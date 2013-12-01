@@ -37,7 +37,7 @@ class TableDDLGenerator {
     public String generateDDL(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
         initializeQuery()
 
-        return query
+        return this.query
     }
 
     /**
@@ -52,7 +52,7 @@ class TableDDLGenerator {
     public String generateTableDDL(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
         initializeQuery()
 
-        return query
+        return this.query
     }
 
     /**
@@ -67,7 +67,7 @@ class TableDDLGenerator {
     public String generatePKDDL(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
         initializeQuery()
 
-        return query
+        return this.query
     }
 
     /**
@@ -82,7 +82,7 @@ class TableDDLGenerator {
     public String generateComments(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
         initializeQuery()
 
-        return query
+        return this.query
     }
 
 }
