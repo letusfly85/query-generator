@@ -38,7 +38,7 @@ dependencies {
 }
 
 
-mainClassName = "com.jellyfish85.srcParser.facade.SrcParserFacade"
+mainClassName = "com.jellyfish85.query.facade.Facade"
 run {
     // dynamic arguments (from "-Prunargs=..." on gradle command line)
     if (project.hasProperty('runargs')) {
