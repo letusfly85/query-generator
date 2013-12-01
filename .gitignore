@@ -1,0 +1,12 @@
+*swp
+*iml
+build
+.idea
+.gradle
+*.properties
+*lst
+lib/dbaccessor.jar
+lib/svnaccessor.jar
+workspace
+attr
+const
