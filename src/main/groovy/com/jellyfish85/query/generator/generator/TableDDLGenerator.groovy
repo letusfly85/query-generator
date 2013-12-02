@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import groovy.text.SimpleTemplateEngine
 
 /**
  * == TableDDLGenerator ==
@@ -12,7 +13,9 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
  */
 class TableDDLGenerator {
 
-    private String query = null
+    private String query   = null
+
+    private Map    binding = null
 
     /**
      * == initializeQuery ==
@@ -51,6 +54,11 @@ class TableDDLGenerator {
      */
     public String generateTableDDL(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
         initializeQuery()
+
+
+
+        SimpleTemplateEngine engine = new SimpleTemplateEngine()
+        this.query = engine.createTemplate().make()
 
         return this.query
     }

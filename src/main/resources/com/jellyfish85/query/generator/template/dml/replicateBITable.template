@@ -1,0 +1,11 @@
+<% import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean %>INSERT INTO ${biTableName} (
+<% columnList.each {MsTabColumnsBean bean ->
+if (bean.columnIdAttr().value() == BigDecimal.ONE) { %>         ${bean.physicalColumnNameAttr().value()}       /* ${bean.logicalColumnNameAttr().value()} */  <% } else { %>
+        ,${bean.physicalColumnNameAttr().value()}      <%    }      }%>
+)
+SELECT
+<% columnList.each {MsTabColumnsBean bean ->
+    if (bean.columnIdAttr().value() == BigDecimal.ONE) { %>         ${bean.physicalColumnNameAttr().value()}       /* ${bean.logicalColumnNameAttr().value()} */  <% } else { %>
+        ,${bean.physicalColumnNameAttr().value()}      <%    }      }%>
+FROM
+    ${tableName}

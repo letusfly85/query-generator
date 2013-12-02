@@ -37,7 +37,7 @@ dependencies {
 
 }
 
-
+/*
 mainClassName = "com.jellyfish85.query.facade.Facade"
 run {
     // dynamic arguments (from "-Prunargs=..." on gradle command line)
@@ -45,11 +45,10 @@ run {
         args project.runargs.split(',')
     }
 }
+*/
 
-/*
-task ConfigActionRunner (type: JavaExec) {
+task BIDmlGeneratorRunner (type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    main = "com.jellyfish85.srcParser.runner.ConfigActionRunner"
+    main = "com.jellyfish85.query.generator.runner.BIDmlGeneratorRunner"
     args = project.runargs.split(',').toList()
 }
-*/
