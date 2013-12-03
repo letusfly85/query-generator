@@ -1,17 +1,18 @@
 package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
-import com.jellyfish85.query.generator.helper.BINameHelper
+import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.query.generator.helper.TableNameHelper
 import groovy.text.SimpleTemplateEngine
 
 /**
- * == restoreQueryGenerator ==
+ * == RestoreQueryGenerator ==
  *
  * @author wada shunsuke
  * @since  2013/12/02
  *
  */
-class restoreQueryGenerator extends GeneralGenerator {
+class RestoreQueryGenerator extends GeneralGenerator {
 
     /**
      * == generate ==
@@ -23,20 +24,21 @@ class restoreQueryGenerator extends GeneralGenerator {
      *
      * @todo fix to dba_ins_timestamp and so on
      */
-   public String generate(ArrayList<MsTabColumnsBean> list) {
+   public String generate(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
        this.initializeQuery()
 
-       BINameHelper helper = new BINameHelper()
+       TableNameHelper helper = new TableNameHelper()
 
        String tableName   = list.head().physicalTableNameAttr().value()
-       String biTableName = helper.requestBITableName(tableName)
+       String bkTableName = helper.requestBKTableName(tableName)
+       String schemaName  = dependency.objectOwnerAttr().value()
 
        SimpleTemplateEngine engine = new SimpleTemplateEngine()
 
        Map map = [
+               schemaName  : schemaName,
                tableName   : tableName,
-               biTableName : biTableName,
-               columnList  : list
+               bkTableName : bkTableName
        ]
 
        def path = "/com/jellyfish85/query/generator/template/dml/restoreTable.template"

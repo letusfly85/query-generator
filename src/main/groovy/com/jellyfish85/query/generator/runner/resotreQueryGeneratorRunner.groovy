@@ -2,9 +2,12 @@ package com.jellyfish85.query.generator.runner
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
+import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
-import com.jellyfish85.query.generator.generator.restoreQueryGenerator
+import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
+import com.jellyfish85.query.generator.generator.RestoreQueryGenerator
+import com.jellyfish85.query.generator.helper.TableNameHelper
 
 /**
  * == resotreQueryGeneratorRunner ==
@@ -22,10 +25,22 @@ class resotreQueryGeneratorRunner {
 
         def conn = _context.getConnection()
 
+        TableNameHelper helper = new TableNameHelper()
+
+        KrObjectDependenciesDao  krObjectDependenciesDao =
+                                          new KrObjectDependenciesDao()
         MsTablesDao msTablesDao         = new MsTablesDao()
         MsTabColumnsDao msTabColumnsDao = new MsTabColumnsDao()
 
-        String tableName = args[0]
+        String tableName    = args[0]
+        String dependencyCd = args[1]
+
+        def _dependencySets =
+            krObjectDependenciesDao.findByDependencyGrpCd(conn, dependencyCd)
+
+        ArrayList<KrObjectDependenciesBean> dependencySets =
+            krObjectDependenciesDao.convert(_dependencySets)
+        KrObjectDependenciesBean dependency = helper.findByApplicationGroupCd(dependencySets, tableName)
 
         MsTablesBean msTablesBean = new MsTablesBean()
         msTablesBean.physicalTableNameAttr().setValue(tableName)
@@ -35,12 +50,9 @@ class resotreQueryGeneratorRunner {
         def _sets = msTabColumnsDao.find(conn, msTablesBean)
         ArrayList<MsTabColumnsBean> sets = msTabColumnsDao.convert(_sets)
 
-        println(sets.size())
-        sets.each {MsTabColumnsBean bean -> println(bean.physicalColumnNameAttr().value())}
+        RestoreQueryGenerator generator = new RestoreQueryGenerator()
 
-        restoreQueryGenerator generator = new restoreQueryGenerator()
-
-        def query = generator.generate(sets)
+        def query = generator.generate(sets, dependency)
 
         println(query)
 

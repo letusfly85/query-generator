@@ -1,11 +1,149 @@
-<% import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean %>INSERT INTO ${biTableName} (
-<% columnList.each {MsTabColumnsBean bean ->
-if (bean.columnIdAttr().value() == BigDecimal.ONE) { %>         ${bean.physicalColumnNameAttr().value()}       /* ${bean.logicalColumnNameAttr().value()} */  <% } else { %>
-        ,${bean.physicalColumnNameAttr().value()}      <%    }      }%>
-)
+spool log/restore_table_${tableName}_${schemaName}.log;
+set echo on;
+
+DECLARE
+W_SQL	VARCHAR2(32637);
+
+CURSOR	SELECT_DIFF_COLS IS
 SELECT
-<% columnList.each {MsTabColumnsBean bean ->
-    if (bean.columnIdAttr().value() == BigDecimal.ONE) { %>         ${bean.physicalColumnNameAttr().value()}       /* ${bean.logicalColumnNameAttr().value()} */  <% } else { %>
-        ,${bean.physicalColumnNameAttr().value()}      <%    }      }%>
+CUR.COLUMN_NAME
+,CUR.NULLABLE
+,CASE WHEN BK.COLUMN_NAME IS NULL THEN 'NONE' ELSE BK.COLUMN_NAME END AS BK_COLUMN_NAME
+,CASE WHEN BK.NULLABLE    IS NULL THEN ''     ELSE BK.NULLABLE    END AS BK_NULLABLE
 FROM
-    ${tableName}
+(
+SELECT
+S.TABLE_NAME
+        ,S.COLUMN_ID
+        ,S.COLUMN_NAME
+        ,S.NULLABLE
+        FROM
+ALL_TAB_COLUMNS S
+WHERE
+        1 = 1
+AND S.OWNER      = '${schemaName}'
+AND S.TABLE_NAME = '${tableName}'
+) CUR,
+(
+SELECT
+S.TABLE_NAME
+        ,S.COLUMN_NAME
+        ,S.NULLABLE
+        FROM
+ALL_TAB_COLUMNS S
+WHERE
+        1 = 1
+AND S.OWNER      = '${schemaName}'
+AND S.TABLE_NAME = '${bkTableName}'
+) BK
+WHERE
+1 = 1
+AND CUR.COLUMN_NAME = BK.COLUMN_NAME(+)
+ORDER BY
+CUR.COLUMN_ID
+;
+
+TYPE T_TAB_COLUMN IS RECORD(
+COLUMN_NAME		ALL_TAB_COLUMNS.COLUMN_NAME%TYPE,
+NULLABLE		ALL_TAB_COLUMNS.COLUMN_NAME%TYPE,
+BK_COLUMN_NAME	ALL_TAB_COLUMNS.COLUMN_NAME%TYPE,
+BK_NULLABLE		ALL_TAB_COLUMNS.COLUMN_NAME%TYPE
+);
+
+TYPE A_TAB_COLUMNS IS VARRAY(4096) OF T_TAB_COLUMN;
+
+W_TAB_COLUMN 	T_TAB_COLUMN;
+ARY_TAB_COLUMNS	A_TAB_COLUMNS;
+
+IND	NUMBER(38,0)	DEFAULT 0;
+
+W_TABLE_COUNT	NUMBER(1, 0)	DEFAULT 0;
+BEGIN
+SELECT
+COUNT(1)
+INTO
+W_TABLE_COUNT
+FROM
+ALL_TABLES TAB
+WHERE
+TAB.OWNER = '${schemaName}'
+AND	TAB.TABLE_NAME = '${bkTableName}';
+
+IF W_TABLE_COUNT = 0 THEN
+DBMS_OUTPUT.PUT_LINE('[${bkTableName}] does not exist.');
+RETURN;
+END IF;
+
+ARY_TAB_COLUMNS := A_TAB_COLUMNS();
+OPEN SELECT_DIFF_COLS;
+LOOP
+FETCH SELECT_DIFF_COLS INTO
+W_TAB_COLUMN;
+EXIT WHEN SELECT_DIFF_COLS%NOTFOUND;
+IND := IND + 1;
+ARY_TAB_COLUMNS.EXTEND(1);
+ARY_TAB_COLUMNS(IND) := W_TAB_COLUMN;
+END LOOP;
+CLOSE SELECT_DIFF_COLS;
+
+W_SQL := 'INSERT INTO ${schemaName}.${tableName} NOLOGGING (' || CHR(10);
+IF IND = 0 THEN
+RETURN;
+END IF;
+
+FOR IDX IN ARY_TAB_COLUMNS.FIRST..ARY_TAB_COLUMNS.LAST LOOP
+
+IF IDX = (ARY_TAB_COLUMNS.LAST) THEN
+W_SQL := W_SQL || '	' || ARY_TAB_COLUMNS(IDX).COLUMN_NAME	||	',';
+ELSE
+W_SQL := W_SQL || '	' || ARY_TAB_COLUMNS(IDX).COLUMN_NAME	||	',' || CHR(10);
+END IF;
+
+END LOOP;
+W_SQL := W_SQL || ')';
+W_SQL := REPLACE(W_SQL, ',)' , ')');
+W_SQL := W_SQL || CHR(10) || ' SELECT ' || CHR(10);
+
+FOR IDX IN ARY_TAB_COLUMNS.FIRST..ARY_TAB_COLUMNS.LAST LOOP
+
+IF IDX = (ARY_TAB_COLUMNS.LAST) THEN
+
+IF ARY_TAB_COLUMNS(IDX).BK_COLUMN_NAME = 'NONE' THEN
+IF ARY_TAB_COLUMNS(IDX).NULLABLE = 'N' THEN
+W_SQL := W_SQL || '	' || '''0'''	||	',';
+ELSE
+W_SQL := W_SQL || '	' || ''''''	||	',';
+END IF;
+ELSE
+W_SQL := W_SQL || '	' || ARY_TAB_COLUMNS(IDX).BK_COLUMN_NAME	||	',';
+END IF;
+
+ELSE
+IF ARY_TAB_COLUMNS(IDX).BK_COLUMN_NAME = 'NONE' THEN
+IF ARY_TAB_COLUMNS(IDX).NULLABLE = 'N' THEN
+W_SQL := W_SQL || '	' || '''0'''	||	',' || CHR(10);
+ELSE
+W_SQL := W_SQL || '	' || ''''''	||	',' || CHR(10);
+END IF;
+ELSE
+W_SQL := W_SQL || '	' || ARY_TAB_COLUMNS(IDX).BK_COLUMN_NAME	||	',' || CHR(10);
+END IF;
+END IF;
+
+END LOOP;
+W_SQL := W_SQL || ')';
+W_SQL := REPLACE(W_SQL, ',)' , '');
+W_SQL := W_SQL || CHR(10) || ' FROM ${schemaName}.${bkTableName}';
+DBMS_OUTPUT.PUT_LINE(W_SQL);
+
+EXECUTE IMMEDIATE W_SQL;
+COMMIT;
+
+EXCEPTION
+WHEN OTHERS THEN
+ROLLBACK;
+DBMS_OUTPUT.PUT_LINE(W_SQL);
+DBMS_OUTPUT.PUT_LINE(SUBSTR(SQLERRM, 1, 100));
+RAISE;
+END;
+/
