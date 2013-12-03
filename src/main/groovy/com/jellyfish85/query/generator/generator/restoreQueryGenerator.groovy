@@ -5,13 +5,13 @@ import com.jellyfish85.query.generator.helper.BINameHelper
 import groovy.text.SimpleTemplateEngine
 
 /**
- * == BIDmlGenerator ==
+ * == restoreQueryGenerator ==
  *
  * @author wada shunsuke
  * @since  2013/12/02
  *
  */
-class BIDmlGenerator extends GeneralGenerator {
+class restoreQueryGenerator extends GeneralGenerator {
 
     /**
      * == generate ==
@@ -39,7 +39,7 @@ class BIDmlGenerator extends GeneralGenerator {
                columnList  : list
        ]
 
-       def path = "/com/jellyfish85/query/generator/template/dml/replicateBITable.template"
+       def path = "/com/jellyfish85/query/generator/template/dml/restoreTable.template"
        def template = new File(getClass().getResource(path).toURI())
 
        setQuery(engine.createTemplate(template).make(map).toString())

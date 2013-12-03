@@ -4,16 +4,16 @@ import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
-import com.jellyfish85.query.generator.generator.BIDmlGenerator
+import com.jellyfish85.query.generator.generator.restoreQueryGenerator
 
 /**
- * == BIDmlGeneratorRunner ==
+ * == resotreQueryGeneratorRunner ==
  *
  * @author wada shunsuke
  * @since  2013/12/02
  *
  */
-class BIDmlGeneratorRunner {
+class resotreQueryGeneratorRunner {
 
     public static void main(String[] args) {
 
@@ -38,7 +38,7 @@ class BIDmlGeneratorRunner {
         println(sets.size())
         sets.each {MsTabColumnsBean bean -> println(bean.physicalColumnNameAttr().value())}
 
-        BIDmlGenerator generator = new BIDmlGenerator()
+        restoreQueryGenerator generator = new restoreQueryGenerator()
 
         def query = generator.generate(sets)
 
