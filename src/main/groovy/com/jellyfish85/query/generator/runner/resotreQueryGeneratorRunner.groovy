@@ -10,13 +10,13 @@ import com.jellyfish85.query.generator.generator.RestoreQueryGenerator
 import com.jellyfish85.query.generator.helper.TableNameHelper
 
 /**
- * == resotreQueryGeneratorRunner ==
+ * == ResotreQueryGeneratorRunner ==
  *
  * @author wada shunsuke
  * @since  2013/12/02
  *
  */
-class resotreQueryGeneratorRunner {
+class ResotreQueryGeneratorRunner {
 
     public static void main(String[] args) {
 
