@@ -1,9 +1,15 @@
 package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
+import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
+import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.helper.TableNameHelper
+
 import groovy.text.SimpleTemplateEngine
+import java.sql.Connection
 
 /**
  * == RestoreQueryGenerator ==
@@ -13,6 +19,9 @@ import groovy.text.SimpleTemplateEngine
  *
  */
 class RestoreQueryGenerator extends GeneralGenerator {
+
+    private TableNameHelper helper = new TableNameHelper()
+
 
     /**
      * == generate ==
@@ -27,10 +36,8 @@ class RestoreQueryGenerator extends GeneralGenerator {
    public String generate(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
        this.initializeQuery()
 
-       TableNameHelper helper = new TableNameHelper()
-
        String tableName   = list.head().physicalTableNameAttr().value()
-       String bkTableName = helper.requestBKTableName(tableName)
+       String bkTableName = this.helper.requestBKTableName(tableName)
        String schemaName  = dependency.objectOwnerAttr().value()
 
        SimpleTemplateEngine engine = new SimpleTemplateEngine()
@@ -50,4 +57,50 @@ class RestoreQueryGenerator extends GeneralGenerator {
        return query
    }
 
+    /**
+     * == generate ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/05
+     * @param list
+     * @return
+     *
+     */
+    public void generate(
+            Connection conn,
+            String dependencyGrpCd,
+            ArrayList<String> list
+    ) {
+
+        // generate dao instances
+        KrObjectDependenciesDao  krObjectDependenciesDao =
+                new KrObjectDependenciesDao()
+        MsTablesDao msTablesDao         = new MsTablesDao()
+        MsTabColumnsDao msTabColumnsDao = new MsTabColumnsDao()
+
+        // get dependency sets
+        def _dependencySets =
+                krObjectDependenciesDao.findByDependencyGrpCd(conn, dependencyGrpCd)
+        ArrayList<KrObjectDependenciesBean> dependencySets =
+                krObjectDependenciesDao.convert(_dependencySets)
+
+        // generate queries by each table
+        list.each {String tableName ->
+            KrObjectDependenciesBean dependency =
+                    helper.findByApplicationGroupCd(dependencySets, tableName)
+
+            MsTablesBean msTablesBean = new MsTablesBean()
+            msTablesBean.physicalTableNameAttr().setValue(tableName)
+            msTablesBean =  msTablesDao.findOne(conn, msTablesBean)
+
+            def _sets = msTabColumnsDao.find(conn, msTablesBean)
+            ArrayList<MsTabColumnsBean> sets = msTabColumnsDao.convert(_sets)
+
+            RestoreQueryGenerator generator = new RestoreQueryGenerator()
+
+            def query = generator.generate(sets, dependency)
+
+            println(query)
+        }
+    }
 }

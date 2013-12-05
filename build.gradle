@@ -49,6 +49,6 @@ run {
 
 task BIDmlGeneratorRunner (type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    main = "com.jellyfish85.query.generator.runner.ResotreQueryGeneratorRunner"
+    main = "com.jellyfish85.query.generator.runner.GenerateErdReleaseScriptsRunner"
     args = project.runargs.split(',').toList()
 }
