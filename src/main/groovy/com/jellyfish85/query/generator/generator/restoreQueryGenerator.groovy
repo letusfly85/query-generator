@@ -6,6 +6,7 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
+import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
 
 import groovy.text.SimpleTemplateEngine
@@ -22,7 +23,6 @@ class RestoreQueryGenerator extends GeneralGenerator {
 
     private TableNameHelper helper = new TableNameHelper()
 
-
     /**
      * == generate ==
      *
@@ -33,7 +33,7 @@ class RestoreQueryGenerator extends GeneralGenerator {
      *
      * @todo fix to dba_ins_timestamp and so on
      */
-   public String generate(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
+   public void generate(ArrayList<MsTabColumnsBean> list, KrObjectDependenciesBean dependency) {
        this.initializeQuery()
 
        String tableName   = list.head().physicalTableNameAttr().value()
@@ -51,10 +51,8 @@ class RestoreQueryGenerator extends GeneralGenerator {
        def path = "/com/jellyfish85/query/generator/template/dml/restoreTable.template"
        def template = new File(getClass().getResource(path).toURI())
 
-       setQuery(engine.createTemplate(template).make(map).toString())
-       String query = getQuery()
-
-       return query
+       String query = engine.createTemplate(template).make(map).toString()
+       this.setQuery(query)
    }
 
     /**
@@ -68,6 +66,7 @@ class RestoreQueryGenerator extends GeneralGenerator {
      */
     public void generate(
             Connection conn,
+            AppFileNameHelper fileNameHelper,
             String dependencyGrpCd,
             ArrayList<String> list
     ) {
@@ -96,11 +95,10 @@ class RestoreQueryGenerator extends GeneralGenerator {
             def _sets = msTabColumnsDao.find(conn, msTablesBean)
             ArrayList<MsTabColumnsBean> sets = msTabColumnsDao.convert(_sets)
 
-            RestoreQueryGenerator generator = new RestoreQueryGenerator()
+            generate(sets, dependency)
 
-            def query = generator.generate(sets, dependency)
-
-            println(query)
+            this.setPath(fileNameHelper.requestRestorePath(dependency, msTablesBean))
+            this.writeAppFile()
         }
     }
 }

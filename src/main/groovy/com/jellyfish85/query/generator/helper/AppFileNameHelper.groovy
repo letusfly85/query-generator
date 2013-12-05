@@ -40,9 +40,12 @@ class AppFileNameHelper {
 
         String fileName = StringUtils.join(["restore_Table_",
                             bean.physicalTableNameAttr().value(),
-                            dependency.objectOwnerAttr().value()
-                           ])
-        String path = FilenameUtils.concat(this.prop.outputHome(), fileName)
+                            dependency.objectOwnerAttr().value(),
+                            ".sql"
+                           ], "")
+
+        println(this.prop.restoreFolder())
+        String path = FilenameUtils.concat(this.prop.restoreFolder(), fileName)
 
         return path
     }

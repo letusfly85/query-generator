@@ -7,6 +7,7 @@ import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.generator.RestoreQueryGenerator
+import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
 
 /**
@@ -25,13 +26,14 @@ class GenerateErdReleaseScriptsRunner {
 
         def conn       = _context.getConnection()
         def argsHelper = _context.getArgsHelper()
+        AppFileNameHelper fileNameHelper = new AppFileNameHelper()
 
         String dependencyGrpCd          = args[0]
         ArrayList<String> tableNameList = argsHelper.requestTableNameList(args[1])
 
 
         RestoreQueryGenerator generator = new RestoreQueryGenerator()
-        generator.generate(conn, dependencyGrpCd, tableNameList)
+        generator.generate(conn, fileNameHelper, dependencyGrpCd, tableNameList)
 
         _context.databaseFinalize()
     }

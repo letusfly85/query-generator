@@ -7,11 +7,13 @@ class AppProp {
 
   var inputStream: InputStream = _
 
-  var property: Properties     = _
+  var property: Properties     = new Properties()
 
-  var outputHome: String = {
-    if (System.getProperties("out.home") != null) {
-      this.outputHome = System.getProperties("out.home")
+  var outputHome: String  = _
+
+  def setOutputHome {
+    if (System.getProperty("out.home") != null) {
+      this.outputHome = System.getProperty("out.home")
 
     } else {
       this.outputHome = "output"
@@ -19,10 +21,11 @@ class AppProp {
   }
 
   def load {
+    setOutputHome
     inputStream = getClass.getResourceAsStream("/com/jellyfish85/query/generator/define/query.properties")
     property.load(inputStream)
   }
 
-  var restoreFolder: String    = property.getProperty("restoreFolder")
+  def restoreFolder: String    = property.getProperty("restoreFolder")
 
 }
