@@ -97,7 +97,9 @@ class RestoreQueryGenerator extends GeneralGenerator {
 
             generate(sets, dependency)
 
-            this.setPath(fileNameHelper.requestRestorePath(dependency, msTablesBean))
+            def restoreQueryPath =
+                    fileNameHelper.requestRestorePath(dependency, msTablesBean)
+            this.setPath(restoreQueryPath)
             this.writeAppFile()
         }
     }
