@@ -26,6 +26,8 @@ class AppProp {
     property.load(inputStream)
   }
 
-  def restoreFolder: String    = property.getProperty("restoreFolder")
+  def restoreFolder:   String    = property.getProperty("restoreFolder")
+
+  def sqlLoaderFolder: String    = property.getProperty("sqlLoaderFolder")
 
 }

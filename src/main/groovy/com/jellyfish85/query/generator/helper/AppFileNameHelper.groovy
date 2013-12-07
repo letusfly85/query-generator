@@ -50,4 +50,24 @@ class AppFileNameHelper {
         return path
     }
 
+    /**
+     * == sqlLoaderPath ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/07
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String sqlLoaderPath(KrObjectDependenciesBean dependency,
+                                     MsTablesBean bean) {
+
+        String fileName = StringUtils.join(["exec_load.sh"], "")
+
+        println(this.prop.sqlLoaderFolder())
+        String path = FilenameUtils.concat(this.prop.sqlLoaderFolder(), fileName)
+
+        return path
+    }
+
 }
