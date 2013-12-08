@@ -1,5 +1,6 @@
 package com.jellyfish85.query.generator.generator
 
+import groovy.text.SimpleTemplateEngine
 import org.apache.commons.io.FileUtils
 
 /**
@@ -14,6 +15,11 @@ class GeneralGenerator {
     private String query = null
 
     private String path  = null
+
+    private SimpleTemplateEngine engine = null
+    public GeneralGenerator() {
+        this.engine = new SimpleTemplateEngine()
+    }
 
     /**
      * == initializeQuery ==
@@ -60,4 +66,22 @@ class GeneralGenerator {
         pw.write(this.getQuery())
         pw.close()
     }
+
+    /**
+     * == generateRestoreQuery ==
+     *
+     * @author  wada shunsuke
+     * @since   2013/12/08
+     * @param map
+     * @param path
+     */
+    public generate(Map map, String path) {
+        this.initializeQuery()
+
+        def template = new File(getClass().getResource(path).toURI())
+
+        String query = this.engine.createTemplate(template).make(map).toString()
+        this.setQuery(query)
+    }
+
 }

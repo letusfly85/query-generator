@@ -21,7 +21,7 @@ class SqlLoaderGenerator<T extends CodeInfoBeanTrait> extends GeneralGenerator {
     public void generateControlFile(ArrayList<T> columnList, KrObjectDependenciesBean dependency) {
         this.initializeQuery()
 
-        String tableName   = list.head().physicalTableName()
+        String tableName   = columnList.head().physicalTableName()
         String schemaName  = dependency.objectOwnerAttr().value()
 
         SimpleTemplateEngine engine = new SimpleTemplateEngine()

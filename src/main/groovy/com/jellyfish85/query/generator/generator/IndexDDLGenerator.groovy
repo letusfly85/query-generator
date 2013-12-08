@@ -10,24 +10,23 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
  * @since  2013/12/01
  *
  */
-class IndexDDLGenerator {
+class IndexDDLGenerator extends GeneralGenerator {
 
-    private String query = null
+    public generateIndexDDL(String tableName,
+                       ArrayList<MsIndColumnsBean> columnList,
+                       KrObjectDependenciesBean dependency) {
 
-    /**
-     * == initializeQuery ==
-     *
-     * @author wada shunsuke
-     * @since  2013/12/01
-     *
-     */
-    protected void initializeQuery() {
-        this.query = null
-    }
+        String indexName   = columnList.head().indexNameAttr().value()
+        String schemaName  = dependency.objectOwnerAttr().value()
 
-    public String generateDDL(ArrayList<MsIndColumnsBean> list, KrObjectDependenciesBean dependency) {
-        initializeQuery()
+        Map map = [
+                schemaName  : schemaName,
+                tableName   : tableName,
+                indexName   : indexName,
+                columnList  : columnList
+        ]
 
-        return this.query
+        String path = "/com/jellyfish85/query/generator/template/dml/indexDDL.template"
+        this.generate(map, path)
     }
 }
