@@ -18,7 +18,7 @@ class SqlLoaderGenerator<T extends CodeInfoBeanTrait> extends GeneralGenerator {
      * @param list
      * @param dependency
      */
-    public void generateDat(ArrayList<T> columnList, KrObjectDependenciesBean dependency) {
+    public void generateControlFile(ArrayList<T> columnList, KrObjectDependenciesBean dependency) {
         this.initializeQuery()
 
         String tableName   = list.head().physicalTableName()
@@ -32,7 +32,7 @@ class SqlLoaderGenerator<T extends CodeInfoBeanTrait> extends GeneralGenerator {
                 columnList  : columnList
         ]
 
-        def path = "/com/jellyfish85/query/generator/template/dml/dat.template"
+        def path = "/com/jellyfish85/query/generator/template/dml/controlFile.templatetemplate"
         def template = new File(getClass().getResource(path).toURI())
 
         String query = engine.createTemplate(template).make(map).toString()
