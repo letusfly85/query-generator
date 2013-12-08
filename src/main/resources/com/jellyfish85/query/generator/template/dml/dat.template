@@ -1,0 +1,22 @@
+LOAD DATA
+INFILE 'dat\\${tableName}.dat'"str 'CRLF'"
+TRUNCATE
+INTO TABLE ${schemaName}.${tableName}
+FIELDS TERMINATED BY "," OPTIONALLY ENCLOSED BY '"'
+TRAILING NULLCOLS
+(
+<% int localCount = 0 %>
+<% columnList.each {bean -> %>
+<% var entity: EntMsTabColumns = tabList(localCount) %>
+<% if (localCount == list.length -1) %>
+${bean.physicalColumnName}
+<% else %>
+<% if (bean.dataType == "VARCHAR2" || bean.dataType == "VARCHAR" || bean.dataType == "CHAR") %>
+${bean.physicalColumnName} CHAR(${String.valueOf(bean.dataLength)}),
+<% else %>
+${bean.physicalColumnName},
+<% end %>
+<% end %>
+<% localCount += 1 %>
+<% end %>
+)

@@ -27,6 +27,9 @@ dependencies {
     //compile 'com.jellyfish85:svnaccessor:1.0-SNAPSHOT'
     compile files('lib/svnaccessor.jar')
 
+    //compile 'com.jellyfish85:svnaccessor:1.0-SNAPSHOT'
+    compile files('lib/cassandra-accessor.jar')
+
     runtime files('lib/ojdbc14.jar')
 
     testCompile      'junit:junit:4.11'
