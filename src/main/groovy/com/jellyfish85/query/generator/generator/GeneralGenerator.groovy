@@ -78,9 +78,11 @@ class GeneralGenerator {
     public generate(Map map, String path) {
         this.initializeQuery()
 
-        def template = new File(getClass().getResource(path).toURI())
+        File template = new File(getClass().getResource(path).toURI())
 
-        String query = this.engine.createTemplate(template).make(map).toString()
+        String query =
+                this.engine.createTemplate(template).make(map).toString()
+
         this.setQuery(query)
     }
 

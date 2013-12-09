@@ -55,3 +55,9 @@ task GenerateErdReleaseScriptsRunner (type: JavaExec) {
     main = "com.jellyfish85.query.generator.runner.GenerateErdReleaseScriptsRunner"
     args = project.runargs.split(',').toList()
 }
+
+task GenerateIndexDDLRunner (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.jellyfish85.query.generator.runner.GenerateIndexDDLRunner"
+    args = project.runargs.split(',').toList()
+}

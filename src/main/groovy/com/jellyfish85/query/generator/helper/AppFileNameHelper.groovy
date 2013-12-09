@@ -1,6 +1,6 @@
 package com.jellyfish85.query.generator.helper
 
-
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndexesBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.query.generator.utils.AppProp
@@ -35,14 +35,41 @@ class AppFileNameHelper {
      * @param bean
      * @return
      */
+    public String indexDDLPath(KrObjectDependenciesBean dependency,
+                                     MsIndexesBean bean) {
+
+        String fileName = StringUtils.join(["create_Index_",
+                            bean.indexNameAttr().value(),
+                            "_",
+                            dependency.objectOwnerAttr().value(),
+                            ".sql"
+                           ], "")
+
+        //todo change restore folder to index folder
+        println(this.prop.restoreFolder() + "\t" + fileName)
+        String path = FilenameUtils.concat(this.prop.restoreFolder(), fileName)
+
+        return path
+    }
+
+    /**
+     * == indexDDLPath ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/09
+     * @param dependency
+     * @param bean
+     * @return
+     */
     public String requestRestorePath(KrObjectDependenciesBean dependency,
                                      MsTablesBean bean) {
 
         String fileName = StringUtils.join(["restore_Table_",
-                            bean.physicalTableNameAttr().value(),
-                            dependency.objectOwnerAttr().value(),
-                            ".sql"
-                           ], "")
+                bean.physicalTableNameAttr().value(),
+                "_",
+                dependency.objectOwnerAttr().value(),
+                ".sql"
+        ], "")
 
         println(this.prop.restoreFolder())
         String path = FilenameUtils.concat(this.prop.restoreFolder(), fileName)
