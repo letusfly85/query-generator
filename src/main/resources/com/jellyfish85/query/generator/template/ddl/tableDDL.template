@@ -10,31 +10,37 @@ select username username from user_users;
 select instance_name instancename from v\$instance;
 spool on;
 spool log/Create_Table_${tableName}_${schemaName}.log
-        CREATE TABLE ${schemaName}.${tableName} (
-<% columnList.eachWithIndex {bean, idx ->
+CREATE TABLE ${schemaName}.${tableName} ( <% columnList.eachWithIndex {bean, idx ->
     def attr = ""
     if(bean.dataTypeAttr().value() == "NUMBER") {
         attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value() + "(" + bean.dataLengthAttr().value() + "," + bean.dataPrecisionAttr().value() + ")"
     } else if(bean.dataTypeAttr().value() == "TIMESTAMP(6)") {
         attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value()
-    } else if(bean.dataTypeAttr().value() == "CLOB" || bean.dataTypeAttr().value() == "BLOB" || bean.dataTypeAttr().value() == "LONG" || l.dataType == "DATE") {
+    } else if(bean.dataTypeAttr().value() == "CLOB" || bean.dataTypeAttr().value() == "BLOB" || bean.dataTypeAttr().value() == "LONG" || bean.dataTypeAttr().value() == "DATE") {
         attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value()
     } else {
         attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value() + "(" + bean.dataLengthAttr().value() + ")"
     }
-
-    if (l.dataDefault != null && l.dataDefault != "NONE") {
+    if (bean.dataDefaultAttr().value() != null && bean.dataDefaultAttr().value() != "NONE") {
         attr += "\tDEFAULT " +  ("'" + bean.dataDefaultAttr().value().replaceAll(" ","") + "'").replaceAll("''","'")
     }
-
-    if (l.notNull == "N") {
+    if (bean.nullableAttr().value() == "N") {
         attr += "\tNOT NULL"
     }
-
     if (idx == 0){ %>
-     ${attr}
-<% } else { %>
-    ,${attr}
-<% }
-}%>
-)
+         ${attr}<% } else { %>
+        ,${attr}<% } }%>
+);
+/
+
+<% if (!pkList.size().equals(0)) { %>
+ALTER TABLE ${schemaName}.${tableName} ADD CONSTRAINT PK_${tableName} PRIMARY KEY (
+<% pkList.eachWithIndex {bean, idx ->
+if (idx == 0) { %> ${bean.physicalColumnNameAttr().value()}
+<% } else { %>,${bean.physicalColumnNameAttr().value()}
+<% } } %>)<% } %>
+/
+
+<% columnList.eachWithIndex {bean, idx -> %>
+COMMENT ON TABLE ${schemaName}.${tableName}.${bean.physicalColumnNameAttr().value()}    IS	'${bean.logicalColumnNameAttr().value()}'
+/ <% } %>

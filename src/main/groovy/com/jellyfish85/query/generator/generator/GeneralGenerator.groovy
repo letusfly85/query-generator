@@ -55,6 +55,7 @@ class GeneralGenerator {
     /**
      * == writeAppFile ==
      *
+     *
      * @author wada shunsuke
      * @since  2013/12/06
      * @throws IOException
@@ -66,7 +67,10 @@ class GeneralGenerator {
             FileUtils.forceMkdir(file.getParentFile())
         }
 
-        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)))
+        PrintWriter pw =
+            new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(new FileOutputStream(file),"UTF-8")))
+
         pw.write(this.getQuery())
         pw.close()
     }

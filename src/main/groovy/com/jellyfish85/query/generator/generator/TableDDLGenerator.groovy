@@ -7,8 +7,11 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
+import org.apache.commons.lang.ArrayUtils
+import org.apache.commons.lang.math.NumberUtils
 
 import java.sql.Connection
+import java.text.DecimalFormat
 
 /**
  * == TableDDLGenerator ==
@@ -27,27 +30,61 @@ class TableDDLGenerator extends GeneralGenerator {
      *
      * @author wada shunsuke
      * @since  2013/12/01
+     * @param bean
      * @param columnList
      * @param dependency
      *
      */
     public void generateTableDDL(
+            MsTablesBean                bean,
             ArrayList<MsTabColumnsBean> columnList,
             KrObjectDependenciesBean dependency) {
 
         this.initializeQuery()
 
-        String tableName   = columnList.head().physicalColumnNameAttr().value()
+        String tableName   = columnList.head().physicalTableNameAttr().value()
         String schemaName  = dependency.objectOwnerAttr().value()
+        String uniqueTag   = generateUniqueTag(bean)
+
+        ArrayList<MsTabColumnsBean> pkList = new ArrayList<MsTabColumnsBean>()
+        for (column in columnList) {
+            if (NumberUtils.isNumber(column.pkFlgAttr().value())) {
+                pkList.add(column)
+            }
+        }
+
+
+        //todo index ddl
+        //todo table version
 
         Map map = [
                 schemaName  : schemaName,
                 tableName   : tableName,
-                columnList  : columnList
+                uniqueTag   : uniqueTag,
+                columnList  : columnList,
+                pkList      : pkList
         ]
 
         String path = "/com/jellyfish85/query/generator/template/ddl/tableDDL.template"
         this.generate(map, path)
+    }
+
+    /**
+     *
+     *
+     *
+     * @param bean
+     * @return
+     */
+    public String generateUniqueTag(MsTablesBean bean) {
+        DecimalFormat df = new DecimalFormat("00000")
+        String tableId = df.format(bean.tableIdAttr().value())
+
+        df = new DecimalFormat("000000000")
+        String tableRevision = df.format(bean.revisionAttr().value())
+        String comment = "[" + tableId + "][" + tableRevision + "]"
+
+        return comment
     }
 
     /**
@@ -85,7 +122,7 @@ class TableDDLGenerator extends GeneralGenerator {
             ArrayList<MsTabColumnsDao> sets = msTabColumnsDao.convert(_sets)
 
             if (!sets.isEmpty()) {
-                this.generateTableDDL(sets, dependency)
+                this.generateTableDDL(bean, sets, dependency)
 
                 String tableDDLPath =
                         fileNameHelper.requestTableDDLPath(dependency, bean)

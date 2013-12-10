@@ -35,8 +35,12 @@ class GenerateErdReleaseScriptsRunner {
         RestoreQueryGenerator restoreQueryGenerator = new RestoreQueryGenerator()
         restoreQueryGenerator.generate(conn, fileNameHelper, dependencyGrpCd, tableNameList)
 
+
+        MsTablesDao msTablesDao = new MsTablesDao()
+        def _list = msTablesDao.findByTableNames(conn, tableNameList)
+        ArrayList<MsTablesBean> list = msTablesDao.convert(_list)
         TableDDLGenerator tableDDLGenerator = new TableDDLGenerator()
-        //tableDDLGenerator.generateTableDDL(conn, fileNameHelper, dependencyGrpCd, tableNameList)
+        tableDDLGenerator.generateTableDDL(conn, fileNameHelper, dependencyGrpCd, list)
 
         _context.databaseFinalize()
     }
