@@ -29,11 +29,15 @@ class GeneralGenerator {
      *
      */
     protected void initializeQuery() {
-        this.query = null
+        this.query = ""
     }
 
     public void setQuery(String _query) {
         this.query = _query
+    }
+
+    public void appendQuery(String _query) {
+        this.query += _query
     }
 
     public String getQuery() {

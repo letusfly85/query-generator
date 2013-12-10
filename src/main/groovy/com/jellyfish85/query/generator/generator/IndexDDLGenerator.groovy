@@ -9,6 +9,7 @@ import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDa
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
 import com.jellyfish85.query.generator.runner.BaseRunner
+import org.apache.commons.io.FilenameUtils
 
 import java.sql.Connection
 
@@ -21,7 +22,11 @@ import java.sql.Connection
  */
 class IndexDDLGenerator extends GeneralGenerator {
 
-    public generateIndexDDL(String tableName,
+    // generate helper
+    private TableNameHelper tableNameHelper  = new TableNameHelper()
+
+
+    public void generateIndexDDL(String tableName,
                        ArrayList<MsIndColumnsBean> columnList,
                        KrObjectDependenciesBean dependency) {
         this.initializeQuery()
@@ -67,14 +72,12 @@ class IndexDDLGenerator extends GeneralGenerator {
         def _list = msIndexesDao.findAll(conn)
         ArrayList<MsIndexesBean> list = msIndexesDao.convert(_list)
 
-        // generate helper
-        TableNameHelper tableNameHelper  = new TableNameHelper()
 
         // generate query each by table
         list.each {MsIndexesBean bean ->
             String tableName = bean.physicalTableNameAttr().value()
             KrObjectDependenciesBean dependency =
-                    tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+                    this.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
 
             def _sets = msIndColumnsDao.find(conn, bean)
             ArrayList<MsIndColumnsBean> sets = msIndColumnsDao.convert(_sets)
@@ -83,11 +86,46 @@ class IndexDDLGenerator extends GeneralGenerator {
                 this.generateIndexDDL(tableName, sets, dependency)
 
                 String indexDDLPath =
-                        fileNameHelper.indexDDLPath(dependency, bean)
+                        fileNameHelper.requestIndexDDLPath(dependency, bean)
                 this.setPath(indexDDLPath)
 
                 this.writeAppFile()
             }
         }
+
+        generateExecuteIndexDDLShell(fileNameHelper, dependencies, list)
     }
+
+    /**
+     *
+     * @param fileNameHelper
+     * @param dependencies
+     * @param list
+     */
+    public void generateExecuteIndexDDLShell(
+            AppFileNameHelper fileNameHelper,
+            ArrayList<KrObjectDependenciesBean> dependencies,
+            ArrayList<MsIndexesBean> list) {
+
+        this.initializeQuery()
+
+        String executeShellPath =
+                fileNameHelper.requestExecuteIndexDDLShellPath()
+        this.setPath(executeShellPath)
+
+        list.each {MsIndexesBean bean ->
+            String tableName = bean.physicalTableNameAttr().value()
+            KrObjectDependenciesBean dependency =
+                    this.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+
+            String indexDDLPath =
+                    fileNameHelper.requestIndexDDLPath(dependency, bean)
+            String ddlName = FilenameUtils.getName(indexDDLPath)
+
+            this.appendQuery("@" + ddlName + "\n")
+        }
+
+        this.writeAppFile()
+    }
+
 }

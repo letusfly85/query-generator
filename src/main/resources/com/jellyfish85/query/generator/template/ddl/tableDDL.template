@@ -1,0 +1,40 @@
+/******************************************************************************
+ Program Name: DDL for  ${schemaName}.${tableName}
+ Author:       Database Architect
+ ******************************************************************************/
+column log_date new_value log_date_text noprint
+column username new_value user_name_text noprint
+column instancename new_value instance_name_text noprint
+select to_char(sysdate,'yyyy_mmdd_hh24mi') log_date from dual;
+select username username from user_users;
+select instance_name instancename from v\$instance;
+spool on;
+spool log/Create_Table_${tableName}_${schemaName}.log
+        CREATE TABLE ${schemaName}.${tableName} (
+<% columnList.eachWithIndex {bean, idx ->
+    def attr = ""
+    if(bean.dataTypeAttr().value() == "NUMBER") {
+        attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value() + "(" + bean.dataLengthAttr().value() + "," + bean.dataPrecisionAttr().value() + ")"
+    } else if(bean.dataTypeAttr().value() == "TIMESTAMP(6)") {
+        attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value()
+    } else if(bean.dataTypeAttr().value() == "CLOB" || bean.dataTypeAttr().value() == "BLOB" || bean.dataTypeAttr().value() == "LONG" || l.dataType == "DATE") {
+        attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value()
+    } else {
+        attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value() + "(" + bean.dataLengthAttr().value() + ")"
+    }
+
+    if (l.dataDefault != null && l.dataDefault != "NONE") {
+        attr += "\tDEFAULT " +  ("'" + bean.dataDefaultAttr().value().replaceAll(" ","") + "'").replaceAll("''","'")
+    }
+
+    if (l.notNull == "N") {
+        attr += "\tNOT NULL"
+    }
+
+    if (idx == 0){ %>
+     ${attr}
+<% } else { %>
+    ,${attr}
+<% }
+}%>
+)

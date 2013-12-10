@@ -27,7 +27,32 @@ class AppFileNameHelper {
     }
 
     /**
-     * == requestRestorePath ==
+     * == requestTableDDLPath ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/10
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestTableDDLPath(KrObjectDependenciesBean dependency,
+                                      MsTablesBean bean) {
+
+        this.fileName = StringUtils.join(["create_Table_",
+                bean.physicalTableNameAttr().value(),
+                "_",
+                dependency.objectOwnerAttr().value(),
+                ".sql"
+        ], "")
+
+        println(this.prop.tableDDLFolder() + "\t" + this.fileName)
+        String path = FilenameUtils.concat(this.prop.tableDDLFolder(), this.fileName)
+
+        return path
+    }
+
+    /**
+     * == requestIndexDDLPath ==
      *
      * @author wada shunsuke
      * @since  2013/12/06
@@ -35,25 +60,44 @@ class AppFileNameHelper {
      * @param bean
      * @return
      */
-    public String indexDDLPath(KrObjectDependenciesBean dependency,
-                                     MsIndexesBean bean) {
+    public String requestIndexDDLPath(KrObjectDependenciesBean dependency,
+                                      MsIndexesBean bean) {
 
-        String fileName = StringUtils.join(["create_Index_",
-                            bean.indexNameAttr().value(),
-                            "_",
-                            dependency.objectOwnerAttr().value(),
-                            ".sql"
-                           ], "")
+        this.fileName = StringUtils.join(["create_Index_",
+                bean.indexNameAttr().value(),
+                "_",
+                dependency.objectOwnerAttr().value(),
+                ".sql"
+        ], "")
 
-        //todo change restore folder to index folder
-        println(this.prop.restoreFolder() + "\t" + fileName)
-        String path = FilenameUtils.concat(this.prop.restoreFolder(), fileName)
+        println(this.prop.indexDDLFolder() + "\t" + this.fileName)
+        String path = FilenameUtils.concat(this.prop.indexDDLFolder(), this.fileName)
 
         return path
     }
 
     /**
-     * == indexDDLPath ==
+     * == requestExecuteIndexDDLShellPath ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/10
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestExecuteIndexDDLShellPath() {
+
+        this.fileName = StringUtils.join(["exe_All.sql"
+        ], "")
+
+        println(this.prop.indexDDLFolder() + "\t" + this.fileName)
+        String path = FilenameUtils.concat(this.prop.indexDDLFolder(), this.fileName)
+
+        return path
+    }
+
+    /**
+     * == requestRestorePath ==
      *
      * @author wada shunsuke
      * @since  2013/12/09
@@ -64,7 +108,7 @@ class AppFileNameHelper {
     public String requestRestorePath(KrObjectDependenciesBean dependency,
                                      MsTablesBean bean) {
 
-        String fileName = StringUtils.join(["restore_Table_",
+        this.fileName = StringUtils.join(["restore_Table_",
                 bean.physicalTableNameAttr().value(),
                 "_",
                 dependency.objectOwnerAttr().value(),
@@ -72,13 +116,13 @@ class AppFileNameHelper {
         ], "")
 
         println(this.prop.restoreFolder())
-        String path = FilenameUtils.concat(this.prop.restoreFolder(), fileName)
+        String path = FilenameUtils.concat(this.prop.restoreFolder(), this.fileName)
 
         return path
     }
 
     /**
-     * == sqlLoaderPath ==
+     * == requestSqlLoaderPath ==
      *
      * @author wada shunsuke
      * @since  2013/12/07
@@ -86,15 +130,14 @@ class AppFileNameHelper {
      * @param bean
      * @return
      */
-    public String sqlLoaderPath(KrObjectDependenciesBean dependency,
+    public String requestSqlLoaderPath(KrObjectDependenciesBean dependency,
                                      MsTablesBean bean) {
 
-        String fileName = StringUtils.join(["exec_load.sh"], "")
+        this.fileName = StringUtils.join(["exec_load.sh"], "")
 
         println(this.prop.sqlLoaderFolder())
-        String path = FilenameUtils.concat(this.prop.sqlLoaderFolder(), fileName)
+        String path = FilenameUtils.concat(this.prop.sqlLoaderFolder(), this.fileName)
 
         return path
     }
-
 }
