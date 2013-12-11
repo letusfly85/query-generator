@@ -55,12 +55,11 @@ class TableDDLGenerator extends GeneralGenerator {
 
 
         //todo index ddl
-        //todo table version
-
         Map map = [
                 schemaName  : schemaName,
                 tableName   : tableName,
                 uniqueTag   : uniqueTag,
+                tableBean   : bean,
                 columnList  : columnList,
                 pkList      : pkList
         ]

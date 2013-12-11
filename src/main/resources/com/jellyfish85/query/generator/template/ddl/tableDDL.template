@@ -33,6 +33,9 @@ CREATE TABLE ${schemaName}.${tableName} ( <% columnList.eachWithIndex {bean, idx
 );
 /
 
+COMMENT ON TABLE ${schemaName}.${tableName} IS '${uniqueTag}\t${tableBean.logicalTableNameAttr().value()}'
+/
+
 <% if (!pkList.size().equals(0)) { %>
 ALTER TABLE ${schemaName}.${tableName} ADD CONSTRAINT PK_${tableName} PRIMARY KEY (
 <% pkList.eachWithIndex {bean, idx ->
