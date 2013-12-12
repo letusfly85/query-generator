@@ -1,7 +1,11 @@
 package com.jellyfish85.query.generator.generator
 
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndColumnsBean
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndexesBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
+import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
+import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndexesDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
@@ -38,7 +42,8 @@ class TableDDLGenerator extends GeneralGenerator {
     public void generateTableDDL(
             MsTablesBean                bean,
             ArrayList<MsTabColumnsBean> columnList,
-            KrObjectDependenciesBean dependency) {
+            KrObjectDependenciesBean dependency,
+            HashMap<MsIndexesBean, ArrayList<MsIndColumnsBean>> hashMap) {
 
         this.initializeQuery()
 
@@ -53,7 +58,6 @@ class TableDDLGenerator extends GeneralGenerator {
             }
         }
 
-
         //todo index ddl
         Map map = [
                 schemaName  : schemaName,
@@ -61,6 +65,7 @@ class TableDDLGenerator extends GeneralGenerator {
                 uniqueTag   : uniqueTag,
                 tableBean   : bean,
                 columnList  : columnList,
+                indHashMap  : hashMap,
                 pkList      : pkList
         ]
 
@@ -106,6 +111,9 @@ class TableDDLGenerator extends GeneralGenerator {
         KrObjectDependenciesDao krObjectDependenciesDao =
                 new KrObjectDependenciesDao()
         MsTabColumnsDao msTabColumnsDao = new MsTabColumnsDao()
+        MsIndexesDao    msIndexesDao    = new MsIndexesDao()
+        MsIndColumnsDao msIndColumnsDao = new MsIndColumnsDao()
+
 
         // specify dependencies
         def _dependencies = krObjectDependenciesDao.findByDependencyGrpCd(conn, dependencyGrpCd)
@@ -117,11 +125,25 @@ class TableDDLGenerator extends GeneralGenerator {
             KrObjectDependenciesBean dependency =
                     this.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
 
+            def _indList = msIndexesDao.findByTableId(conn, bean.tableIdAttr().value())
+            HashMap<MsIndexesBean, ArrayList<MsIndColumnsBean>> hashMap =
+                    new HashMap<MsIndexesBean, ArrayList<MsIndColumnsBean>>()
+            ArrayList<MsIndexesBean> indList = msIndexesDao.convert(_indList)
+
+            if (!ArrayUtils.isEmpty(indList)) {
+                indList.each {MsIndexesBean indexesBean ->
+                    def _indColList = msIndColumnsDao.find(conn, indexesBean)
+                    ArrayList<MsIndColumnsBean> indColList = msIndColumnsDao.convert(_indColList)
+
+                    hashMap.put(indexesBean, indColList)
+                }
+            }
+
             def _sets = msTabColumnsDao.find(conn, bean)
             ArrayList<MsTabColumnsDao> sets = msTabColumnsDao.convert(_sets)
 
             if (!sets.isEmpty()) {
-                this.generateTableDDL(bean, sets, dependency)
+                this.generateTableDDL(bean, sets, dependency, hashMap)
 
                 String tableDDLPath =
                         fileNameHelper.requestTableDDLPath(dependency, bean)

@@ -25,7 +25,13 @@ class IndexDDLGenerator extends GeneralGenerator {
     // generate helper
     private TableNameHelper tableNameHelper  = new TableNameHelper()
 
-
+    /**
+     * == generateIndexDDL ==
+     *
+     * @param tableName
+     * @param columnList
+     * @param dependency
+     */
     public void generateIndexDDL(String tableName,
                        ArrayList<MsIndColumnsBean> columnList,
                        KrObjectDependenciesBean dependency) {
@@ -42,6 +48,35 @@ class IndexDDLGenerator extends GeneralGenerator {
         ]
 
         String path = "/com/jellyfish85/query/generator/template/ddl/indexDDL.template"
+        this.generate(map, path)
+    }
+
+    /**
+     * == generateIndexPlainDDL ==
+     *
+     *
+     * @author wada shunsuke
+     * @since  2013/12/12
+     * @param tableName
+     * @param columnList
+     * @param dependency
+     */
+    public void generateIndexPlainDDL(String tableName,
+                                 ArrayList<MsIndColumnsBean> columnList,
+                                 KrObjectDependenciesBean dependency) {
+        this.initializeQuery()
+
+        String indexName   = columnList.head().indexNameAttr().value()
+        String schemaName  = dependency.objectOwnerAttr().value()
+
+        Map map = [
+                schemaName  : schemaName,
+                tableName   : tableName,
+                indexName   : indexName,
+                columnList  : columnList
+        ]
+
+        String path = "/com/jellyfish85/query/generator/template/ddl/indexPlainDDL.template"
         this.generate(map, path)
     }
 
