@@ -57,6 +57,13 @@ class TableDDLGenerator extends GeneralGenerator {
                 pkList.add(column)
             }
         }
+        hashMap.each {MsIndexesBean msIndexesBean, ArrayList<MsIndColumnsBean> indList ->
+            //CREATE INDEX ${schemaName}.${indexName} ON ${schemaName}.${tableName} KEY (
+            indList.each {MsIndColumnsBean indCol ->
+
+            }
+            //)
+        }
 
         //todo index ddl
         Map map = [

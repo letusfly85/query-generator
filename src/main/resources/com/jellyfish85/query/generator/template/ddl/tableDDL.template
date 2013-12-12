@@ -1,4 +1,12 @@
-/******************************************************************************
+<%
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndColumnsBean
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndexesBean
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
+import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
+import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndexesDao
+import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
+%>/******************************************************************************
  Program Name: DDL for  ${schemaName}.${tableName}
  Author:       Database Architect
  ******************************************************************************/
@@ -43,6 +51,16 @@ if (idx == 0) { %> ${bean.physicalColumnNameAttr().value()}
 <% } else { %>,${bean.physicalColumnNameAttr().value()}
 <% } } %>)<% } %>
 /
+
+<% if (!indHashMap.size().equals(0)) {
+indHashMap.each {MsIndexesBean msIndexesBean, ArrayList<MsIndColumnsBean> indList -> %>
+CREATE INDEX ${schemaName}.${msIndexesBean.indexNameAttr().value()} ON ${schemaName}.${tableName} KEY (
+<% indList.eachWithIndex {MsIndColumnsBean indCol, index ->
+if (index.equals(0)) { %>     ${indCol.columnNameAttr().value()}
+<% } else { %>    ,${indCol.columnNameAttr().value()}
+<% } } %>)
+/
+<% } } %>
 
 <% columnList.eachWithIndex {bean, idx -> %>
 COMMENT ON TABLE ${schemaName}.${tableName}.${bean.physicalColumnNameAttr().value()}    IS	'${bean.logicalColumnNameAttr().value()}'
