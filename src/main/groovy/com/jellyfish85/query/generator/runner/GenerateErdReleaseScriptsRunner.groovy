@@ -6,6 +6,8 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
+import com.jellyfish85.query.generator.generator.ErdReleaseScriptsGenerator
+import com.jellyfish85.query.generator.generator.RenameQueryGenerator
 import com.jellyfish85.query.generator.generator.RestoreQueryGenerator
 import com.jellyfish85.query.generator.generator.TableDDLGenerator
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
@@ -32,15 +34,8 @@ class GenerateErdReleaseScriptsRunner {
         String dependencyGrpCd          = args[0]
         ArrayList<String> tableNameList = argsHelper.requestTableNameList(args[1])
 
-        RestoreQueryGenerator restoreQueryGenerator = new RestoreQueryGenerator()
-        restoreQueryGenerator.generate(conn, fileNameHelper, dependencyGrpCd, tableNameList)
-
-
-        MsTablesDao msTablesDao = new MsTablesDao()
-        def _list = msTablesDao.findByTableNames(conn, tableNameList)
-        ArrayList<MsTablesBean> list = msTablesDao.convert(_list)
-        TableDDLGenerator tableDDLGenerator = new TableDDLGenerator()
-        tableDDLGenerator.generateTableDDL(conn, fileNameHelper, dependencyGrpCd, list)
+        ErdReleaseScriptsGenerator generator = new ErdReleaseScriptsGenerator()
+        generator.generateErdReleaseScripts(conn, dependencyGrpCd, tableNameList)
 
         _context.databaseFinalize()
     }

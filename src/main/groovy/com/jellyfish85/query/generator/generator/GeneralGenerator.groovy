@@ -1,5 +1,7 @@
 package com.jellyfish85.query.generator.generator
 
+import com.jellyfish85.query.generator.helper.AppFileNameHelper
+import com.jellyfish85.query.generator.helper.TableNameHelper
 import groovy.text.SimpleTemplateEngine
 import org.apache.commons.io.FileUtils
 
@@ -16,9 +18,16 @@ class GeneralGenerator {
 
     private String path  = null
 
-    private SimpleTemplateEngine engine = null
+    public AppFileNameHelper fileNameHelper  = null
+
+    public TableNameHelper   tableNameHelper = null
+
+    public SimpleTemplateEngine engine = null
+
     public GeneralGenerator() {
-        this.engine = new SimpleTemplateEngine()
+        this.engine          = new SimpleTemplateEngine()
+        this.fileNameHelper  = new AppFileNameHelper()
+        this.tableNameHelper = new TableNameHelper()
     }
 
     /**

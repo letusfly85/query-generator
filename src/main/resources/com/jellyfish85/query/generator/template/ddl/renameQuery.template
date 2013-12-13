@@ -1,0 +1,94 @@
+/******************************************************************************
+ Program Name: renmae query for  ${schemaName}.${tableName}
+ Author:       Database Architect
+ ******************************************************************************/
+spool log/rename_table_${tableName}_${schemaName}.log;
+set echo on;
+set serveroutput on;
+
+DECLARE
+    W_SQL	VARCHAR2(2000);
+
+    CURSOR SELECT_PK IS
+    SELECT
+        CON.CONSTRAINT_NAME
+    FROM
+        ALL_CONSTRAINTS CON
+    WHERE
+        1 = 1
+    AND	CON.OWNER = '${schemaName}'
+    AND CON.TABLE_NAME = '${tableName}'
+    AND CON.CONSTRAINT_TYPE = 'P';
+
+    W_PK_NAME	VARCHAR2(30);
+
+
+    CURSOR SELECT_INDEX IS
+    SELECT
+        IND.INDEX_NAME
+    FROM
+        ALL_INDEXES IND
+    WHERE
+        1 = 1
+    AND IND.OWNER = '${schemaName}'
+    AND IND.TABLE_NAME = '${tableName}';
+
+    W_INDEX_NAME	VARCHAR2(30);
+
+    IND	NUMBER(38,0)	DEFAULT 0;
+
+    W_TABLE_COUNT	NUMBER(1, 0)	DEFAULT 0;
+
+BEGIN
+    SELECT
+        COUNT(1)
+    INTO
+        W_TABLE_COUNT
+    FROM
+        ALL_TABLES TAB
+    WHERE
+        TAB.OWNER = '${schemaName}'
+    AND	TAB.TABLE_NAME = '${tableName}';
+
+    IF W_TABLE_COUNT = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('[${tableName}] does not exist.');
+        RETURN;
+    END IF;
+
+    OPEN SELECT_INDEX;
+    LOOP
+    FETCH SELECT_INDEX INTO
+        W_INDEX_NAME;
+    EXIT WHEN SELECT_INDEX%NOTFOUND;
+        IND := IND + 1;
+        W_SQL := 'ALTER INDEX ${schemaName}.' || W_INDEX_NAME || ' RENAME TO BK_' || SUBSTR(W_INDEX_NAME, 1, 27);
+        DBMS_OUTPUT.PUT_LINE(W_SQL);
+        EXECUTE IMMEDIATE W_SQL;
+    END LOOP;
+    CLOSE SELECT_INDEX;
+
+
+    IND := 0;
+    OPEN SELECT_PK;
+    LOOP
+    FETCH SELECT_PK INTO
+        W_PK_NAME;
+    EXIT WHEN SELECT_PK%NOTFOUND;
+        IND := IND + 1;
+        W_SQL := 'ALTER TABLE ${schemaName}.${tableName} RENAME CONSTRAINT ' || W_PK_NAME || ' TO BK_' || SUBSTR(REPLACE(W_PK_NAME,'PK_',''), 1, 27);
+        DBMS_OUTPUT.PUT_LINE(W_SQL);
+        EXECUTE IMMEDIATE W_SQL;
+    END LOOP;
+    CLOSE SELECT_PK;
+
+    W_SQL := 'ALTER TABLE ${schemaName}.${tableName} RENAME TO BK_${tableName}';
+    DBMS_OUTPUT.PUT_LINE(W_SQL);
+    EXECUTE IMMEDIATE W_SQL;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE(SUBSTR(SQLERRM, 1, 100));
+        RAISE;
+
+END;
+/
