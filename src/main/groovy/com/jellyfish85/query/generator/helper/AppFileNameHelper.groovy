@@ -173,6 +173,51 @@ class AppFileNameHelper {
     }
 
     /**
+     * == requestExecuteQueriesPath ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/13
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestExecuteQueriesPath(
+            KrObjectDependenciesBean dependency,
+            MsTablesBean bean) {
+
+        this.fileName = StringUtils.join(["exec_",
+                bean.physicalTableNameAttr().value(),
+                "_",
+                dependency.objectOwnerAttr().value(),
+                ".sql"
+        ], "")
+
+        println(this.prop.restoreFolder())
+        String path = FilenameUtils.concat(this.prop.restoreFolder(), this.fileName)
+
+        return path
+    }
+
+    /**
+     * == requestExecuteAllQueriesPath ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/13
+     * @return
+     *
+     */
+    public String requestExecuteAllQueriesPath() {
+
+        this.fileName = StringUtils.join(["exe_All.sql"
+        ], "")
+
+        println(this.prop.restoreFolder())
+        String path = FilenameUtils.concat(this.prop.restoreFolder(), this.fileName)
+
+        return path
+    }
+
+    /**
      * == requestSqlLoaderPath ==
      *
      * @author wada shunsuke

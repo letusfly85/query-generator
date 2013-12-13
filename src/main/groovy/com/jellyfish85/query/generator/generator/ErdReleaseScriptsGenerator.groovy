@@ -18,6 +18,8 @@ class ErdReleaseScriptsGenerator {
 
     private TableNameHelper tableNameHelper = new TableNameHelper()
 
+    private ExecuteQueriesShellGenerator executeQueriesShellGenerator =
+                            new ExecuteQueriesShellGenerator()
     private RenameQueryGenerator  renameQueryGenerator  = new RenameQueryGenerator()
     private RestoreQueryGenerator restoreQueryGenerator = new RestoreQueryGenerator()
     private TableDDLGenerator     tableDDLGenerator     = new TableDDLGenerator()
@@ -72,13 +74,19 @@ class ErdReleaseScriptsGenerator {
             def _sets = msTabColumnsDao.find(conn, bean)
             ArrayList<MsTabColumnsDao> sets = msTabColumnsDao.convert(_sets)
 
+            ArrayList<MsTablesBean> targetList = new ArrayList<MsTablesBean>()
             if (!sets.isEmpty()) {
                 this.renameQueryGenerator.generateRenameQuery(bean, dependency)
                 this.restoreQueryGenerator.generateRestoreQuery(bean, dependency)
                 this.tableDDLGenerator.generateTableDDL(bean, sets, dependency, hashMap)
                 this.dropBackupTableQueryGenerator.generateDropBackupTableQuery(bean, dependency)
+
+                this.executeQueriesShellGenerator.generateExecuteQueriesShell(bean, dependency)
+
+                targetList.add(bean)
             }
+            this.executeQueriesShellGenerator.
+                    generateExecuteQueriesShell(targetList, dependency)
         }
     }
-
 }

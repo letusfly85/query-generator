@@ -1,0 +1,7 @@
+WHENEVER SQLERROR EXIT SQL.SQLCODE
+WHENEVER OSERROR  EXIT SQL.OSCODE
+
+@${renameQueryName}
+@${tableDDLName}
+@${restoreQueryName}
+@${dropBackupTableQueryName}

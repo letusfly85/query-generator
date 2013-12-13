@@ -1,0 +1,2 @@
+<% execScriptsList.each {String execScriptsName -> %>@${execScriptsName}
+<% } %>
