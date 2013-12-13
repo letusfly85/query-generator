@@ -2,7 +2,6 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
-import com.jellyfish85.query.generator.helper.TableNameHelper
 
 /**
  * == RenameQueryGenerator ==
@@ -12,9 +11,6 @@ import com.jellyfish85.query.generator.helper.TableNameHelper
  *
  */
 class RenameQueryGenerator extends GeneralGenerator {
-
-    // generate helper
-    private TableNameHelper tableNameHelper  = new TableNameHelper()
 
     /**
      * == generateRenameQuery ==
