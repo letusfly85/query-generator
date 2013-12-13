@@ -1,0 +1,45 @@
+/******************************************************************************
+ Program Name: drop backup table query for  ${schemaName}.${tableName}
+ Author:       Database Architect
+ ******************************************************************************/
+spool log/drop_backup_table_${tableName}_${schemaName}.log;
+set echo on;
+set serveroutput on;
+
+DECLARE
+    W_SQL	VARCHAR2(2000);
+    IND	NUMBER(38,0)	DEFAULT 0;
+    W_TABLE_COUNT	NUMBER(1, 0)	DEFAULT 0;
+
+    W_BACKUP_TABLE_NAME	VARCHAR2(30);
+
+BEGIN
+    W_BACKUP_TABLE_NAME := SUBSTR('BK_${tableName}', 1, 30);
+    DBMS_OUTPUT.PUT_LINE('backup table name is [' || W_BACKUP_TABLE_NAME || ']');
+
+    SELECT
+        COUNT(1)
+    INTO
+        W_TABLE_COUNT
+    FROM
+        ALL_TABLES TAB
+    WHERE
+        TAB.OWNER = '${schemaName}'
+    AND	TAB.TABLE_NAME = W_BACKUP_TABLE_NAME;
+
+    IF W_TABLE_COUNT = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('[' || W_BACKUP_TABLE_NAME || '] does not exist.');
+    RETURN;
+
+    ELSE
+        W_SQL := 'DROP TABLE ${schemaName}.' || W_BACKUP_TABLE_NAME;
+        EXECUTE IMMEDIATE W_SQL;
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE(SUBSTR(SQLERRM, 1, 100));
+        RAISE;
+
+END;
+/

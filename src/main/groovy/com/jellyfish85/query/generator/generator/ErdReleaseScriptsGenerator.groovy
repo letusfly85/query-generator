@@ -21,6 +21,8 @@ class ErdReleaseScriptsGenerator {
     private RenameQueryGenerator  renameQueryGenerator  = new RenameQueryGenerator()
     private RestoreQueryGenerator restoreQueryGenerator = new RestoreQueryGenerator()
     private TableDDLGenerator     tableDDLGenerator     = new TableDDLGenerator()
+    private DropBackupTableQueryGenerator dropBackupTableQueryGenerator =
+            new DropBackupTableQueryGenerator()
 
     public void generateErdReleaseScripts(
             Connection              conn,
@@ -74,6 +76,7 @@ class ErdReleaseScriptsGenerator {
                 this.renameQueryGenerator.generateRenameQuery(bean, dependency)
                 this.restoreQueryGenerator.generateRestoreQuery(bean, dependency)
                 this.tableDDLGenerator.generateTableDDL(bean, sets, dependency, hashMap)
+                this.dropBackupTableQueryGenerator.generateDropBackupTableQuery(bean, dependency)
             }
         }
     }
