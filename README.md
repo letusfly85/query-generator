@@ -1,0 +1,1 @@
+http://letusfly85.github.io/query-generator/
