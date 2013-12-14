@@ -1,0 +1,1 @@
+Index.PACKAGES = {"com.jellyfish85" : [], "com.jellyfish85.query" : [], "com.jellyfish85.query.generator.utils" : [{"class" : "com\/jellyfish85\/query\/generator\/utils\/AppProp.html", "name" : "com.jellyfish85.query.generator.utils.AppProp"}], "com.jellyfish85.query.generator" : [], "com" : []};
