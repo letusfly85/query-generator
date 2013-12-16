@@ -3,7 +3,7 @@ package com.jellyfish85.query.generator.helper
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndexesBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
-import com.jellyfish85.query.generator.utils.AppProp
+import com.jellyfish85.query.generator.utils.QueryAppProp
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang.StringUtils
 
@@ -19,10 +19,10 @@ class AppFileNameHelper {
 
     private String fileName  = null
 
-    private AppProp prop     = null
+    private QueryAppProp prop     = null
 
     public AppFileNameHelper() {
-        prop = new AppProp()
+        prop = new QueryAppProp()
         prop.load()
     }
 
