@@ -1,7 +1,7 @@
 package com.jellyfish85.query.generator.helper
 
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
-import com.jellyfish85.query.generator.constant.AppConst
+import com.jellyfish85.query.generator.constant.QueryAppConst
 
 /**
  * == TableNameHelper ==
@@ -87,34 +87,34 @@ class TableNameHelper {
     public String identifyTableGroup(String tableName) {
 
         if (tableName.startsWith("WR_IK")) {
-            return AppConst.APPLICATION_GROUP_IK
+            return QueryAppConst.APPLICATION_GROUP_IK
 
         } else if (tableName.startsWith("WI_IK_")) {
-            return AppConst.APPLICATION_GROUP_IK
+            return QueryAppConst.APPLICATION_GROUP_IK
 
         } else if (tableName.startsWith("WR")) {
-            return AppConst.APPLICATION_GROUP_IF
+            return QueryAppConst.APPLICATION_GROUP_IF
 
         } else if (tableName.startsWith("WS")) {
-            return AppConst.APPLICATION_GROUP_IF
+            return QueryAppConst.APPLICATION_GROUP_IF
 
         } else if (tableName.startsWith("WI")) {
-            return AppConst.APPLICATION_GROUP_APP
+            return QueryAppConst.APPLICATION_GROUP_APP
 
         } else if (tableName.startsWith("E_J")) {
-            return AppConst.APPLICATION_GROUP_APP
+            return QueryAppConst.APPLICATION_GROUP_APP
 
         } else if (tableName.startsWith("E_K")) {
-            return AppConst.APPLICATION_GROUP_APP
+            return QueryAppConst.APPLICATION_GROUP_APP
 
         } else if (tableName.startsWith("E_IK")) {
-            return AppConst.APPLICATION_GROUP_APP
+            return QueryAppConst.APPLICATION_GROUP_APP
 
         } else if (isIkTable(tableName)) {
-            return AppConst.APPLICATION_GROUP_IK
+            return QueryAppConst.APPLICATION_GROUP_IK
 
         } else {
-            return AppConst.APPLICATION_GROUP_APP
+            return QueryAppConst.APPLICATION_GROUP_APP
         }
     }
 

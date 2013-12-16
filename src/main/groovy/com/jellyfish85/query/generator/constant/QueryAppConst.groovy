@@ -1,13 +1,19 @@
 package com.jellyfish85.query.generator.constant
 
 /**
- * == AppConst ==
+ * constant fields list
  *
  *
  * @author wada shunsuke
  * @since  2013/12/03
  */
-class AppConst {
+class QueryAppConst {
+
+    // organization
+    public final static String ORGANIZATION          = "erd.maintenance.tool"
+
+    // application name
+    public final static String APPLICATION_NAME      = "query-generator"
 
     // application group of main system
     public final static String APPLICATION_GROUP_APP = "0"
@@ -17,5 +23,9 @@ class AppConst {
 
     // application group of translation
     public final static String APPLICATION_GROUP_IK  = "2"
+
+
+    public final static String STRING_DAT_END        = "CRLF"
+
 
 }

@@ -23,7 +23,7 @@ class AppFileNameHelper {
 
     public AppFileNameHelper() {
         prop = new QueryAppProp()
-        prop.load()
+        //prop.load()
     }
 
     /**
@@ -231,8 +231,29 @@ class AppFileNameHelper {
 
         this.fileName = StringUtils.join(["exec_load.sh"], "")
 
-        println(this.prop.sqlLoaderFolder())
-        String path = FilenameUtils.concat(this.prop.sqlLoaderFolder(), this.fileName)
+        println(this.prop.sqlLoaderParentPath())
+        String path = FilenameUtils.concat(this.prop.sqlLoaderParentPath(), this.fileName)
+
+        return path
+    }
+
+    /**
+     * return sql loader dat file path
+     *
+     * @author wada shunsuke
+     * @since  2013/12/07
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestSqlLoaderDatPath(MsTablesBean bean) {
+
+        this.fileName = StringUtils.join([
+                    bean.physicalTableNameAttr().value(),
+                    ".dat"
+                ], "")
+
+        String path = FilenameUtils.concat(this.prop.sqlLoaderDatPath(), this.fileName)
 
         return path
     }

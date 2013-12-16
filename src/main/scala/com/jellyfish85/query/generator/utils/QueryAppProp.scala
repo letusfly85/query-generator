@@ -31,15 +31,19 @@ class QueryAppProp {
     new PropertiesConfiguration("com/jellyfish85/query/generator/define/query.properties")
 
 
-  val restoreFolder:   String          = configuration.getString("tableScriptFolder")
+  val restoreFolder:            String          = configuration.getString("tableScriptFolder")
 
-  val tableDDLFolder:  String          = configuration.getString("tableScriptFolder")
+  val tableDDLFolder:           String          = configuration.getString("tableScriptFolder")
 
-  val sqlLoaderFolder: String          = configuration.getString("sqlLoaderFolder")
+  val sqlLoaderParentPath:      String          = configuration.getString("sql.loader.path.parent")
 
-  val indexDDLFolder:  String          = configuration.getString("indexDDLFolder")
+  val sqlLoaderCtlPath:         String          = configuration.getString("sql.loader.path.ctl")
 
-  val applicationWorkspacePath: String = configuration.getString("application.workspace.path")
+  val sqlLoaderDatPath:         String          = configuration.getString("sql.loader.path.dat")
+
+  val indexDDLFolder:           String          = configuration.getString("indexDDLFolder")
+
+  val applicationWorkspacePath: String          = configuration.getString("application.workspace.path")
 
 
 
