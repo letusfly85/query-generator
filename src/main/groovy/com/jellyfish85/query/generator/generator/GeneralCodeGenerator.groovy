@@ -1,6 +1,8 @@
 package com.jellyfish85.query.generator.generator
 
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
+import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.query.generator.constant.QueryAppConst
 import com.jellyfish85.query.generator.downloader.FileDownloader
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
@@ -20,14 +22,13 @@ import org.apache.commons.lang.StringUtils
  * @since  2013/12/16
  *
  */
-class GeneralCodeGenerator {
+class GeneralCodeGenerator extends GeneralGenerator {
 
     private XlsAppProp   xlsProp   = new XlsAppProp()
 
     private QueryAppProp queryProp = new QueryAppProp()
 
-    private AppFileNameHelper fileNameHelper =
-                                     new AppFileNameHelper()
+    //private AppFileNameHelper fileNameHelper = new AppFileNameHelper()
 
     public void generateDataFile() {
 
@@ -66,7 +67,7 @@ class GeneralCodeGenerator {
 
         MsTablesBean tablesBean = new MsTablesBean()
         tablesBean.physicalTableNameAttr().setValue(codeXlsBeans.head().physicalTableName())
-        String datPath = fileNameHelper.requestSqlLoaderDatPath(tablesBean)
+        String datPath = this.fileNameHelper.requestSqlLoaderDatPath(tablesBean)
         File   datFile = new File(datPath)
         if (!datFile.getParentFile().exists()) {
             FileUtils.forceMkdir(datFile.getParentFile())
@@ -83,5 +84,25 @@ class GeneralCodeGenerator {
             }
         }
         pw.close()
+    }
+
+    /**
+     * generate general code control file
+     *
+     * @param schemaName
+     * @param columnList
+     */
+    public void generateControlFile(String schemaName, ArrayList<MsTabColumnsBean> columnList) {
+        String tableName = columnList.head().physicalColumnNameAttr().value()
+
+        Map map = [
+                schemaName  : schemaName,
+                tableName   : tableName,
+                columnList  : columnList
+        ]
+
+        String path = "/com/jellyfish85/query/generator/template/ddl/indexDDL.template"
+
+        this.generate(map, path)
     }
 }
