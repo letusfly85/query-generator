@@ -2,10 +2,8 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
-import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.query.generator.constant.QueryAppConst
 import com.jellyfish85.query.generator.downloader.FileDownloader
-import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.utils.QueryAppProp
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.GeneralCodeXlsBean
@@ -101,7 +99,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
                 columnList  : columnList
         ]
 
-        String path = "/com/jellyfish85/query/generator/template/ddl/indexDDL.template"
+        String path = "/com/jellyfish85/query/generator/template/dml/controlFile.template"
 
         this.generate(map, path)
     }
