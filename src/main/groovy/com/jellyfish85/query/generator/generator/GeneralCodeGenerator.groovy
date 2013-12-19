@@ -26,8 +26,6 @@ class GeneralCodeGenerator extends GeneralGenerator {
 
     private QueryAppProp queryProp = new QueryAppProp()
 
-    //private AppFileNameHelper fileNameHelper = new AppFileNameHelper()
-
     public void generateDataFile() {
 
         SVNRequestBean requestBean = new SVNRequestBean()
