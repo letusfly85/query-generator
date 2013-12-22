@@ -13,7 +13,6 @@ import com.jellyfish85.xlsaccessor.utils.XlsAppProp
  *
  * @author wada shunsuke
  * @since  2013/12/08
- * @todo
  *
  */
 class GenerateSqlLoaderSetsRunner {

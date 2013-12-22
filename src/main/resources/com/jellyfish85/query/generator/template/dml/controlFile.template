@@ -12,9 +12,17 @@ TRAILING NULLCOLS
 ${bean.physicalColumnName}
 <% else %>
 <% if (bean.dataType == "VARCHAR2" || bean.dataType == "VARCHAR" || bean.dataType == "CHAR") %>
+<% if (bean.physicalColumnName =~ /D([A-Z]+)TIME([A-Z]+)P/){%>
+${bean.physicalColumnName}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')",
+<% } else { %>
 ${bean.physicalColumnName} CHAR(${String.valueOf(bean.dataLength)}),
+<% } %>
 <% else %>
+<% if (bean.physicalColumnName =~ /D([A-Z]+)TIME([A-Z]+)P/){%>
+${bean.physicalColumnName}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')",
+<% } else { %>
 ${bean.physicalColumnName},
+<% } %>
 <% end %>
 <% end %>
 <% localCount += 1 %>
