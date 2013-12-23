@@ -89,7 +89,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
      * @param columnList
      */
     public void generateControlFile(String schemaName, ArrayList<MsTabColumnsBean> columnList) {
-        String tableName = columnList.head().physicalColumnNameAttr().value()
+        String tableName = columnList.head().physicalTableNameAttr().value()
 
         Map map = [
                 schemaName  : schemaName,
@@ -100,5 +100,8 @@ class GeneralCodeGenerator extends GeneralGenerator {
         String path = "/com/jellyfish85/query/generator/template/dml/controlFile.template"
 
         this.generate(map, path)
+        String sqlLoaderControlPath = this.fileNameHelper.requestSqlLoaderControlPath(tableName)
+        this.setPath(sqlLoaderControlPath)
+        this.writeAppFile()
     }
 }

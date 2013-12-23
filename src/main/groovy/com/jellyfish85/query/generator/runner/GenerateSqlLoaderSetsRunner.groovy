@@ -2,7 +2,9 @@ package com.jellyfish85.query.generator.runner
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
+import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
+import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.generator.GeneralCodeGenerator
 import com.jellyfish85.query.generator.helper.TableNameHelper
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
@@ -27,8 +29,14 @@ class GenerateSqlLoaderSetsRunner {
         String generalTableName = xlsAppProp.generalCodePhysicalTableName()
 
         String dependencyGrpCd          = args[0]
+        KrObjectDependenciesDao dependenciesDao = new KrObjectDependenciesDao()
+        def _dependencies = dependenciesDao.findByDependencyGrpCd(conn, dependencyGrpCd)
+        ArrayList<KrObjectDependenciesBean> dependencies = dependenciesDao.convert(_dependencies)
+
         TableNameHelper tableNameHelper = new TableNameHelper()
-        String schemaName = tableNameHelper.findByApplicationGroupCd(dependencyGrpCd, generalTableName)
+        String schemaName =
+                tableNameHelper.findByApplicationGroupCd(dependencies, generalTableName).
+                        objectOwnerAttr().value()
 
         MsTablesBean tablesBean = new MsTablesBean()
         tablesBean.physicalTableNameAttr().setValue(generalTableName)

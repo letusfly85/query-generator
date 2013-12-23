@@ -4,27 +4,6 @@ TRUNCATE
 INTO TABLE ${schemaName}.${tableName}
 FIELDS TERMINATED BY "," OPTIONALLY ENCLOSED BY '"'
 TRAILING NULLCOLS
-(
-<% int localCount = 0 %>
-<% columnList.each {bean -> %>
-<% var entity: EntMsTabColumns = tabList(localCount) %>
-<% if (localCount == list.length -1) %>
-${bean.physicalColumnName}
-<% else %>
-<% if (bean.dataType == "VARCHAR2" || bean.dataType == "VARCHAR" || bean.dataType == "CHAR") %>
-<% if (bean.physicalColumnName =~ /D([A-Z]+)TIME([A-Z]+)P/){%>
-${bean.physicalColumnName}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')",
-<% } else { %>
-${bean.physicalColumnName} CHAR(${String.valueOf(bean.dataLength)}),
-<% } %>
-<% else %>
-<% if (bean.physicalColumnName =~ /D([A-Z]+)TIME([A-Z]+)P/){%>
-${bean.physicalColumnName}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')",
-<% } else { %>
-${bean.physicalColumnName},
-<% } %>
-<% end %>
-<% end %>
-<% localCount += 1 %>
-<% end %>
+(<% columnList.eachWithIndex {bean, index -> %>
+<% if (index == columnList.size() -1) { %>${bean.physicalColumnNameAttr().value()}<% } else { %><% if (bean.dataTypeAttr().value() == "VARCHAR2" || bean.dataTypeAttr().value() == "VARCHAR" || bean.dataTypeAttr().value() == "CHAR") { %><% if (bean.physicalColumnNameAttr().value() =~ /D([A-Z_]+)TIME([A-Z_]+)P/) { %>${bean.physicalColumnNameAttr().value()}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')",<% } else { %>${bean.physicalColumnNameAttr().value()} CHAR(${String.valueOf(bean.dataLengthAttr().value())}),<% } %><% } else { %><% if (bean.physicalColumnNameAttr().value() =~ /D([A-Z_]+)TIME([A-Z_]+)P/) { %>${bean.physicalColumnNameAttr().value()}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')",<% } else { %>${bean.physicalColumnNameAttr().value()},<% } %><% } %><% } %><% } %>
 )

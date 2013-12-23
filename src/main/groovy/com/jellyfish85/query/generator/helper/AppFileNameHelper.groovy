@@ -257,4 +257,25 @@ class AppFileNameHelper {
 
         return path
     }
+
+    /**
+     * return sql loader control file path
+     *
+     * @author wada shunsuke
+     * @since  2013/12/23
+     * @param dependency
+     * @param tableName
+     * @return
+     */
+    public String requestSqlLoaderControlPath(String tableName) {
+
+        this.fileName = StringUtils.join([
+                tableName,
+                ".ctl"
+        ], "")
+
+        String path = FilenameUtils.concat(this.prop.sqlLoaderCtlPath(), this.fileName)
+
+        return path
+    }
 }
