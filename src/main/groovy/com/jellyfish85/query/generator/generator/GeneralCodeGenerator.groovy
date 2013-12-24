@@ -40,7 +40,6 @@ class GeneralCodeGenerator extends GeneralGenerator {
                 codeXlsDao.findAll(bookPath, new BigDecimal(0), requestBean)
         ArrayList<GeneralCodeXlsBean> codeXlsBeans = codeXlsDao.convert(_codeXlsBeans)
 
-
         ArrayList<String> datEntries = new ArrayList<>()
         codeXlsBeans.each {GeneralCodeXlsBean xlsBean ->
             def datEntry = "\""
@@ -90,11 +89,20 @@ class GeneralCodeGenerator extends GeneralGenerator {
      */
     public void generateControlFile(String schemaName, ArrayList<MsTabColumnsBean> columnList) {
         String tableName = columnList.head().physicalTableNameAttr().value()
+        ArrayList<MsTabColumnsBean> _columnList =
+                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("D([A-Z_]+)TIME([A-Z]+)P")}
+        _columnList.each {it -> println(it.physicalColumnNameAttr().value())}
+        MsTabColumnsBean beanIns = new MsTabColumnsBean()
+        MsTabColumnsBean beanPln = new MsTabColumnsBean()
+        beanIns.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampDefault())
+        beanPln.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampUpdate())
+        _columnList.add(beanIns)
+        _columnList.add(beanPln)
 
         Map map = [
                 schemaName  : schemaName,
                 tableName   : tableName,
-                columnList  : columnList
+                columnList  : _columnList
         ]
 
         String path = "/com/jellyfish85/query/generator/template/dml/controlFile.template"

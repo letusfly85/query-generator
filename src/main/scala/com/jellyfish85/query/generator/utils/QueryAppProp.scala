@@ -22,6 +22,10 @@ class QueryAppProp {
 
   val applicationWorkspacePath: String          = configuration.getString("application.workspace.path")
 
+  val sqlLoaderColumnTimestampDefault :String   = configuration.getString("sql.loader.column.timestamp.default")
+
+  val sqlLoaderColumnTimestampUpdate  :String   = configuration.getString("sql.loader.column.timestamp.update")
+
 
 
 }
