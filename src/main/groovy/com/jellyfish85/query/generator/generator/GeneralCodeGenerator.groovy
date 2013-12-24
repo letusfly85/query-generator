@@ -26,6 +26,13 @@ class GeneralCodeGenerator extends GeneralGenerator {
 
     private QueryAppProp queryProp = new QueryAppProp()
 
+    /**
+     * generate general code's data file
+     *
+     * @author wada shunsuke
+     * @since  2013/12/20
+     *
+     */
     public void generateDataFile() {
 
         SVNRequestBean requestBean = new SVNRequestBean()
@@ -82,10 +89,13 @@ class GeneralCodeGenerator extends GeneralGenerator {
     }
 
     /**
-     * generate general code control file
+     * generate general code's control file
      *
-     * @param schemaName
-     * @param columnList
+     * @param  schemaName
+     * @param  columnList
+     * @author wada shunsuke
+     * @since  2013/12/20
+     *
      */
     public void generateControlFile(String schemaName, ArrayList<MsTabColumnsBean> columnList) {
         String tableName = columnList.head().physicalTableNameAttr().value()

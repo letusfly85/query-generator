@@ -8,7 +8,7 @@ package com.jellyfish85.query.generator.generator
  * @since  2013/12/23
  *
  */
-class UniqueCodeGenerator {
+class UniqueCodeGenerator extends GeneralGenerator {
 
     public void generateUniqueCodeControlFile() {
 
