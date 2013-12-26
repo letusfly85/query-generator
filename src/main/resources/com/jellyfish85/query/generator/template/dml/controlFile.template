@@ -1,5 +1,5 @@
 LOAD DATA
-INFILE 'controlFile\\${tableName}.controlFile'"str 'CRLF'"
+INFILE 'ctl\\${tableName}.controlFile'"str 'CRLF'"
 TRUNCATE
 INTO TABLE ${schemaName}.${tableName}
 FIELDS TERMINATED BY "," OPTIONALLY ENCLOSED BY '"'

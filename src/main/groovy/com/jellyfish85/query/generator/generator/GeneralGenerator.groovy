@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
+import com.jellyfish85.query.generator.utils.QueryAppProp
 import groovy.text.SimpleTemplateEngine
 import org.apache.commons.io.FileUtils
 
@@ -23,6 +24,8 @@ class GeneralGenerator {
     public TableNameHelper   tableNameHelper = null
 
     public SimpleTemplateEngine engine = null
+
+    public QueryAppProp queryProp = new QueryAppProp()
 
     public GeneralGenerator() {
         this.engine          = new SimpleTemplateEngine()

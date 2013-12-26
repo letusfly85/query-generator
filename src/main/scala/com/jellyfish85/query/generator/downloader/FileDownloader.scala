@@ -33,4 +33,18 @@ object FileDownloader {
     list.head
   }
 
+  /**
+   *
+   *
+   * @param requestBean
+   */
+  def downloadDir(requestBean: SVNRequestBean) {
+    val folder: File = new File(prop.applicationWorkspacePath)
+
+    def filter(x: SVNRequestBean): Boolean  =  true
+    val requestBeans: List[SVNRequestBean] = getter.getSVNInfo(requestBean.path, filter)
+
+    getter.simpleGetFiles(requestBeans, folder)
+  }
+
 }

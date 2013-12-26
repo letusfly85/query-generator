@@ -10,14 +10,14 @@ import com.jellyfish85.query.generator.helper.TableNameHelper
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
 
 /**
- * == GenerateSqlLoaderSetsRunner ==
+ * == GenerateGeneralCodeSqlLoaderSetsRunner ==
  *
  *
  * @author wada shunsuke
  * @since  2013/12/08
  *
  */
-class GenerateSqlLoaderSetsRunner {
+class GenerateGeneralCodeSqlLoaderSetsRunner {
 
     public static void main(String[] args) {
         BaseRunner _context = new BaseRunner()
@@ -48,6 +48,5 @@ class GenerateSqlLoaderSetsRunner {
         GeneralCodeGenerator generator = new GeneralCodeGenerator()
         generator.generateDataFile()
         generator.generateControlFile(schemaName, columnList)
-
     }
 }

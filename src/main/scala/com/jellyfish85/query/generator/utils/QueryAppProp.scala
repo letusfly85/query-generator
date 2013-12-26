@@ -26,6 +26,11 @@ class QueryAppProp {
 
   val sqlLoaderColumnTimestampUpdate  :String   = configuration.getString("sql.loader.column.timestamp.update")
 
+  val sqlLoaderColumnUser             :String   = configuration.getString("sql.loader.column.user")
+
+  val sqlLoaderColumnFunction         :String   = configuration.getString("sql.loader.column.function")
+
+
 
 
 }
