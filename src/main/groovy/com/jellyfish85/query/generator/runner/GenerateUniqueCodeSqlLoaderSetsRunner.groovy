@@ -39,9 +39,10 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         parentPath.listFiles().each {File file ->
             println(file.getPath())
-            generator.generateUniqueCodeControlFile(dependencies, file.getPath())
+            generator.initializeBean(dependencies, file.getPath())
 
-            //todo generate data files
+            generator.generateUniqueCodeControlFile(dependencies)
+            generator.generateUniqueCodeDataFile(dependencies)
         }
     }
 }

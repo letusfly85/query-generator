@@ -24,8 +24,11 @@ class QueryAppConst {
     // application group of translation
     public final static String APPLICATION_GROUP_IK  = "2"
 
-
+    // data files end symbol
     public final static String STRING_DAT_END        = "CRLF"
+
+    // String blank
+    public final static String STRING_BLANK          = ""
 
 
 }
