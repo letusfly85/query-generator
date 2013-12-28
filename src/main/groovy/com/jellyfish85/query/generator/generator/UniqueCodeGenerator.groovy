@@ -1,6 +1,7 @@
 package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.query.generator.constant.QueryAppConst
 import com.jellyfish85.query.generator.converter.XlsColumnAttribute2MsTabColumnsConverter
@@ -8,6 +9,8 @@ import com.jellyfish85.query.generator.helper.TableNameHelper
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.UniqueCodeXlsBean
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.XlsColumnAttribute
 import com.jellyfish85.xlsaccessor.dao.query.generate.tool.UniqueCodeXlsDao
+import org.apache.commons.io.FileUtils
+import org.apache.commons.lang.StringUtils
 
 /**
  * generate unique code release sets including shell, control, data files
@@ -47,10 +50,10 @@ class UniqueCodeGenerator extends GeneralGenerator {
             String _path
     ) {
         this.path = _path
-        UniqueCodeXlsDao xlsDao = new UniqueCodeXlsDao(this.path)
+        this.xlsDao = new UniqueCodeXlsDao(this.path)
 
         // get data from xls
-        UniqueCodeXlsBean xlsBean = xlsDao.getHeaderInfo()
+        this.xlsBean = xlsDao.getHeaderInfo()
 
         String tableName = xlsBean.physicalTableName()
 
@@ -59,10 +62,48 @@ class UniqueCodeGenerator extends GeneralGenerator {
                         objectOwnerAttr().value()
     }
 
-
-
+    /**
+     * generate data file from excel file
+     *
+     *
+     */
     public void generateUniqueCodeDataFile() {
+        ArrayList<HashMap<Integer, String>> listMap = xlsDao.getDataEntry()
 
+        ArrayList<String> datEntries = new ArrayList<>()
+        listMap.each {HashMap<Integer, String> map ->
+            def datEntry = "\""
+            def _innerArray = new ArrayList<String>()
+            map.each {key, value ->
+                println(key + value)
+                _innerArray.add(value)
+            }
+            datEntry +=
+                    StringUtils.join(_innerArray, "\",\"")
+
+            datEntry += "\"${QueryAppConst.STRING_DAT_END}"
+            datEntries.add(datEntry)
+        }
+
+        MsTablesBean tablesBean = new MsTablesBean()
+        tablesBean.physicalTableNameAttr().setValue(xlsBean.physicalTableName())
+        String datPath = this.fileNameHelper.requestSqlLoaderDatPath(tablesBean)
+        File   datFile = new File(datPath)
+        if (!datFile.getParentFile().exists()) {
+            FileUtils.forceMkdir(datFile.getParentFile())
+        }
+
+        PrintWriter pw = new PrintWriter(new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(datFile),"UTF-8")))
+
+        datEntries.eachWithIndex {entry, index ->
+            pw.write(entry)
+
+            if (!index.equals(datEntries.size()-1)) {
+                pw.write("\n")
+            }
+        }
+        pw.close()
     }
 
     /**
