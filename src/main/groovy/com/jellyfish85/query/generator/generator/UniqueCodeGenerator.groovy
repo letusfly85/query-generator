@@ -75,7 +75,6 @@ class UniqueCodeGenerator extends GeneralGenerator {
             def datEntry = "\""
             def _innerArray = new ArrayList<String>()
             map.each {key, value ->
-                println(key + value)
                 _innerArray.add(value)
             }
             datEntry +=
