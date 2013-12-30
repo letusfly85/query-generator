@@ -15,20 +15,15 @@ class CodeGeneratorHelper extends GeneralGenerator {
      *
      * @author wada shunsuke
      * @since  2013/12/30
-     * @param schemaName
-     * @param tablesBeans
+     * @param tableNames
      * @param shellScriptPath
      */
     public void generateLoadingShellScript(
-            String schemaName,
-            ArrayList<MsTablesBean> tablesBeans,
+            HashMap<String, String> tableNames,
             String shellScriptPath
     ) {
-        String tableName = tablesBeans.head().physicalTableNameAttr().value()
-
         Map map = [
-                schemaName  : schemaName,
-                tableName   : tableName
+                tableNames  : tableNames
         ]
 
         String path = "/com/jellyfish85/query/generator/template/shell/execSqlLoader.template"

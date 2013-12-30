@@ -238,6 +238,25 @@ class AppFileNameHelper {
     }
 
     /**
+     * == requestSqlLoaderPath ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/07
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestSqlLoaderPath4UniqueCode() {
+
+        this.fileName = StringUtils.join(["exec_load4unique_code.sh"], "")
+
+        println(this.prop.sqlLoaderParentPath())
+        String path = FilenameUtils.concat(this.prop.sqlLoaderParentPath(), this.fileName)
+
+        return path
+    }
+
+    /**
      * return sql loader dat file path
      *
      * @author wada shunsuke

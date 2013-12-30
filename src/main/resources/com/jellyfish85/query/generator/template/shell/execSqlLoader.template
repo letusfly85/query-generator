@@ -4,6 +4,6 @@
 #
 #
 ####################################################################
-<% tableNames.each {String tableName -> %>\
+<% tableNames.each {String tableName, String schemaName -> %>\
 sqlldr CONTROL=ctl/${tableName}.ctl, LOG=log/${tableName}.log, BAD=${tableName}.bad, DATA=dat/${tableName}.dat, USERID=${schemaName}/\$PASSWORD
-<% } %>\
+<% } %>

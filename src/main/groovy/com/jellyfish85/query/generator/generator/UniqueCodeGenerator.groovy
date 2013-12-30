@@ -38,6 +38,10 @@ class UniqueCodeGenerator extends GeneralGenerator {
     public UniqueCodeGenerator() {
     }
 
+    public void setTableNames(HashMap<String, String> map) {
+        map.put(this.xlsBean.physicalTableName(), queryProp.sqlLoaderLoadExecutor())
+    }
+
     /**
      * initialize bean info, add table name and other attributes
      *

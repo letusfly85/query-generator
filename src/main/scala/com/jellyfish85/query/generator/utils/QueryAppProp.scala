@@ -12,6 +12,8 @@ class QueryAppProp {
 
   val tableDDLFolder:           String          = configuration.getString("tableScriptFolder")
 
+  val sqlLoaderLoadExecutor:    String = configuration.getString("sql.loader.load.executor")
+
   val sqlLoaderParentPath:      String          = configuration.getString("sql.loader.path.parent")
 
   val sqlLoaderCtlPath:         String          = configuration.getString("sql.loader.path.ctl")

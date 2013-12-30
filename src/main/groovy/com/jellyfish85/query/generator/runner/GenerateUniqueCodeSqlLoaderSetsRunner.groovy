@@ -4,6 +4,8 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.downloader.FileDownloader
 import com.jellyfish85.query.generator.generator.UniqueCodeGenerator
+import com.jellyfish85.query.generator.helper.AppFileNameHelper
+import com.jellyfish85.query.generator.helper.CodeGeneratorHelper
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
 
@@ -23,6 +25,7 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
         def queryProp = _context.queryProp
 
         XlsAppProp      xlsAppProp      = new XlsAppProp()
+        AppFileNameHelper fileNameHelper = new AppFileNameHelper()
 
         String dependencyGrpCd          = args[0]
         KrObjectDependenciesDao dependenciesDao = new KrObjectDependenciesDao()
@@ -37,14 +40,22 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
         File parentPath =
                 new File(queryProp.applicationWorkspacePath())
 
+        HashMap<String, String> tableNames = new HashMap<>()
         parentPath.listFiles().eachWithIndex {File file, int idx ->
+            if (idx <= 3) {
             println(file.getPath())
             generator.initializeBean(dependencies, file.getPath())
+            generator.setTableNames(tableNames)
 
             generator.generateUniqueCodeControlFile()
             generator.generateUniqueCodeDataFile()
 
-            System.exit(0)
+            } else {
+
+            }
         }
+
+        CodeGeneratorHelper helper = new CodeGeneratorHelper()
+        helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4UniqueCode())
     }
 }
