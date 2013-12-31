@@ -39,7 +39,7 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         File _parentPath =
                 new File(queryProp.applicationWorkspacePath())
-        File parentPath  = generator.removeSpecialCodes(_parentPath)
+        File parentPath  = generator.removeSpecialCodes(_parentPath.listFiles())
 
         HashMap<String, String> tableNames = new HashMap<>()
         parentPath.listFiles().eachWithIndex {File file, int idx ->
