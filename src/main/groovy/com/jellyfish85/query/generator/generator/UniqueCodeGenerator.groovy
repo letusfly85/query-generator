@@ -43,6 +43,39 @@ class UniqueCodeGenerator extends GeneralGenerator {
     }
 
     /**
+     * remove exceptional files
+     *
+     *
+     * @param files
+     * @return
+     */
+    public ArrayList<File> removeSpecialCodes(ArrayList<File> files) {
+        ArrayList<File> removedFiles = new ArrayList<>()
+
+        Boolean _switch = true
+        files.each {File file ->
+            _switch = true
+            queryProp.exceptCodeDefault().each {key, value ->
+                if (file.getName().matches(".*" + key + ".*")) {
+                    _switch = false
+                }
+            }
+
+            queryProp.exceptCodeMaintenance().each {key, value ->
+                if (file.getName().matches(".*" + key + ".*")) {
+                    _switch = false
+                }
+            }
+
+            if (_switch){
+                removedFiles.add(file)
+            }
+        }
+
+        return removedFiles
+    }
+
+    /**
      * initialize bean info, add table name and other attributes
      *
      *
