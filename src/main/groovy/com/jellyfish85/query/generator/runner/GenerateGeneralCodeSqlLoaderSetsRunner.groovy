@@ -53,7 +53,9 @@ class GenerateGeneralCodeSqlLoaderSetsRunner {
         generator.generateDataFile()
         generator.generateControlFile(schemaName, columnList)
 
+        HashMap<String, String> tableNames = new HashMap<>()
+        tableNames.put(generalTableName, schemaName)
         CodeGeneratorHelper helper = new CodeGeneratorHelper()
-        helper.generateLoadingShellScript([generalTableName], fileNameHelper.requestSqlLoaderPath4GeneralCode())
+        helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4GeneralCode())
     }
 }
