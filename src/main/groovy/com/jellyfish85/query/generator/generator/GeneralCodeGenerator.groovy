@@ -100,14 +100,26 @@ class GeneralCodeGenerator extends GeneralGenerator {
     public void generateControlFile(String schemaName, ArrayList<MsTabColumnsBean> columnList) {
         String tableName = columnList.head().physicalTableNameAttr().value()
         ArrayList<MsTabColumnsBean> _columnList =
-                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("D([A-Z_]+)TIME([A-Z]+)P")}
-        _columnList.each {it -> println(it.physicalColumnNameAttr().value())}
+                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("D([A-Z]{1})A_")}
+        _columnList.collect {it.dataDefaultAttr().setValue(null)}
+
         MsTabColumnsBean beanIns = new MsTabColumnsBean()
         MsTabColumnsBean beanPln = new MsTabColumnsBean()
+        MsTabColumnsBean beanUsr = new MsTabColumnsBean()
+        MsTabColumnsBean beanFnc = new MsTabColumnsBean()
+        MsTabColumnsBean beanFlg = new MsTabColumnsBean()
+
         beanIns.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampDefault())
         beanPln.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampUpdate())
-        _columnList.add(beanIns)
-        _columnList.add(beanPln)
+        beanUsr.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnUser())
+        beanFnc.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnFunction())
+
+        beanIns.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
+        beanPln.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
+        beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
+        beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
+
+        _columnList.add([beanIns, beanPln, beanUsr, beanFnc, beanFlg])
 
         Map map = [
                 schemaName  : schemaName,
