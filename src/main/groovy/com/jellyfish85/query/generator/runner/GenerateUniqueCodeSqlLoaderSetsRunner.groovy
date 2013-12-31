@@ -37,8 +37,9 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
         requestBean.setPath(xlsAppProp.uniqueCodeBookParentPath())
         FileDownloader.downloadDir(requestBean)
 
-        File parentPath =
+        File _parentPath =
                 new File(queryProp.applicationWorkspacePath())
+        File parentPath  = generator.removeSpecialCodes(_parentPath)
 
         HashMap<String, String> tableNames = new HashMap<>()
         parentPath.listFiles().eachWithIndex {File file, int idx ->
