@@ -42,7 +42,7 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         HashMap<String, String> tableNames = new HashMap<>()
         parentPath.listFiles().eachWithIndex {File file, int idx ->
-            if (idx <= 3) {
+            //if (idx <= 3) {
             println(file.getPath())
             generator.initializeBean(dependencies, file.getPath())
             generator.setTableNames(tableNames)
@@ -50,9 +50,9 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
             generator.generateUniqueCodeControlFile()
             generator.generateUniqueCodeDataFile()
 
-            } else {
-
-            }
+//            } else {
+//
+//            }
         }
 
         CodeGeneratorHelper helper = new CodeGeneratorHelper()
