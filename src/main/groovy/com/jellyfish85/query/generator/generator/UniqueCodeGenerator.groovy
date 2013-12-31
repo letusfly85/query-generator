@@ -111,7 +111,7 @@ class UniqueCodeGenerator extends GeneralGenerator {
         listList.each {ArrayList<String> list ->
             def datEntry = "\""
             datEntry +=
-                    StringUtils.join(list, "\",\"")
+                    StringUtils.join(list.collect{it.replace("\"", "\"\"")}, "\",\"")
 
             datEntry += "\"${QueryAppConst.STRING_DAT_END}"
             datEntries.add(datEntry)
