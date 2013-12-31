@@ -1,3 +1,4 @@
+<% import org.apache.commons.lang.StringUtils %>\
 LOAD DATA
 INFILE 'dat\\${tableName}.dat'"str 'CRLF'"
 TRUNCATE
@@ -7,21 +8,21 @@ TRAILING NULLCOLS
 (
 <% columnList.eachWithIndex {bean, index ->
     if (index == columnList.size() -1) {
-        if (bean.physicalColumnNameAttr().value() =~ /D([A-Z_]+)TIME([A-Z]+)P/) { %>\
-    ${bean.physicalColumnNameAttr().value()}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')"
+        if (!StringUtils.isBlank(bean.dataDefaultAttr().value())) { %>\
+    ${bean.physicalColumnNameAttr().value()}  ${bean.dataDefaultAttr().value()}
 <% } else { %>\
     ${bean.physicalColumnNameAttr().value()}
 <% }
     } else {
         if (bean.dataTypeAttr().value() == "VARCHAR2" || bean.dataTypeAttr().value() == "VARCHAR" || bean.dataTypeAttr().value() == "CHAR") {
-            if (bean.physicalColumnNameAttr().value() =~ /D([A-Z_]+)TIME([A-Z]+)P/) { %>\
-    ${bean.physicalColumnNameAttr().value()}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')",
+            if (!StringUtils.isBlank(bean.dataDefaultAttr().value())) { %>\
+    ${bean.physicalColumnNameAttr().value()}  ${bean.dataDefaultAttr().value()},
 <% } else { %>\
     ${bean.physicalColumnNameAttr().value()} CHAR(${String.valueOf(bean.dataLengthAttr().value())}),
 <% }
         } else {
-            if (bean.physicalColumnNameAttr().value() =~ /D([A-Z_]+)TIME([A-Z]+)P/) { %>\
-    ${bean.physicalColumnNameAttr().value()}  DATE 'yyyy/MM/dd hh24:mi:ss' "to_char(SYSDATE,'yyyy/MM/dd hh24:mi:ss')",
+            if (!StringUtils.isBlank(bean.dataDefaultAttr().value())) { %>\
+    ${bean.physicalColumnNameAttr().value()}  ${bean.dataDefaultAttr().value()},
 <% } else { %>\
     ${bean.physicalColumnNameAttr().value()},
 <% }

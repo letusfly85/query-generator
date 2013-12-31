@@ -33,6 +33,11 @@ class QueryAppProp {
 
   val sqlLoaderColumnFunction         :String   = configuration.getString("sql.loader.column.function")
 
+  val sqlLoaderDefaultValueFunctionId :String   = configuration.getString("sql.loader.default.value.function.id")
+
+  val sqlLoaderDefaultValueUserId     :String   = configuration.getString("sql.loader.default.value.user.id")
+
+  val sqlLoaderDefaultValueTimestamp  :String   = configuration.getString("sql.loader.default.value.timestamp")
 
   /************************************************************************************************
    *

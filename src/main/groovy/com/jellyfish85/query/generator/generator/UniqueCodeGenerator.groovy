@@ -156,10 +156,17 @@ class UniqueCodeGenerator extends GeneralGenerator {
         MsTabColumnsBean beanPln = new MsTabColumnsBean()
         MsTabColumnsBean beanUsr = new MsTabColumnsBean()
         MsTabColumnsBean beanFnc = new MsTabColumnsBean()
+
         beanIns.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampDefault())
         beanPln.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampUpdate())
         beanUsr.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnUser())
         beanFnc.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnFunction())
+
+        beanIns.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
+        beanPln.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
+        beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
+        beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
+
 
         columnsBeans.addAll([beanIns, beanPln, beanUsr, beanFnc])
 
