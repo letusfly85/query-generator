@@ -71,7 +71,7 @@ task GenerateIndexDDLRunner (type: JavaExec) {
     args = project.runargs.split(',').toList()
 }
 
-task GenerateSqlLoaderSetsRunner (type: JavaExec) {
+task GenerateGeneralCodeSqlLoaderSetsRunner (type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "com.jellyfish85.query.generator.runner.GenerateGeneralCodeSqlLoaderSetsRunner"
     args = project.runargs.split(',').toList()
