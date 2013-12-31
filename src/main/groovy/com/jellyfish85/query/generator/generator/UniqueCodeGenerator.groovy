@@ -49,11 +49,11 @@ class UniqueCodeGenerator extends GeneralGenerator {
      * @param files
      * @return
      */
-    public ArrayList<File> removeSpecialCodes(ArrayList<File> files) {
+    public ArrayList<File> removeSpecialCodes(File _parentPath) {
         ArrayList<File> removedFiles = new ArrayList<>()
 
         Boolean _switch = true
-        files.each {File file ->
+        _parentPath.listFiles().each {File file ->
             _switch = true
             queryProp.exceptCodeDefault().each {key, value ->
                 if (file.getName().matches(".*" + key + ".*")) {
