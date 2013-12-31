@@ -43,7 +43,7 @@ class UniqueCodeGenerator extends GeneralGenerator {
     }
 
     public void finalizeXlsDao() {
-        xlsDao.closeStream4Path()
+        this.xlsDao.closeStream4Path()
     }
 
     /**
