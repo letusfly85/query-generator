@@ -100,7 +100,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
     public void generateControlFile(String schemaName, ArrayList<MsTabColumnsBean> columnList) {
         String tableName = columnList.head().physicalTableNameAttr().value()
         ArrayList<MsTabColumnsBean> _columnList =
-                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("^D([A-C])A_")}
+                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("^D([A-C]{1})A")}
         _columnList.collect {it.dataDefaultAttr().setValue(null)}
 
         MsTabColumnsBean beanIns = new MsTabColumnsBean()
