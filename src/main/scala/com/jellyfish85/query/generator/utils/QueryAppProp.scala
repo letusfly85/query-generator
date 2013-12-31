@@ -46,7 +46,7 @@ class QueryAppProp {
   val exceptCodeDefaultKeys: java.util.Iterator[String] =
     exceptionConfiguration.getKeys("except.code.default")
   while (exceptCodeDefaultKeys.hasNext) {
-    val key: String = uniqueCodeKeys.next()
+    val key: String = exceptCodeDefaultKeys.next()
     val _key = key.replaceAll("except.code.default.", "")
     exceptCodeDefault.put(_key, configuration.getInt(key))
   }
@@ -55,7 +55,7 @@ class QueryAppProp {
   val exceptCodeMaintenanceKeys: java.util.Iterator[String] =
     exceptionConfiguration.getKeys("except.code.maintenance")
   while (exceptCodeMaintenanceKeys.hasNext) {
-    val key: String = uniqueCodeKeys.next()
+    val key: String = exceptCodeMaintenanceKeys.next()
     val _key = key.replaceAll("except.code.maintenance.", "")
     exceptCodeMaintenance.put(_key, configuration.getInt(key))
   }
