@@ -119,7 +119,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
         beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
         beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
 
-        _columnList.add([beanIns, beanPln, beanUsr, beanFnc, beanFlg])
+        _columnList.addAll([beanIns, beanPln, beanUsr, beanFnc, beanFlg])
 
         Map map = [
                 schemaName  : schemaName,
