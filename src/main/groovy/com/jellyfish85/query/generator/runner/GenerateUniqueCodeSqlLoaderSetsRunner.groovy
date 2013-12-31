@@ -54,6 +54,8 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 //            } else {
 //
 //            }
+
+            generator.finalizeXlsDao()
         }
 
         //CodeGeneratorHelper helper = new CodeGeneratorHelper()
