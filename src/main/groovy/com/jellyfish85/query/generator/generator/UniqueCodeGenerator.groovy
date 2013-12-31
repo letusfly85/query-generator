@@ -105,17 +105,13 @@ class UniqueCodeGenerator extends GeneralGenerator {
      *
      */
     public void generateUniqueCodeDataFile() {
-        ArrayList<HashMap<Integer, String>> listMap = xlsDao.getDataEntry()
+        ArrayList<ArrayList<String>> listList = xlsDao.getDataEntry()
 
         ArrayList<String> datEntries = new ArrayList<>()
-        listMap.each {HashMap<Integer, String> map ->
+        listList.each {ArrayList<String> list ->
             def datEntry = "\""
-            def _innerArray = new ArrayList<String>()
-            map.each {key, value ->
-                _innerArray.add(value)
-            }
             datEntry +=
-                    StringUtils.join(_innerArray, "\",\"")
+                    StringUtils.join(list, "\",\"")
 
             datEntry += "\"${QueryAppConst.STRING_DAT_END}"
             datEntries.add(datEntry)
