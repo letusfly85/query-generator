@@ -46,17 +46,17 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
             //if (idx <= 3) {
             println(file.getPath())
             generator.initializeBean(dependencies, file.getPath())
-            generator.setTableNames(tableNames)
+            //generator.setTableNames(tableNames)
 
-            generator.generateUniqueCodeControlFile()
-            generator.generateUniqueCodeDataFile()
+            //generator.generateUniqueCodeControlFile()
+            //generator.generateUniqueCodeDataFile()
 
 //            } else {
 //
 //            }
         }
 
-        CodeGeneratorHelper helper = new CodeGeneratorHelper()
-        helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4UniqueCode())
+        //CodeGeneratorHelper helper = new CodeGeneratorHelper()
+        //helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4UniqueCode())
     }
 }
