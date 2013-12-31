@@ -100,7 +100,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
     public void generateControlFile(String schemaName, ArrayList<MsTabColumnsBean> columnList) {
         String tableName = columnList.head().physicalTableNameAttr().value()
         ArrayList<MsTabColumnsBean> _columnList =
-                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("^D([A-C]{1})A")}
+                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("^D([A-C]{1})A_" + ".*")}
         _columnList.collect {it.dataDefaultAttr().setValue(null)}
 
         MsTabColumnsBean beanIns = new MsTabColumnsBean()
@@ -120,7 +120,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
         beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
         beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
 
-        _columnList.addAll([beanIns, beanPln, beanUsr, beanFnc, beanFlg])
+        _columnList.addAll([beanFlg, beanIns, beanPln, beanUsr, beanFnc])
 
         Map map = [
                 schemaName  : schemaName,
