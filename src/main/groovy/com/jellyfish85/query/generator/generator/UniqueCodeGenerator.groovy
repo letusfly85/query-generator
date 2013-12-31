@@ -42,12 +42,6 @@ class UniqueCodeGenerator extends GeneralGenerator {
         map.put(this.xlsBean.physicalTableName(), queryProp.sqlLoaderLoadExecutor())
     }
 
-    public void finalizeXlsDao() {
-        def result = this.xlsDao.closeStream4Path()
-
-        println(result)
-    }
-
     /**
      * remove exceptional files
      *
