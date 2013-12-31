@@ -35,7 +35,7 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         SVNRequestBean requestBean = new SVNRequestBean()
         requestBean.setPath(xlsAppProp.uniqueCodeBookParentPath())
-        FileDownloader.downloadDir(requestBean)
+        //FileDownloader.downloadDir(requestBean)
 
         File parentPath =
                 new File(queryProp.applicationWorkspacePath())

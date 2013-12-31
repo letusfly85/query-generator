@@ -37,9 +37,9 @@ dependencies {
 
     runtime files('lib/ojdbc14.jar')
 
-    runtime 'org.apache.poi:poi:3.7'
+    runtime 'org.apache.poi:poi:3.8'
 
-    runtime 'org.apache.poi:poi-ooxml:3.7'
+    runtime 'org.apache.poi:poi-ooxml:3.8'
 
     testCompile      'junit:junit:4.11'
 
