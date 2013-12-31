@@ -238,6 +238,24 @@ class AppFileNameHelper {
     }
 
     /**
+     * request general code loading shell script path
+     *
+     * @author wada shunsuke
+     * @since  2014/01/01
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestSqlLoaderPath4GeneralCode() {
+        this.fileName = StringUtils.join(["exec_load4general_code.sh"], "")
+
+        println(this.prop.sqlLoaderParentPath())
+        String path = FilenameUtils.concat(this.prop.sqlLoaderParentPath(), this.fileName)
+
+        return path
+    }
+
+    /**
      * == requestSqlLoaderPath ==
      *
      * @author wada shunsuke
@@ -247,7 +265,6 @@ class AppFileNameHelper {
      * @return
      */
     public String requestSqlLoaderPath4UniqueCode() {
-
         this.fileName = StringUtils.join(["exec_load4unique_code.sh"], "")
 
         println(this.prop.sqlLoaderParentPath())

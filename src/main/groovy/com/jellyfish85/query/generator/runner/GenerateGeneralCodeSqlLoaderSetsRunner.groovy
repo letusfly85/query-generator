@@ -6,6 +6,8 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.generator.GeneralCodeGenerator
+import com.jellyfish85.query.generator.helper.AppFileNameHelper
+import com.jellyfish85.query.generator.helper.CodeGeneratorHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
 
@@ -25,7 +27,9 @@ class GenerateGeneralCodeSqlLoaderSetsRunner {
 
         def conn = _context.getConnection()
 
-        XlsAppProp      xlsAppProp      = new XlsAppProp()
+        XlsAppProp      xlsAppProp       = new XlsAppProp()
+        AppFileNameHelper fileNameHelper = new AppFileNameHelper()
+
         String generalTableName = xlsAppProp.generalCodePhysicalTableName()
 
         String dependencyGrpCd          = args[0]
@@ -48,5 +52,8 @@ class GenerateGeneralCodeSqlLoaderSetsRunner {
         GeneralCodeGenerator generator = new GeneralCodeGenerator()
         generator.generateDataFile()
         generator.generateControlFile(schemaName, columnList)
+
+        CodeGeneratorHelper helper = new CodeGeneratorHelper()
+        helper.generateLoadingShellScript([generalTableName], fileNameHelper.requestSqlLoaderPath4GeneralCode())
     }
 }
