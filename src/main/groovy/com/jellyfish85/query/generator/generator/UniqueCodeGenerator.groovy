@@ -43,7 +43,9 @@ class UniqueCodeGenerator extends GeneralGenerator {
     }
 
     public void finalizeXlsDao() {
-        this.xlsDao.closeStream4Path()
+        def result = this.xlsDao.closeStream4Path()
+
+        println(result)
     }
 
     /**
