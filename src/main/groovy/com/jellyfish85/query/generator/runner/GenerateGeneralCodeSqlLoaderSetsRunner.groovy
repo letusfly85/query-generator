@@ -9,6 +9,7 @@ import com.jellyfish85.query.generator.generator.GeneralCodeGenerator
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.CodeGeneratorHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
+import com.jellyfish85.query.generator.utils.QueryAppProp
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
 
 /**
@@ -28,6 +29,7 @@ class GenerateGeneralCodeSqlLoaderSetsRunner {
         def conn = _context.getConnection()
 
         XlsAppProp      xlsAppProp       = new XlsAppProp()
+        QueryAppProp    queryAppProp     = new QueryAppProp()
         AppFileNameHelper fileNameHelper = new AppFileNameHelper()
 
         String generalTableName = xlsAppProp.generalCodePhysicalTableName()
@@ -54,7 +56,7 @@ class GenerateGeneralCodeSqlLoaderSetsRunner {
         generator.generateControlFile(schemaName, columnList)
 
         HashMap<String, String> tableNames = new HashMap<>()
-        tableNames.put(generalTableName, schemaName)
+        tableNames.put(generalTableName, queryAppProp.sqlLoaderLoadExecutor())
         CodeGeneratorHelper helper = new CodeGeneratorHelper()
         helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4GeneralCode())
     }
