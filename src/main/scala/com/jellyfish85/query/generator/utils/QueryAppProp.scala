@@ -33,6 +33,8 @@ class QueryAppProp {
 
   val sqlLoaderColumnFunction         :String   = configuration.getString("sql.loader.column.function")
 
+  val sqlLoaderColumnLogicalDelete    :String   = configuration.getString("sql.loader.column.logical.delete")
+
   val sqlLoaderDefaultValueFunctionId :String   = configuration.getString("sql.loader.default.value.function.id")
 
   val sqlLoaderDefaultValueUserId     :String   = configuration.getString("sql.loader.default.value.user.id")

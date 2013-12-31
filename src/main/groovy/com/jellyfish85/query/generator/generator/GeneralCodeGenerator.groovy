@@ -100,7 +100,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
     public void generateControlFile(String schemaName, ArrayList<MsTabColumnsBean> columnList) {
         String tableName = columnList.head().physicalTableNameAttr().value()
         ArrayList<MsTabColumnsBean> _columnList =
-                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("D([A-Z]{1})A_")}
+                columnList.findAll  {!it.physicalColumnNameAttr().value().matches("^D([A-C])A_")}
         _columnList.collect {it.dataDefaultAttr().setValue(null)}
 
         MsTabColumnsBean beanIns = new MsTabColumnsBean()
@@ -113,6 +113,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
         beanPln.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampUpdate())
         beanUsr.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnUser())
         beanFnc.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnFunction())
+        beanFlg.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnLogicalDelete())
 
         beanIns.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
         beanPln.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
