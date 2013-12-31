@@ -48,7 +48,7 @@ class QueryAppProp {
   while (exceptCodeDefaultKeys.hasNext) {
     val key: String = exceptCodeDefaultKeys.next()
     val _key = key.replaceAll("except.code.default.", "")
-    exceptCodeDefault.put(_key, configuration.getInt(key))
+    exceptCodeDefault.put(_key, configuration.getString(key))
   }
 
   val exceptCodeMaintenance: util.HashMap[String, String] = new util.HashMap[String, String]()
@@ -57,6 +57,6 @@ class QueryAppProp {
   while (exceptCodeMaintenanceKeys.hasNext) {
     val key: String = exceptCodeMaintenanceKeys.next()
     val _key = key.replaceAll("except.code.maintenance.", "")
-    exceptCodeMaintenance.put(_key, configuration.getInt(key))
+    exceptCodeMaintenance.put(_key, configuration.getString(key))
   }
 }
