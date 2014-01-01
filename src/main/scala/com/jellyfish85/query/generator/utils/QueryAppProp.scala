@@ -45,6 +45,14 @@ class QueryAppProp {
 
   val sqlLoaderDefaultValueCharZero   :String   = configuration.getString("sql.loader.default.value.char.zero")
 
+  val sqlLoaderDefaultValueFile       :String   = configuration.getString("sql.loader.default.value.file")
+
+  val sqlLoaderDefaultValueFileData   :String   = configuration.getString("sql.loader.default.value.fileData")
+
+  val sqlLoaderDefaultValueYmd        :String   = configuration.getString("sql.loader.default.value.ymd")
+
+
+
   /************************************************************************************************
    *
    *

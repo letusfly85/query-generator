@@ -67,7 +67,8 @@ class TemplateRecordGenerator extends GeneralGenerator {
                 schemaName  : this.schemaName,
                 tableName   : this.tableName,
                 columnName  : xlsDao.beanRecordId().physicalColumnName(),
-                recordIds   : recordIds
+                recordIds   : recordIds,
+                executor    : queryProp.sqlLoaderLoadExecutor()
         ]
 
         String template = "/com/jellyfish85/query/generator/template/dml/deleteTemplateRecord.template"
@@ -97,25 +98,38 @@ class TemplateRecordGenerator extends GeneralGenerator {
         ArrayList<MsTabColumnsBean> _header = converter.convert(columnAttributes)
         _columnList.addAll(_header)
 
+        MsTabColumnsBean beanFil = new MsTabColumnsBean()
+        MsTabColumnsBean beanFid = new MsTabColumnsBean()
+        MsTabColumnsBean beanRey = new MsTabColumnsBean()
+        MsTabColumnsBean beanRet = new MsTabColumnsBean()
         MsTabColumnsBean beanIns = new MsTabColumnsBean()
         MsTabColumnsBean beanPln = new MsTabColumnsBean()
         MsTabColumnsBean beanUsr = new MsTabColumnsBean()
         MsTabColumnsBean beanFnc = new MsTabColumnsBean()
         MsTabColumnsBean beanFlg = new MsTabColumnsBean()
 
+        beanFil.physicalColumnNameAttr().setValue(xlsProp.templateRecordDefineColumnOptionFile())
+        beanFid.physicalColumnNameAttr().setValue(xlsProp.templateRecordDefineColumnOptionFileData())
+        beanRey.physicalColumnNameAttr().setValue(xlsProp.templateRecordDefineColumnOptionRegisterYmd())
+        beanRet.physicalColumnNameAttr().setValue(xlsProp.templateRecordDefineColumnOptionRegisterTimestamp())
         beanIns.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampDefault())
         beanPln.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampUpdate())
         beanUsr.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnUser())
         beanFnc.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnFunction())
         beanFlg.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnLogicalDelete())
 
+        beanFil.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFile())
+        beanFid.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFileData())
+        beanRey.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueYmd())
+        beanRet.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
         beanIns.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
         beanPln.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
         beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
         beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
         beanFlg.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueCharZero())
 
-        _columnList.addAll([beanFlg, beanIns, beanPln, beanUsr, beanFnc])
+        _columnList.addAll([beanFil, beanFid, beanRey, beanRet,
+                beanFlg, beanIns, beanPln, beanUsr, beanFnc])
 
         Map map = [
                 schemaName  : schemaName,
@@ -145,8 +159,7 @@ class TemplateRecordGenerator extends GeneralGenerator {
                             ,xlsBean.displayName()
                             ,xlsBean.templatePath()
                             ,xlsBean.customerId()
-                            ,QueryAppConst.ORGANIZATION
-                            ,QueryAppConst.APPLICATION_NAME], "\",\"")
+                            ,"dat/" + xlsBean.templateName()], "\",\"")
 
             dataEntry += "\"${QueryAppConst.STRING_DAT_END}"
             dataEntries.add(dataEntry)

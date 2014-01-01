@@ -1,3 +1,5 @@
+CONN ${executor}/\$PASSWORD
+
 spool DELETE_${schemaName}.${tableName}.log
 DELETE FROM ${schemaName}.${tableName} tpl
 WHERE
