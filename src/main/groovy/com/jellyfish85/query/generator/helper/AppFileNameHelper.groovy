@@ -282,7 +282,7 @@ class AppFileNameHelper {
      * @param bean
      * @return
      */
-    public String requestSqlLoaderDatPath(MsTablesBean bean) {
+    public String requestSqlLoaderDataPath(MsTablesBean bean) {
 
         this.fileName = StringUtils.join([
                     bean.physicalTableNameAttr().value(),
@@ -311,6 +311,20 @@ class AppFileNameHelper {
         ], "")
 
         String path = FilenameUtils.concat(this.prop.sqlLoaderCtlPath(), this.fileName)
+
+        return path
+    }
+
+    public String requestSqlLoaderDeleteTablePath(String schemaName, String tableName) {
+        this.fileName = StringUtils.join([
+                "DELETE_",
+                tableName,
+                "_",
+                schemaName,
+                ".sql"
+        ], "")
+
+        String path = FilenameUtils.concat(this.prop.sqlLoaderParentPath(), this.fileName)
 
         return path
     }

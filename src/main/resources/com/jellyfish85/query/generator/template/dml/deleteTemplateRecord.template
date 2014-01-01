@@ -1,0 +1,17 @@
+spool DELETE_${schemaName}.${tableName}.log
+DELETE FROM ${schemaName}.${tableName} tpl
+WHERE
+    tpl.${columnName} IN
+(
+<% recordIds.eachWithIndex { recordId, index ->
+    if (index == 0) { %>\
+     '${recordId}'
+<%  else {%>\
+    ,'${recordId}'
+<%
+        }
+    } %>\
+)
+;
+COMMIT;
+EXIT;

@@ -119,7 +119,7 @@ class UniqueCodeGenerator extends GeneralGenerator {
 
         MsTablesBean tablesBean = new MsTablesBean()
         tablesBean.physicalTableNameAttr().setValue(xlsBean.physicalTableName())
-        String datPath = this.fileNameHelper.requestSqlLoaderDatPath(tablesBean)
+        String datPath = this.fileNameHelper.requestSqlLoaderDataPath(tablesBean)
         File   datFile = new File(datPath)
         if (!datFile.getParentFile().exists()) {
             FileUtils.forceMkdir(datFile.getParentFile())
