@@ -12,6 +12,7 @@ import com.jellyfish85.xlsaccessor.bean.query.generate.tool.XlsColumnAttribute
 import com.jellyfish85.xlsaccessor.constant.AppConst
 import com.jellyfish85.xlsaccessor.dao.query.generate.tool.TemplateRecordXlsDao
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
+import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang.StringUtils
 
 /**
@@ -82,10 +83,12 @@ class TemplateRecordGenerator extends GeneralGenerator {
     }
 
     public void generateTemplateShellScript() {
+        String deleteTemplateRecordTablePath =
+                FilenameUtils.getName(this.fileNameHelper.requestSqlLoaderDeleteTablePath(this.schemaName, this.tableName))
         Map map = [
-                deleteTemplateRecordTablePath: this.fileNameHelper.requestSqlLoaderDeleteTablePath(this.schemaName, this.tableName),
-                schemaName : queryProp.sqlLoaderLoadExecutor(),
-                tableName  : tableName
+                deleteTemplateRecordTablePath: deleteTemplateRecordTablePath,
+                schemaName                   : queryProp.sqlLoaderLoadExecutor(),
+                tableName                    : tableName
         ]
 
         String path = "/com/jellyfish85/query/generator/template/shell/execSqlLoader4Template.template"
