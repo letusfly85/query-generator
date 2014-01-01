@@ -6,7 +6,7 @@ WHERE
 <% recordIds.eachWithIndex { recordId, index ->
     if (index == 0) { %>\
      '${recordId}'
-<%  else {%>\
+<% } else {%>\
     ,'${recordId}'
 <%
         }

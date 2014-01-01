@@ -4,10 +4,11 @@ import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.query.generator.constant.QueryAppConst
+import com.jellyfish85.query.generator.converter.XlsColumnAttribute2MsTabColumnsConverter
 import com.jellyfish85.query.generator.helper.TableNameHelper
-import com.jellyfish85.query.generator.utils.QueryAppProp
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.TemplateRecordXlsBean
+import com.jellyfish85.xlsaccessor.bean.query.generate.tool.XlsColumnAttribute
 import com.jellyfish85.xlsaccessor.constant.AppConst
 import com.jellyfish85.xlsaccessor.dao.query.generate.tool.TemplateRecordXlsDao
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
@@ -34,7 +35,7 @@ class TemplateRecordGenerator extends GeneralGenerator {
 
     private TableNameHelper tableNameHelper = new TableNameHelper()
 
-    private XlsAppProp      xlsAppProp      = new XlsAppProp()
+    private XlsAppProp      xlsProp = new XlsAppProp()
 
     public TemplateRecordGenerator(
             String _path, BigDecimal _ticketNumber, SVNRequestBean _requestBean,
@@ -46,7 +47,7 @@ class TemplateRecordGenerator extends GeneralGenerator {
 
         xlsDao = new TemplateRecordXlsDao(this.path)
 
-        this.tableName  = xlsAppProp.templateRecordDefinePhysicalTableName()
+        this.tableName  = xlsProp.templateRecordDefinePhysicalTableName()
         this.schemaName =
                 tableNameHelper.findByApplicationGroupCd(dependencies, tableName).
                         objectOwnerAttr().value()
@@ -65,7 +66,7 @@ class TemplateRecordGenerator extends GeneralGenerator {
         Map map = [
                 schemaName  : this.schemaName,
                 tableName   : this.tableName,
-                columnName  : this.xlsAppProp.templateRecordDefineColumnMap("recordId"),
+                columnName  : xlsDao.beanRecordId().physicalColumnName(),
                 recordIds   : recordIds
         ]
 
@@ -86,10 +87,15 @@ class TemplateRecordGenerator extends GeneralGenerator {
     /**
      *
      *
-     * @todo
      */
     public void generateTemplateControlFile() {
         ArrayList<MsTabColumnsBean> _columnList = new ArrayList<>()
+
+        ArrayList<XlsColumnAttribute> columnAttributes = xlsDao.getHeader()
+        XlsColumnAttribute2MsTabColumnsConverter converter =
+                new XlsColumnAttribute2MsTabColumnsConverter()
+        ArrayList<MsTabColumnsBean> _header = converter.convert(columnAttributes)
+        _columnList.addAll(_header)
 
         MsTabColumnsBean beanIns = new MsTabColumnsBean()
         MsTabColumnsBean beanPln = new MsTabColumnsBean()
@@ -107,13 +113,15 @@ class TemplateRecordGenerator extends GeneralGenerator {
         beanPln.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
         beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
         beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
+        beanFlg.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueCharZero())
 
         _columnList.addAll([beanFlg, beanIns, beanPln, beanUsr, beanFnc])
 
         Map map = [
                 schemaName  : schemaName,
                 tableName   : tableName,
-                columnList  : _columnList
+                columnList  : _columnList,
+                mode        : QueryAppConst.LOADER_WRITE_MODE_APPEND
         ]
 
         String path = "/com/jellyfish85/query/generator/template/dml/controlFile.template"

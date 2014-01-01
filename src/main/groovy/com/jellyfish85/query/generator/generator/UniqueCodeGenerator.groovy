@@ -8,6 +8,7 @@ import com.jellyfish85.query.generator.converter.XlsColumnAttribute2MsTabColumns
 import com.jellyfish85.query.generator.helper.TableNameHelper
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.UniqueCodeXlsBean
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.XlsColumnAttribute
+import com.jellyfish85.xlsaccessor.constant.AppConst
 import com.jellyfish85.xlsaccessor.dao.query.generate.tool.UniqueCodeXlsDao
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang.StringUtils
@@ -174,7 +175,8 @@ class UniqueCodeGenerator extends GeneralGenerator {
         Map map = [
                 schemaName  : schemaName,
                 tableName   : tableName,
-                columnList  : columnsBeans
+                columnList  : columnsBeans,
+                mode        : QueryAppConst.LOADER_WRITE_MODE_TRUNCATE
         ]
 
         String template = "/com/jellyfish85/query/generator/template/dml/controlFile.template"

@@ -50,4 +50,20 @@ object FileDownloader {
     getter.simpleGetFiles(requestBeans, folder)
   }
 
+  /**
+   *
+   *
+   * @param requestBean
+   * @param path
+   */
+  def downloadDir(requestBean: SVNRequestBean, path: String) {
+    val folder: File = new File(path)
+    FileUtils.forceMkdir(folder)
+
+    def filter(x: SVNRequestBean): Boolean  =  true
+    val requestBeans: List[SVNRequestBean] = getter.getSVNInfo(requestBean.path, filter)
+
+    getter.simpleGetFiles(requestBeans, folder)
+  }
+
 }

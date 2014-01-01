@@ -125,7 +125,8 @@ class GeneralCodeGenerator extends GeneralGenerator {
         Map map = [
                 schemaName  : schemaName,
                 tableName   : tableName,
-                columnList  : _columnList
+                columnList  : _columnList,
+                mode        : QueryAppConst.LOADER_WRITE_MODE_TRUNCATE
         ]
 
         String path = "/com/jellyfish85/query/generator/template/dml/controlFile.template"

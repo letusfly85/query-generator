@@ -1,7 +1,7 @@
 <% import org.apache.commons.lang.StringUtils %>\
 LOAD DATA
 INFILE 'dat\\${tableName}.dat'"str 'CRLF'"
-TRUNCATE
+${mode}
 INTO TABLE ${schemaName}.${tableName}
 FIELDS TERMINATED BY "," OPTIONALLY ENCLOSED BY '"'
 TRAILING NULLCOLS
