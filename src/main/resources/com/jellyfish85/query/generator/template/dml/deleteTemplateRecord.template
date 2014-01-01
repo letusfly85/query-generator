@@ -1,4 +1,4 @@
-CONN ${executor}/\$PASSWORD
+CONN ${executor}/&1
 
 spool DELETE_${schemaName}.${tableName}.log
 DELETE FROM ${schemaName}.${tableName} tpl

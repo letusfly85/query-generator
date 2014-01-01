@@ -38,6 +38,7 @@ class GenerateTemplateRecordSqlLoaderSetsRunner {
         ArrayList<TemplateRecordXlsBean> xlsBeans = generator.getXlsBeans()
         generator.generateTemplateDataFile(xlsBeans)
         generator.generateTemplateDeleteQuery(xlsBeans)
+        generator.generateTemplateShellScript()
 
         SVNRequestBean __requestBean = new SVNRequestBean()
         __requestBean.setPath(xlsAppProp.templateRecordDocsPath())

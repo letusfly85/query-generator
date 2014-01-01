@@ -1,0 +1,8 @@
+####################################################################
+#
+#
+#
+#
+####################################################################
+sqlplus -s -l /NOLOG @${deleteTemplateRecordTablePath} "\$PASSWORD"
+sqlldr CONTROL=ctl/${tableName}.ctl, LOG=log/${tableName}.log, BAD=${tableName}.bad, DATA=dat/${tableName}.dat, USERID=${schemaName}/\$PASSWORD

@@ -82,7 +82,17 @@ class TemplateRecordGenerator extends GeneralGenerator {
     }
 
     public void generateTemplateShellScript() {
+        Map map = [
+                deleteTemplateRecordTable: this.fileNameHelper.requestSqlLoaderDeleteTablePath(this.schemaName, this.tableName),
+                schemaName : schemaName,
+                tableName  : tableName
+        ]
 
+        String path = "/com/jellyfish85/query/generator/template/shell/deleteTemplateRecord.template"
+
+        this.generate(map, path)
+        this.setPath(this.fileNameHelper.requestSqlLoaderPath4TemplateRecord())
+        this.writeAppFile()
     }
 
     /**

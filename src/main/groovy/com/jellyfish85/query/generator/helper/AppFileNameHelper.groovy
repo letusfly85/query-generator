@@ -274,6 +274,24 @@ class AppFileNameHelper {
     }
 
     /**
+     * == requestSqlLoaderPath4TemplateRecord ==
+     *
+     * @author wada shunsuke
+     * @since  2014/01/01
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestSqlLoaderPath4TemplateRecord() {
+        this.fileName = StringUtils.join(["exec_load4template_record.sh"], "")
+
+        println(this.prop.sqlLoaderParentPath())
+        String path = FilenameUtils.concat(this.prop.sqlLoaderParentPath(), this.fileName)
+
+        return path
+    }
+
+    /**
      * return sql loader dat file path
      *
      * @author wada shunsuke
