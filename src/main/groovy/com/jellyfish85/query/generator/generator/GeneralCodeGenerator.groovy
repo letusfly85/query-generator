@@ -42,9 +42,9 @@ class GeneralCodeGenerator extends GeneralGenerator {
         String bookPath =
                 StringUtils.join([queryProp.applicationWorkspacePath(), requestBean.path()], "/")
 
-        GeneralCodeXlsDao codeXlsDao = new GeneralCodeXlsDao()
+        GeneralCodeXlsDao codeXlsDao = new GeneralCodeXlsDao(bookPath)
         def _codeXlsBeans =
-                codeXlsDao.findAll(bookPath, new BigDecimal(0), requestBean)
+                codeXlsDao.findAll(new BigDecimal(0), requestBean)
         ArrayList<GeneralCodeXlsBean> codeXlsBeans = codeXlsDao.convert(_codeXlsBeans)
 
         ArrayList<String> datEntries = new ArrayList<>()
