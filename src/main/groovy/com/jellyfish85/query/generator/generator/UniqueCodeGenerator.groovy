@@ -56,13 +56,13 @@ class UniqueCodeGenerator extends GeneralGenerator {
         _parentPath.listFiles().each {File file ->
             _switch = true
             queryProp.exceptCodeDefault().each {key, value ->
-                if (file.getName().matches(".*" + key + ".*")) {
+                if (file.getName().matches(".*" + value + ".*")) {
                     _switch = false
                 }
             }
 
             queryProp.exceptCodeMaintenance().each {key, value ->
-                if (file.getName().matches(".*" + key + ".*")) {
+                if (file.getName().matches(".*" + value + ".*")) {
                     _switch = false
                 }
             }
