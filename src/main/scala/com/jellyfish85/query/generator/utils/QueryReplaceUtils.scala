@@ -13,7 +13,7 @@ import com.jellyfish85.xlsaccessor.constant.AppConst
  *
  */
 @throws(classOf[IOException])
-class QueryReplaceUtils {
+class QueryReplaceUtils(prop: QueryAppProp) {
 
 
   /**
@@ -22,7 +22,7 @@ class QueryReplaceUtils {
    * @param controlFile
    * @param schemaName
    */
-  def addSchemaName2ControlFile(prop:    QueryAppProp, controlFile: File, schemaName: String) {
+  def addSchemaName2ControlFile(controlFile: File, schemaName: String) {
     val tmpFile: File = new File(prop.applicationWorkspacePath, "tmp")
     if (tmpFile.exists()) FileUtils.forceDelete(tmpFile)
 
@@ -92,7 +92,7 @@ class QueryReplaceUtils {
    *
    * @param file
    */
-  def convertSJIS2UTF8(prop:    QueryAppProp, file: File) {
+  def convertSJIS2UTF8(file: File) {
     val tmpFile: File = new File(prop.applicationWorkspacePath, "tmp")
     if (tmpFile.exists()) FileUtils.forceDelete(tmpFile)
 

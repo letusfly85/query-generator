@@ -1,7 +1,6 @@
 package com.jellyfish85.query.generator.runner
 
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
-import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.downloader.FileDownloader
 import com.jellyfish85.query.generator.generator.TemplateRecordGenerator
