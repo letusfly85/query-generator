@@ -4,6 +4,7 @@ import com.jellyfish85.query.generator.helper.CodeGeneratorHelper
 import com.jellyfish85.query.generator.utils.QueryReplaceUtils
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
+import org.apache.commons.lang.StringUtils
 
 /**
  * generate error check code suites
@@ -34,7 +35,7 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
         ArrayList<File> destFiles = new ArrayList<>()
         controlPath.listFiles().each {File file ->
             String extName  = FilenameUtils.getExtension(file.getName()).toLowerCase()
-            String fileName = FilenameUtils.getBaseName(file.getName()) + extName
+            String fileName = StringUtils.join([FilenameUtils.getBaseName(file.getName()), extName], ".")
             File dest = new File(queryProp.sqlLoaderCtlPath(), fileName)
 
             FileUtils.copyFile(file, dest)
@@ -57,7 +58,7 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
         ArrayList<File> destFiles = new ArrayList<>()
         dataPath.listFiles().each {File file ->
             String extName  = FilenameUtils.getExtension(file.getName()).toLowerCase()
-            String fileName = FilenameUtils.getBaseName(file.getName()) + extName
+            String fileName = StringUtils.join([FilenameUtils.getBaseName(file.getName()), extName], ".")
             File dest = new File(queryProp.sqlLoaderDatPath(), fileName)
 
             FileUtils.copyFile(file, dest)
