@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.helper
 
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.query.generator.constant.QueryAppConst
+import com.jellyfish85.query.generator.utils.QueryAppProp
 
 /**
  * == TableNameHelper ==
@@ -14,6 +15,8 @@ class TableNameHelper {
 
     private String biTableName = null
     private String bkTableName = null
+
+    private QueryAppProp queryProp = new QueryAppProp()
 
     /**
      * == requestBITableName ==
@@ -226,5 +229,21 @@ class TableNameHelper {
         }
 
         return result
+    }
+
+    /**
+     * request schema name by dependency group
+     *
+     *
+     * @param dependencyGrpCd
+     * @return
+     */
+    public requestMainSchemaName(String dependencyGrpCd) {
+        if (dependencyGrpCd.equals(QueryAppConst.APPLICATION_MAIN_GROUP)) {
+            return queryProp.erdSchemaMainName()
+
+        } else if (dependencyGrpCd.equals(QueryAppConst.APPLICATION_SUB_GROUP)) {
+            return queryProp.erdSchemaSubName()
+        }
     }
 }

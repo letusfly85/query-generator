@@ -292,6 +292,24 @@ class AppFileNameHelper {
     }
 
     /**
+     * request sql loader script for authority code
+     *
+     * @author wada shunsuke
+     * @since  2014/01/02
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestSqlLoaderPath4AuthorityCode() {
+        this.fileName = StringUtils.join(["exec_load4authority_code.sh"], "")
+
+        println(this.prop.sqlLoaderParentPath())
+        String path = FilenameUtils.concat(this.prop.sqlLoaderParentPath(), this.fileName)
+
+        return path
+    }
+
+    /**
      * return sql loader dat file path
      *
      * @author wada shunsuke

@@ -15,6 +15,13 @@ class QueryAppConst {
     // application name
     public final static String APPLICATION_NAME             = "query-generator"
 
+    // application main group
+    public final static String APPLICATION_MAIN_GROUP       = "01"
+
+    // application sub group
+    public final static String APPLICATION_SUB_GROUP        = "02"
+
+
     // application group of main system
     public final static String APPLICATION_GROUP_APP        = "0"
 
@@ -27,8 +34,10 @@ class QueryAppConst {
     // data files end symbol
     public final static String STRING_DAT_END               = "CRLF"
 
+    // sql loader writing mode append
     public final static String LOADER_WRITE_MODE_APPEND     = "APPEND"
 
+    // sql loader writing mode truncate
     public final static String LOADER_WRITE_MODE_TRUNCATE   = "TRUNCATE"
 
     // String blank

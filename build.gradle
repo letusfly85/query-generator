@@ -83,8 +83,14 @@ task GenerateUniqueCodeSqlLoaderSetsRunner (type: JavaExec) {
     args = project.runargs.split(',').toList()
 }
 
-task GenerateTemplateRecordSqlLoaderSetsRunner  (type: JavaExec) {
+task GenerateTemplateRecordSqlLoaderSetsRunner (type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "com.jellyfish85.query.generator.runner.GenerateTemplateRecordSqlLoaderSetsRunner"
+    args = project.runargs.split(',').toList()
+}
+
+task GenerateAuthorityCodeSqlLoaderSetsRunner (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.jellyfish85.query.generator.runner.GenerateAuthorityCodeSqlLoaderSetsRunner"
     args = project.runargs.split(',').toList()
 }

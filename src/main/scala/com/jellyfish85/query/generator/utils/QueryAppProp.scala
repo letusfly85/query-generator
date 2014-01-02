@@ -2,12 +2,17 @@ package com.jellyfish85.query.generator.utils
 
 import org.apache.commons.configuration.{PropertiesConfiguration, Configuration}
 import java.util
+import java.io.InputStream
 
 class QueryAppProp {
 
-  val configuration: Configuration =
-    new PropertiesConfiguration("com/jellyfish85/query/generator/define/query.properties")
+  val inputStream: InputStream =
+    getClass.getResourceAsStream("/com/jellyfish85/query/generator/define/query.properties")
 
+  val configuration: PropertiesConfiguration =
+    new PropertiesConfiguration()
+
+  configuration.load(inputStream, "UTF8")
 
   val restoreFolder:                   String   = configuration.getString("tableScriptFolder")
 
@@ -22,10 +27,6 @@ class QueryAppProp {
   val sqlLoaderDatPath:                String   = configuration.getString("sql.loader.path.dat")
 
   val indexDDLFolder:                  String   = configuration.getString("indexDDLFolder")
-
-  val applicationWorkspacePath:        String   = configuration.getString("application.workspace.path")
-
-  val applicationTemplatePath:         String   = configuration.getString("application.template.path")
 
   val sqlLoaderColumnTimestampDefault :String   = configuration.getString("sql.loader.column.timestamp.default")
 
@@ -78,4 +79,40 @@ class QueryAppProp {
     val _key = key.replaceAll("except.code.maintenance.", "")
     exceptCodeMaintenance.put(_key, exceptionConfiguration.getString(key))
   }
+
+  /************************************************************************************************
+   * subversion path
+   *
+   *
+   ************************************************************************************************/
+
+  val subversionAuthorityCodeDataPath: String = configuration.getString("subversion.authority.code.data.path")
+
+  val subversionAuthorityCodeControlPath: String
+                                              = configuration.getString("subversion.authority.code.control.path")
+
+  /************************************************************************************************
+   * subversion path
+   *
+   *
+   ************************************************************************************************/
+  val applicationWorkspacePath:        String   = configuration.getString("application.workspace.path")
+
+  val applicationTemplatePath:         String   = configuration.getString("application.workspace.template.path")
+
+  val applicationControlPath:          String   = configuration.getString("application.workspace.control.path")
+
+  val applicationDataPath:             String   = configuration.getString("application.workspace.data.path")
+
+  /************************************************************************************************
+   * subversion path
+   *
+   *
+   ************************************************************************************************/
+  val erdTableMasterPrefix:            String   = configuration.getString("erd.table.master.prefix")
+
+  val erdSchemaMainName:               String   = configuration.getString("erd.schema.main.name")
+
+  val erdSchemaSubName:                String   = configuration.getString("erd.schema.sub.name")
+
 }
