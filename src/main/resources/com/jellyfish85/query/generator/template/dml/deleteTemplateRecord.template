@@ -1,6 +1,6 @@
 CONN ${executor}/&1
 
-spool DELETE_${schemaName}.${tableName}.log
+spool DELETE_log/${schemaName}.${tableName}.log
 DELETE FROM ${schemaName}.${tableName} tpl
 WHERE
     tpl.${columnName} IN
