@@ -4,7 +4,7 @@ column log_date new_value log_date_text noprint
 column username new_value user_name_text noprint
 column instancename new_value instance_name_text noprint
 select to_char(sysdate,'yyyy_mmdd_hh24mi') log_date from dual;
-spool log/delete_${tableName}.${schemaName}.&log_date_text.log
+spool log/delete_${tableName}.${schemaName}.&log_date_text..log
 DELETE FROM ${schemaName}.${tableName} tpl
 WHERE
     tpl.${columnName} IN
