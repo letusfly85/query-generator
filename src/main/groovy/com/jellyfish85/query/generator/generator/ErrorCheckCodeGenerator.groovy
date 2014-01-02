@@ -16,14 +16,18 @@ import org.apache.commons.lang.StringUtils
  */
 class ErrorCheckCodeGenerator extends GeneralGenerator {
 
-    private String schemaName      = null
+    private String schemaName                  = null
 
     private HashMap<String, String> tableNames = new HashMap<String, String>()
 
-    private QueryReplaceUtils replaceUtils = new QueryReplaceUtils()
+    private QueryReplaceUtils replaceUtils     = null
+
+    private BaseContext context                = null
 
     public ErrorCheckCodeGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
+        this.replaceUtils = new QueryReplaceUtils(this.context.queryProp)
 
         this.schemaName = this.context.tableNameHelper.requestMainSchemaName(this.context.dependentGrpCd)
     }
@@ -52,7 +56,7 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
     }
 
     public void generateDataFile() {
-        File dataPath = new File(queryProp.applicationDataPath())
+        File dataPath = new File(this.context.queryProp.applicationDataPath())
 
         ArrayList<File> destFiles = new ArrayList<>()
         dataPath.listFiles().each {File file ->

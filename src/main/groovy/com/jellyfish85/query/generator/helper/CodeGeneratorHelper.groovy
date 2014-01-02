@@ -1,5 +1,6 @@
 package com.jellyfish85.query.generator.helper
 
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.generator.GeneralGenerator
 
 /**
@@ -9,8 +10,8 @@ import com.jellyfish85.query.generator.generator.GeneralGenerator
  */
 class CodeGeneratorHelper extends GeneralGenerator {
 
-    public CodeGeneratorHelper(String environment) {
-        super(environment)
+    public CodeGeneratorHelper(BaseContext _context) {
+        super(_context)
     }
 
     /**

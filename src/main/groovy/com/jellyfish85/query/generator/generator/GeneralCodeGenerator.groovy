@@ -22,8 +22,11 @@ import org.apache.commons.lang.StringUtils
  */
 class GeneralCodeGenerator extends GeneralGenerator {
 
+    private BaseContext context = null
+
     public GeneralCodeGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
     }
 
     private XlsAppProp   xlsProp   = new XlsAppProp()
@@ -39,7 +42,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
 
         SVNRequestBean requestBean = new SVNRequestBean()
         requestBean.setPath(xlsProp.generalCodeBookPath())
-        requestBean = FileDownloader.download(requestBean)
+        requestBean = FileDownloader.download(this.context.queryProp, requestBean)
 
         String bookPath =
                 StringUtils.join([this.context.queryProp.applicationWorkspacePath(), requestBean.path()], "/")
