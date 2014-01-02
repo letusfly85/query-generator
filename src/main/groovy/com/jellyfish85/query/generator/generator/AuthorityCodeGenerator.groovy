@@ -15,16 +15,20 @@ import org.apache.commons.io.FilenameUtils
  */
 class AuthorityCodeGenerator extends GeneralGenerator {
 
-    private String schemaName      = null
+    private BaseContext context                = null
+
+    private String schemaName                  = null
 
     private HashMap<String, String> tableNames = new HashMap<String, String>()
 
-    private QueryReplaceUtils replaceUtils = new QueryReplaceUtils()
+    private QueryReplaceUtils replaceUtils     = null
 
     public AuthorityCodeGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
 
-        this.schemaName = context.tableNameHelper.requestMainSchemaName(context.dependentGrpCd)
+        this.replaceUtils  = new QueryReplaceUtils(this.context.queryProp)
+        this.schemaName    = context.tableNameHelper.requestMainSchemaName(context.dependentGrpCd)
     }
 
     public void generateControlFile() {
