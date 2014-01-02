@@ -4,6 +4,7 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.downloader.FileDownloader
 import com.jellyfish85.query.generator.generator.TemplateRecordGenerator
+import com.jellyfish85.query.generator.helper.ResourceCopyHelper
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.TemplateRecordXlsBean
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
@@ -48,6 +49,10 @@ class GenerateTemplateRecordSqlLoaderSetsRunner {
             File dest = new File(queryProp.sqlLoaderDatPath(), doc.getName())
             FileUtils.copyFile(doc, dest)
         }
+
+        ResourceCopyHelper copyHelper = new ResourceCopyHelper()
+        String loginSqlPath = (new File(queryProp.sqlLoaderParentPath(), "login.sql")).getPath()
+        copyHelper.copyLoginSql(loginSqlPath)
 
         _context.databaseFinalize()
     }
