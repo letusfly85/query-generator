@@ -309,6 +309,25 @@ class AppFileNameHelper {
         return path
     }
 
+
+    /**
+     * request sql loader script for error check code
+     *
+     * @author wada shunsuke
+     * @since  2014/01/02
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestSqlLoaderPath4ErrorCheckCode() {
+        this.fileName = StringUtils.join(["exec_load4error_check_code.sh"], "")
+
+        println(this.prop.sqlLoaderParentPath())
+        String path = FilenameUtils.concat(this.prop.sqlLoaderParentPath(), this.fileName)
+
+        return path
+    }
+
     /**
      * return sql loader dat file path
      *

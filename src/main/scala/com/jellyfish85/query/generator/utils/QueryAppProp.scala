@@ -91,8 +91,15 @@ class QueryAppProp {
   val subversionAuthorityCodeControlPath: String
                                               = configuration.getString("subversion.authority.code.control.path")
 
+  val subversionErrorCheckCodeDataPath: String
+                                              = configuration.getString("subversion.error.check.code.data.path")
+
+  val subversionErrorCheckCodeControlPath: String
+                                              = configuration.getString("subversion.error.check.code.control.path")
+
+
   /************************************************************************************************
-   * subversion path
+   * workspace attributes
    *
    *
    ************************************************************************************************/
@@ -105,7 +112,7 @@ class QueryAppProp {
   val applicationDataPath:             String   = configuration.getString("application.workspace.data.path")
 
   /************************************************************************************************
-   * subversion path
+   * erd attributes
    *
    *
    ************************************************************************************************/
