@@ -1,6 +1,10 @@
 CONN ${executor}/&1
 
-spool DELETE_log/${schemaName}.${tableName}.log
+column log_date new_value log_date_text noprint
+column username new_value user_name_text noprint
+column instancename new_value instance_name_text noprint
+select to_char(sysdate,'yyyy_mmdd_hh24mi') log_date from dual;
+spool DELETE_log/delete_${tableName}.${schemaName}.log_date.log
 DELETE FROM ${schemaName}.${tableName} tpl
 WHERE
     tpl.${columnName} IN
