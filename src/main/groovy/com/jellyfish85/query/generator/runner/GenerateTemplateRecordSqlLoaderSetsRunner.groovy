@@ -48,5 +48,7 @@ class GenerateTemplateRecordSqlLoaderSetsRunner {
             File dest = new File(queryProp.sqlLoaderDatPath(), doc.getName())
             FileUtils.copyFile(doc, dest)
         }
+
+        _context.databaseFinalize()
     }
 }
