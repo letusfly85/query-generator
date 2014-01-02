@@ -1,5 +1,6 @@
 package com.jellyfish85.query.generator.runner
 
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.downloader.FileDownloader
 import com.jellyfish85.query.generator.generator.AuthorityCodeGenerator
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
@@ -14,11 +15,14 @@ import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 class GenerateAuthorityCodeSqlLoaderSetsRunner {
 
     public static void main(String[] args) {
-        BaseRunner _context = new BaseRunner()
-        _context.databaseInitialize()
-
-        def queryProp = _context.queryProp
         def dependencyGrpCd = args[0]
+        def environment     = args[1]
+
+        BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
+        BaseContext context = runner._context
+        runner.databaseInitialize()
+
+        def queryProp = context.queryProp
 
         SVNRequestBean controlRequestBean = new SVNRequestBean()
         controlRequestBean.setPath(queryProp.subversionAuthorityCodeControlPath())
@@ -28,12 +32,12 @@ class GenerateAuthorityCodeSqlLoaderSetsRunner {
         FileDownloader.downloadDir(controlRequestBean, queryProp.applicationControlPath())
         FileDownloader.downloadDir(dataRequestBean,    queryProp.applicationDataPath())
 
-        AuthorityCodeGenerator generator = new AuthorityCodeGenerator(dependencyGrpCd)
+        AuthorityCodeGenerator generator = new AuthorityCodeGenerator(context)
         generator.generateControlFile()
         generator.generateDataFile()
         generator.generateShellScript()
 
-        _context.databaseFinalize()
+        runner.databaseFinalize()
     }
 
 }

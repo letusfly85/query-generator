@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.query.generator.BaseContext
 
 /**
  * == DropBackupTableQueryGenerator ==
@@ -12,6 +13,10 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
  *
  */
 class DropBackupTableQueryGenerator extends  GeneralGenerator {
+
+    public DropBackupTableQueryGenerator(BaseContext _context) {
+        super(_context)
+    }
 
     /**
      * == generateDropBackupTableQuery ==

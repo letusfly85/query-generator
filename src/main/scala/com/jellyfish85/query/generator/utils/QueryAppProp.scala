@@ -3,8 +3,9 @@ package com.jellyfish85.query.generator.utils
 import org.apache.commons.configuration.{PropertiesConfiguration, Configuration}
 import java.util
 import java.io.InputStream
+import org.apache.commons.lang.StringUtils
 
-class QueryAppProp {
+class QueryAppProp(environment: String) {
 
   val inputStream: InputStream =
     getClass.getResourceAsStream("/com/jellyfish85/query/generator/define/query.properties")
@@ -14,19 +15,44 @@ class QueryAppProp {
 
   configuration.load(inputStream, "UTF8")
 
-  val restoreFolder:                   String   = configuration.getString("tableScriptFolder")
+  /************************************************************************************************
+   *
+   *
+   *
+   ************************************************************************************************/
+  var outputFolder: String = _
+  val rootFolders: java.util.Iterator[String] = configuration.getKeys("folder.output.root")
+  while (rootFolders.hasNext) {
+    val key: String = rootFolders.next()
+    if (key.replaceAll("folder.output.root.", "").equals(environment)) {
+      outputFolder = configuration.getString(key)
+    }
+  }
+  if (StringUtils.isBlank(outputFolder)) {
+    throw new RuntimeException("there is no key for environment")
+  }
 
-  val tableDDLFolder:                  String   = configuration.getString("tableScriptFolder")
+  /************************************************************************************************
+   *
+   *
+   *
+   ************************************************************************************************/
+  val tableDDLFolder:                  String   = outputFolder + configuration.getString("folder.output.erd.table")
 
-  val sqlLoaderLoadExecutor:           String   = configuration.getString("sql.loader.load.executor")
+  val indexDDLFolder:                  String   = outputFolder + configuration.getString("folder.output.erd.index")
 
-  val sqlLoaderParentPath:             String   = configuration.getString("sql.loader.path.parent")
+  /************************************************************************************************
+   *
+   *
+   *
+   ************************************************************************************************/
+  val sqlLoaderLoadExecutor:           String   = outputFolder + configuration.getString("sql.loader.load.executor")
 
-  val sqlLoaderCtlPath:                String   = configuration.getString("sql.loader.path.ctl")
+  val sqlLoaderParentPath:             String   = outputFolder + configuration.getString("sql.loader.path.parent")
 
-  val sqlLoaderDatPath:                String   = configuration.getString("sql.loader.path.dat")
+  val sqlLoaderCtlPath:                String   = outputFolder + configuration.getString("sql.loader.path.ctl")
 
-  val indexDDLFolder:                  String   = configuration.getString("indexDDLFolder")
+  val sqlLoaderDatPath:                String   = outputFolder + configuration.getString("sql.loader.path.dat")
 
   val sqlLoaderColumnTimestampDefault :String   = configuration.getString("sql.loader.column.timestamp.default")
 

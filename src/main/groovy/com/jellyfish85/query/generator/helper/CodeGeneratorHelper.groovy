@@ -1,6 +1,5 @@
 package com.jellyfish85.query.generator.helper
 
-import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.query.generator.generator.GeneralGenerator
 
 /**
@@ -9,6 +8,10 @@ import com.jellyfish85.query.generator.generator.GeneralGenerator
  *
  */
 class CodeGeneratorHelper extends GeneralGenerator {
+
+    public CodeGeneratorHelper(String environment) {
+        super(environment)
+    }
 
     /**
      * generate sql loader script

@@ -17,14 +17,12 @@ object FileDownloader {
 
   val getter:  SVNGetFiles[SVNRequestBean] = new SVNGetFiles
 
-  val prop:    QueryAppProp     = new QueryAppProp
-
   /**
    *
    *
    * @param requestBean
    */
-  def download(requestBean: SVNRequestBean): SVNRequestBean = {
+  def download(prop:    QueryAppProp, requestBean: SVNRequestBean): SVNRequestBean = {
     val folder: File = new File(prop.applicationWorkspacePath)
     FileUtils.forceMkdir(folder)
 
@@ -40,7 +38,7 @@ object FileDownloader {
    *
    * @param requestBean
    */
-  def downloadDir(requestBean: SVNRequestBean) {
+  def downloadDir(prop:    QueryAppProp, requestBean: SVNRequestBean) {
     val folder: File = new File(prop.applicationWorkspacePath)
     FileUtils.forceMkdir(folder)
 

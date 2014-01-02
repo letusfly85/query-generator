@@ -2,9 +2,9 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.constant.QueryAppConst
 import com.jellyfish85.query.generator.downloader.FileDownloader
-import com.jellyfish85.query.generator.utils.QueryAppProp
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.GeneralCodeXlsBean
 import com.jellyfish85.xlsaccessor.dao.query.generate.tool.GeneralCodeXlsDao
@@ -22,9 +22,11 @@ import org.apache.commons.lang.StringUtils
  */
 class GeneralCodeGenerator extends GeneralGenerator {
 
-    private XlsAppProp   xlsProp   = new XlsAppProp()
+    public GeneralCodeGenerator(BaseContext _context) {
+        super(_context)
+    }
 
-    private QueryAppProp queryProp = new QueryAppProp()
+    private XlsAppProp   xlsProp   = new XlsAppProp()
 
     /**
      * generate general code's data file
@@ -40,7 +42,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
         requestBean = FileDownloader.download(requestBean)
 
         String bookPath =
-                StringUtils.join([queryProp.applicationWorkspacePath(), requestBean.path()], "/")
+                StringUtils.join([this.context.queryProp.applicationWorkspacePath(), requestBean.path()], "/")
 
         GeneralCodeXlsDao codeXlsDao = new GeneralCodeXlsDao(bookPath)
         def _codeXlsBeans =
@@ -69,7 +71,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
 
         MsTablesBean tablesBean = new MsTablesBean()
         tablesBean.physicalTableNameAttr().setValue(codeXlsBeans.head().physicalTableName())
-        String datPath = this.fileNameHelper.requestSqlLoaderDataPath(tablesBean)
+        String datPath = this.context.fileNameHelper.requestSqlLoaderDataPath(tablesBean)
         File   datFile = new File(datPath)
         if (!datFile.getParentFile().exists()) {
             FileUtils.forceMkdir(datFile.getParentFile())
@@ -109,16 +111,16 @@ class GeneralCodeGenerator extends GeneralGenerator {
         MsTabColumnsBean beanFnc = new MsTabColumnsBean()
         MsTabColumnsBean beanFlg = new MsTabColumnsBean()
 
-        beanIns.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampDefault())
-        beanPln.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampUpdate())
-        beanUsr.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnUser())
-        beanFnc.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnFunction())
-        beanFlg.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnLogicalDelete())
+        beanIns.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnTimestampDefault())
+        beanPln.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnTimestampUpdate())
+        beanUsr.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnUser())
+        beanFnc.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnFunction())
+        beanFlg.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnLogicalDelete())
 
-        beanIns.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
-        beanPln.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
-        beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
-        beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
+        beanIns.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueTimestamp())
+        beanPln.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueTimestamp())
+        beanUsr.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueUserId())
+        beanFnc.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueFunctionId())
 
         _columnList.addAll([beanFlg, beanIns, beanPln, beanUsr, beanFnc])
 
@@ -132,7 +134,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
         String path = "/com/jellyfish85/query/generator/template/dml/controlFile.template"
 
         this.generate(map, path)
-        String sqlLoaderControlPath = this.fileNameHelper.requestSqlLoaderControlPath(tableName)
+        String sqlLoaderControlPath = this.context.fileNameHelper.requestSqlLoaderControlPath(tableName)
         this.setPath(sqlLoaderControlPath)
         this.writeAppFile()
     }

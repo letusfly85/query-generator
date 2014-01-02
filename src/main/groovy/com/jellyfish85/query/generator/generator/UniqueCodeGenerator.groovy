@@ -3,6 +3,7 @@ package com.jellyfish85.query.generator.generator
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.constant.QueryAppConst
 import com.jellyfish85.query.generator.converter.XlsColumnAttribute2MsTabColumnsConverter
 import com.jellyfish85.query.generator.helper.TableNameHelper
@@ -30,17 +31,16 @@ class UniqueCodeGenerator extends GeneralGenerator {
     XlsColumnAttribute2MsTabColumnsConverter converter =
             new XlsColumnAttribute2MsTabColumnsConverter()
 
-    private TableNameHelper  tableNameHelper = new TableNameHelper()
-
     private UniqueCodeXlsDao  xlsDao  = null
 
     private UniqueCodeXlsBean xlsBean = null
 
-    public UniqueCodeGenerator() {
+    public UniqueCodeGenerator(BaseContext _context) {
+        super(_context)
     }
 
     public void setTableNames(HashMap<String, String> map) {
-        map.put(this.xlsBean.physicalTableName(), queryProp.sqlLoaderLoadExecutor())
+        map.put(this.xlsBean.physicalTableName(), this.context.queryProp.sqlLoaderLoadExecutor())
     }
 
     /**
@@ -56,13 +56,13 @@ class UniqueCodeGenerator extends GeneralGenerator {
         Boolean _switch = true
         _parentPath.listFiles().each {File file ->
             _switch = true
-            queryProp.exceptCodeDefault().each {key, value ->
+            this.context.queryProp.exceptCodeDefault().each {key, value ->
                 if (file.getName().matches(".*" + value + ".*")) {
                     _switch = false
                 }
             }
 
-            queryProp.exceptCodeMaintenance().each {key, value ->
+            this.context.queryProp.exceptCodeMaintenance().each {key, value ->
                 if (file.getName().matches(".*" + value + ".*")) {
                     _switch = false
                 }
@@ -96,7 +96,7 @@ class UniqueCodeGenerator extends GeneralGenerator {
         String tableName = xlsBean.physicalTableName()
 
         this.schemaName =
-                tableNameHelper.findByApplicationGroupCd(_dependencies, tableName).
+                this.context.tableNameHelper.findByApplicationGroupCd(_dependencies, tableName).
                         objectOwnerAttr().value()
     }
 
@@ -120,7 +120,7 @@ class UniqueCodeGenerator extends GeneralGenerator {
 
         MsTablesBean tablesBean = new MsTablesBean()
         tablesBean.physicalTableNameAttr().setValue(xlsBean.physicalTableName())
-        String datPath = this.fileNameHelper.requestSqlLoaderDataPath(tablesBean)
+        String datPath = this.context.fileNameHelper.requestSqlLoaderDataPath(tablesBean)
         File   datFile = new File(datPath)
         if (!datFile.getParentFile().exists()) {
             FileUtils.forceMkdir(datFile.getParentFile())
@@ -158,15 +158,15 @@ class UniqueCodeGenerator extends GeneralGenerator {
         MsTabColumnsBean beanUsr = new MsTabColumnsBean()
         MsTabColumnsBean beanFnc = new MsTabColumnsBean()
 
-        beanIns.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampDefault())
-        beanPln.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampUpdate())
-        beanUsr.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnUser())
-        beanFnc.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnFunction())
+        beanIns.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnTimestampDefault())
+        beanPln.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnTimestampUpdate())
+        beanUsr.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnUser())
+        beanFnc.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnFunction())
 
-        beanIns.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
-        beanPln.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
-        beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
-        beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
+        beanIns.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueTimestamp())
+        beanPln.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueTimestamp())
+        beanUsr.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueUserId())
+        beanFnc.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueFunctionId())
 
 
         columnsBeans.addAll([beanIns, beanPln, beanUsr, beanFnc])
@@ -182,7 +182,7 @@ class UniqueCodeGenerator extends GeneralGenerator {
         String template = "/com/jellyfish85/query/generator/template/dml/controlFile.template"
 
         this.generate(map, template)
-        String sqlLoaderControlPath = this.fileNameHelper.requestSqlLoaderControlPath(tableName)
+        String sqlLoaderControlPath = this.context.fileNameHelper.requestSqlLoaderControlPath(tableName)
         this.setPath(sqlLoaderControlPath)
         this.writeAppFile()
     }

@@ -16,7 +16,10 @@ class TableNameHelper {
     private String biTableName = null
     private String bkTableName = null
 
-    private QueryAppProp queryProp = new QueryAppProp()
+    private QueryAppProp queryProp = null
+    public TableNameHelper(QueryAppProp _queryProp) {
+        this.queryProp = _queryProp
+    }
 
     /**
      * == requestBITableName ==

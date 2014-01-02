@@ -2,12 +2,15 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.cassandra.accessor.bean.query.generate.tool.CodeInfoBeanTrait
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.helper.TableNameHelper
 import groovy.text.SimpleTemplateEngine
 
 class SqlLoaderGenerator<T extends CodeInfoBeanTrait> extends GeneralGenerator {
 
-    private TableNameHelper helper = new TableNameHelper()
+    public SqlLoaderGenerator(BaseContext _context) {
+        super(_context)
+    }
 
     /**
      * == generateDat ==
@@ -38,5 +41,4 @@ class SqlLoaderGenerator<T extends CodeInfoBeanTrait> extends GeneralGenerator {
         String query = engine.createTemplate(template).make(map).toString()
         this.setQuery(query)
     }
-
 }

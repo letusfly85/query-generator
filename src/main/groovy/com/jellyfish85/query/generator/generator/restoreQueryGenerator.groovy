@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.query.generator.BaseContext
 
 /**
  * == RestoreQueryGenerator ==
@@ -11,6 +12,10 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
  *
  */
 class RestoreQueryGenerator extends GeneralGenerator {
+
+    public RestoreQueryGenerator(BaseContext _context) {
+        super(_context)
+    }
 
     /**
      * == generateRestoreQuery ==
@@ -26,7 +31,7 @@ class RestoreQueryGenerator extends GeneralGenerator {
            KrObjectDependenciesBean     dependency) {
 
        String tableName   = msTablesBean.physicalTableNameAttr().value()
-       String bkTableName = this.tableNameHelper.requestBKTableName(tableName)
+       String bkTableName = this.context.tableNameHelper.requestBKTableName(tableName)
        String schemaName  = dependency.objectOwnerAttr().value()
 
        Map map = [
@@ -39,7 +44,7 @@ class RestoreQueryGenerator extends GeneralGenerator {
 
        this.generate(map, path)
        String restoreQueryPath =
-               this.fileNameHelper.requestRestorePath(dependency, msTablesBean)
+               this.context.fileNameHelper.requestRestorePath(dependency, msTablesBean)
        this.setPath(restoreQueryPath)
        this.writeAppFile()
    }

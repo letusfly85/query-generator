@@ -6,6 +6,7 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndexesDao
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
 import com.jellyfish85.query.generator.runner.BaseRunner
@@ -22,8 +23,9 @@ import java.sql.Connection
  */
 class IndexDDLGenerator extends GeneralGenerator {
 
-    // generate helper
-    private TableNameHelper tableNameHelper  = new TableNameHelper()
+    public IndexDDLGenerator(BaseContext _context) {
+        super(_context)
+    }
 
     /**
      * == generateIndexDDL ==
@@ -112,7 +114,7 @@ class IndexDDLGenerator extends GeneralGenerator {
         list.each {MsIndexesBean bean ->
             String tableName = bean.physicalTableNameAttr().value()
             KrObjectDependenciesBean dependency =
-                    this.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+                    this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
 
             def _sets = msIndColumnsDao.find(conn, bean)
             ArrayList<MsIndColumnsBean> sets = msIndColumnsDao.convert(_sets)
@@ -151,7 +153,7 @@ class IndexDDLGenerator extends GeneralGenerator {
         list.each {MsIndexesBean bean ->
             String tableName = bean.physicalTableNameAttr().value()
             KrObjectDependenciesBean dependency =
-                    this.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+                    this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
 
             String indexDDLPath =
                     fileNameHelper.requestIndexDDLPath(dependency, bean)

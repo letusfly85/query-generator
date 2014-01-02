@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.runner
 
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.downloader.FileDownloader
 import com.jellyfish85.query.generator.generator.UniqueCodeGenerator
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
@@ -18,16 +19,19 @@ import com.jellyfish85.xlsaccessor.utils.XlsAppProp
 class GenerateUniqueCodeSqlLoaderSetsRunner {
 
     public static void main(String[] args) {
-        BaseRunner _context = new BaseRunner()
-        _context.databaseInitialize()
+        def dependencyGrpCd = args[0]
+        def environment     = args[1]
 
-        def conn      = _context.getConnection()
-        def queryProp = _context.queryProp
+        BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
+        BaseContext context = runner._context
+        runner.databaseInitialize()
+
+        def conn            = runner.getConnection()
+        def queryProp       = context.queryProp
+        def fileNameHelper  = context.fileNameHelper
 
         XlsAppProp      xlsAppProp      = new XlsAppProp()
-        AppFileNameHelper fileNameHelper = new AppFileNameHelper()
 
-        String dependencyGrpCd          = args[0]
         KrObjectDependenciesDao dependenciesDao = new KrObjectDependenciesDao()
         def _dependencies = dependenciesDao.findByDependencyGrpCd(conn, dependencyGrpCd)
         ArrayList<KrObjectDependenciesBean> dependencies = dependenciesDao.convert(_dependencies)
@@ -54,5 +58,7 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         CodeGeneratorHelper helper = new CodeGeneratorHelper()
         helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4UniqueCode())
+
+        runner.databaseFinalize()
     }
 }

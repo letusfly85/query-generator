@@ -5,6 +5,7 @@ import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndexesBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.query.generator.BaseContext
 import org.apache.commons.lang.math.NumberUtils
 
 import java.text.DecimalFormat
@@ -17,6 +18,10 @@ import java.text.DecimalFormat
  *
  */
 class TableDDLGenerator extends GeneralGenerator {
+
+    public TableDDLGenerator(BaseContext _context) {
+        super(_context)
+    }
 
     /**
      * == generateDDL ==

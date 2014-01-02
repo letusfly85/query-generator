@@ -3,25 +3,18 @@ package com.jellyfish85.query.generator.runner
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.dbaccessor.manager.DatabaseManager
-import com.jellyfish85.query.generator.helper.ArgumentsHelper
-import com.jellyfish85.query.generator.utils.QueryAppProp
+import com.jellyfish85.query.generator.BaseContext
 
 import java.sql.Connection
 
 public class BaseRunner {
 
-    public BaseRunner() {}
-
-    private static DatabaseManager manager = new DatabaseManager()
-
-    private static ArgumentsHelper argsHelper  = new ArgumentsHelper()
-
-    public QueryAppProp queryProp = new QueryAppProp()
-
-    public ArgumentsHelper getArgsHelper() {
-        return this.argsHelper
+    public BaseContext _context = null
+    public BaseRunner(String dependentGrpCd, String environment) {
+        this._context  = new BaseContext(dependentGrpCd, environment)
     }
 
+    private static DatabaseManager manager     = new DatabaseManager()
     public Connection getConnection() {
         return this.manager.conn()
     }
@@ -33,6 +26,9 @@ public class BaseRunner {
     }
 
     public void databaseFinalize() {
+        println("database finalize..")
+        println(".. closing connection ..")
+
         this.manager.jCommit()
         this.manager.jClose()
     }
@@ -40,16 +36,13 @@ public class BaseRunner {
     /**
      * return dependency sets
      *
-     * @param dependencyGrpCd
+     *
      * @return
      */
-    public ArrayList<KrObjectDependenciesBean> getDependencies(
-            String dependencyGrpCd
-
-    ) {
+    public ArrayList<KrObjectDependenciesBean> getDependencies() {
         KrObjectDependenciesDao dependenciesDao = new KrObjectDependenciesDao()
         def _dependencies =
-                dependenciesDao.findByDependencyGrpCd(this.connection, dependencyGrpCd)
+                dependenciesDao.findByDependencyGrpCd(this.connection, this._context.dependentGrpCd)
 
         ArrayList<KrObjectDependenciesBean> dependencies = dependenciesDao.convert(_dependencies)
         return dependencies

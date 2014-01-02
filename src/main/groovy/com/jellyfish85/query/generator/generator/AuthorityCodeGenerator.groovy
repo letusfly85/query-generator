@@ -1,5 +1,6 @@
 package com.jellyfish85.query.generator.generator
 
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.helper.CodeGeneratorHelper
 import com.jellyfish85.query.generator.utils.QueryReplaceUtils
 import org.apache.commons.io.FileUtils
@@ -14,32 +15,30 @@ import org.apache.commons.io.FilenameUtils
  */
 class AuthorityCodeGenerator extends GeneralGenerator {
 
-    private String dependencyGrpCd = null
-
     private String schemaName      = null
 
     private HashMap<String, String> tableNames = new HashMap<String, String>()
 
     private QueryReplaceUtils replaceUtils = new QueryReplaceUtils()
 
-    public AuthorityCodeGenerator(String _dependencyGrpCd) {
-        this.dependencyGrpCd = _dependencyGrpCd
+    public AuthorityCodeGenerator(BaseContext _context) {
+        super(_context)
 
-        this.schemaName = this.tableNameHelper.requestMainSchemaName(this.dependencyGrpCd)
+        this.schemaName = context.tableNameHelper.requestMainSchemaName(context.dependentGrpCd)
     }
 
     public void generateControlFile() {
-        File controlPath = new File(queryProp.applicationControlPath())
+        File controlPath = new File(this.context.queryProp.applicationControlPath())
 
         ArrayList<File> destFiles = new ArrayList<>()
         controlPath.listFiles().each {File file ->
-            File dest = new File(queryProp.sqlLoaderCtlPath(), file.getName())
+            File dest = new File(this.context.queryProp.sqlLoaderCtlPath(), file.getName())
 
             FileUtils.copyFile(file, dest)
             destFiles.add(dest)
 
             this.tableNames.put(
-                    FilenameUtils.getBaseName(file.getName()), queryProp.sqlLoaderLoadExecutor()
+                    FilenameUtils.getBaseName(file.getName()), this.context.queryProp.sqlLoaderLoadExecutor()
             )
         }
 
@@ -50,11 +49,11 @@ class AuthorityCodeGenerator extends GeneralGenerator {
     }
 
     public void generateDataFile() {
-        File dataPath = new File(queryProp.applicationDataPath())
+        File dataPath = new File(this.context.queryProp.applicationDataPath())
 
         ArrayList<File> destFiles = new ArrayList<>()
         dataPath.listFiles().each {File file ->
-            File dest = new File(queryProp.sqlLoaderDatPath(), file.getName())
+            File dest = new File(this.context.queryProp.sqlLoaderDatPath(), file.getName())
 
             FileUtils.copyFile(file, dest)
             destFiles.add(dest)
@@ -68,7 +67,7 @@ class AuthorityCodeGenerator extends GeneralGenerator {
     public void generateShellScript() {
         CodeGeneratorHelper helper = new CodeGeneratorHelper()
 
-        helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4AuthorityCode())
+        helper.generateLoadingShellScript(tableNames, this.context.fileNameHelper.requestSqlLoaderPath4AuthorityCode())
     }
 
 }

@@ -15,8 +15,6 @@ import com.jellyfish85.xlsaccessor.constant.AppConst
 @throws(classOf[IOException])
 class QueryReplaceUtils {
 
-  val queryProp: QueryAppProp = new QueryAppProp
-
 
   /**
    * == addSchemaName2ControlFile ==
@@ -24,8 +22,8 @@ class QueryReplaceUtils {
    * @param controlFile
    * @param schemaName
    */
-  def addSchemaName2ControlFile(controlFile: File, schemaName: String) {
-    val tmpFile: File = new File(queryProp.applicationWorkspacePath, "tmp")
+  def addSchemaName2ControlFile(prop:    QueryAppProp, controlFile: File, schemaName: String) {
+    val tmpFile: File = new File(prop.applicationWorkspacePath, "tmp")
     if (tmpFile.exists()) FileUtils.forceDelete(tmpFile)
 
     var pw: PrintWriter =
@@ -44,8 +42,8 @@ class QueryReplaceUtils {
       else {
         if (idx < 10) {
           pw.write(buf.
-            replace(("TABLE " + queryProp.erdTableMasterPrefix),
-                    ("TABLE "  + schemaName + "." + queryProp.erdTableMasterPrefix)) + "\n")
+            replace(("TABLE " + prop.erdTableMasterPrefix),
+                    ("TABLE "  + schemaName + "." + prop.erdTableMasterPrefix)) + "\n")
 
         } else {
           pw.write(buf + "\n")
@@ -94,8 +92,8 @@ class QueryReplaceUtils {
    *
    * @param file
    */
-  def convertSJIS2UTF8(file: File) {
-    val tmpFile: File = new File(queryProp.applicationWorkspacePath, "tmp")
+  def convertSJIS2UTF8(prop:    QueryAppProp, file: File) {
+    val tmpFile: File = new File(prop.applicationWorkspacePath, "tmp")
     if (tmpFile.exists()) FileUtils.forceDelete(tmpFile)
 
     var pw: PrintWriter = new PrintWriter(new BufferedWriter(

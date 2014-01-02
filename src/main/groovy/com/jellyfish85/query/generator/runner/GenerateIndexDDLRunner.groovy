@@ -6,6 +6,7 @@ import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndexesDao
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.generator.IndexDDLGenerator
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.TableNameHelper
@@ -21,19 +22,22 @@ import com.jellyfish85.query.generator.helper.TableNameHelper
 class GenerateIndexDDLRunner {
 
     public static void main(String[] args) {
-        BaseRunner _context = new BaseRunner()
-        _context.databaseInitialize()
-        def conn = _context.getConnection()
+        def dependencyGrpCd = args[0]
+        def environment     = args[1]
 
-        AppFileNameHelper fileNameHelper = new AppFileNameHelper()
-        String dependencyGrpCd = args[0]
+        BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
+        BaseContext context = runner._context
+        runner.databaseInitialize()
+
+        def conn = runner.getConnection()
+        def fileNameHelper  = context.fileNameHelper
 
         // generate query generator instance
-        IndexDDLGenerator generator = new IndexDDLGenerator()
+        IndexDDLGenerator generator = new IndexDDLGenerator(context)
 
         // generate files
         generator.generateIndexDDL(conn, fileNameHelper, dependencyGrpCd)
 
-        _context.databaseFinalize()
+        runner.databaseFinalize()
     }
 }

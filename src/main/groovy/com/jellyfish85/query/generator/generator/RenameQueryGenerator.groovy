@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.query.generator.BaseContext
 
 /**
  * == RenameQueryGenerator ==
@@ -11,6 +12,10 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
  *
  */
 class RenameQueryGenerator extends GeneralGenerator {
+
+    public RenameQueryGenerator(BaseContext _context) {
+        super(_context)
+    }
 
     /**
      * == generateRenameQuery ==
@@ -38,7 +43,7 @@ class RenameQueryGenerator extends GeneralGenerator {
         String path = "/com/jellyfish85/query/generator/template/ddl/renameQuery.template"
         this.generate(map, path)
         String renameQueryPath =
-                this.fileNameHelper.requestRenamePath(dependency, msTablesBean)
+                this.context.fileNameHelper.requestRenamePath(dependency, msTablesBean)
         this.setPath(renameQueryPath)
         this.writeAppFile()
     }

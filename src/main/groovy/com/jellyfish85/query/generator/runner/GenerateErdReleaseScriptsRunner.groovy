@@ -1,5 +1,6 @@
 package com.jellyfish85.query.generator.runner
 
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.generator.ErdReleaseScriptsGenerator
 
 /**
@@ -12,19 +13,21 @@ import com.jellyfish85.query.generator.generator.ErdReleaseScriptsGenerator
 class GenerateErdReleaseScriptsRunner {
 
     public static void main(String[] args) {
+        def dependencyGrpCd = args[0]
+        def environment     = args[1]
 
-        BaseRunner _context = new BaseRunner()
-        _context.databaseInitialize()
+        BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
+        BaseContext context = runner._context
+        runner.databaseInitialize()
 
-        def conn       = _context.getConnection()
-        def argsHelper = _context.getArgsHelper()
+        def conn       = runner.getConnection()
+        def argsHelper = context.argsHelper
 
-        String dependencyGrpCd          = args[0]
         ArrayList<String> tableNameList = argsHelper.requestTableNameList(args[1])
 
         ErdReleaseScriptsGenerator generator = new ErdReleaseScriptsGenerator()
         generator.generateErdReleaseScripts(conn, dependencyGrpCd, tableNameList)
 
-        _context.databaseFinalize()
+        runner.databaseFinalize()
     }
 }

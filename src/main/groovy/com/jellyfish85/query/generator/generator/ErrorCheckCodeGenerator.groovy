@@ -1,5 +1,6 @@
 package com.jellyfish85.query.generator.generator
 
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.helper.CodeGeneratorHelper
 import com.jellyfish85.query.generator.utils.QueryReplaceUtils
 import org.apache.commons.io.FileUtils
@@ -15,34 +16,32 @@ import org.apache.commons.lang.StringUtils
  */
 class ErrorCheckCodeGenerator extends GeneralGenerator {
 
-    private String dependencyGrpCd = null
-
     private String schemaName      = null
 
     private HashMap<String, String> tableNames = new HashMap<String, String>()
 
     private QueryReplaceUtils replaceUtils = new QueryReplaceUtils()
 
-    public ErrorCheckCodeGenerator(String _dependencyGrpCd) {
-        this.dependencyGrpCd = _dependencyGrpCd
+    public ErrorCheckCodeGenerator(BaseContext _context) {
+        super(_context)
 
-        this.schemaName = this.tableNameHelper.requestMainSchemaName(this.dependencyGrpCd)
+        this.schemaName = this.context.tableNameHelper.requestMainSchemaName(this.context.dependentGrpCd)
     }
 
     public void generateControlFile() {
-        File controlPath = new File(queryProp.applicationControlPath())
+        File controlPath = new File(this.context.queryProp.applicationControlPath())
 
         ArrayList<File> destFiles = new ArrayList<>()
         controlPath.listFiles().each {File file ->
             String extName  = FilenameUtils.getExtension(file.getName()).toLowerCase()
             String fileName = StringUtils.join([FilenameUtils.getBaseName(file.getName()), extName], ".")
-            File dest = new File(queryProp.sqlLoaderCtlPath(), fileName)
+            File dest = new File(this.context.queryProp.sqlLoaderCtlPath(), fileName)
 
             FileUtils.copyFile(file, dest)
             destFiles.add(dest)
 
             this.tableNames.put(
-                    FilenameUtils.getBaseName(file.getName()), queryProp.sqlLoaderLoadExecutor()
+                    FilenameUtils.getBaseName(file.getName()), this.context.queryProp.sqlLoaderLoadExecutor()
             )
         }
 
@@ -59,7 +58,7 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
         dataPath.listFiles().each {File file ->
             String extName  = FilenameUtils.getExtension(file.getName()).toLowerCase()
             String fileName = StringUtils.join([FilenameUtils.getBaseName(file.getName()), extName], ".")
-            File dest = new File(queryProp.sqlLoaderDatPath(), fileName)
+            File dest = new File(this.context.queryProp.sqlLoaderDatPath(), fileName)
 
             FileUtils.copyFile(file, dest)
             destFiles.add(dest)
@@ -73,6 +72,6 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
     public void generateShellScript() {
         CodeGeneratorHelper helper = new CodeGeneratorHelper()
 
-        helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4ErrorCheckCode())
+        helper.generateLoadingShellScript(tableNames, this.context.fileNameHelper.requestSqlLoaderPath4ErrorCheckCode())
     }
 }

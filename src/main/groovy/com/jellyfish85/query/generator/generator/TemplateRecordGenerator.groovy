@@ -3,6 +3,7 @@ package com.jellyfish85.query.generator.generator
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
+import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.constant.QueryAppConst
 import com.jellyfish85.query.generator.converter.XlsColumnAttribute2MsTabColumnsConverter
 import com.jellyfish85.query.generator.helper.TableNameHelper
@@ -12,6 +13,7 @@ import com.jellyfish85.xlsaccessor.bean.query.generate.tool.XlsColumnAttribute
 import com.jellyfish85.xlsaccessor.constant.AppConst
 import com.jellyfish85.xlsaccessor.dao.query.generate.tool.TemplateRecordXlsDao
 import com.jellyfish85.xlsaccessor.utils.XlsAppProp
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang.StringUtils
 
@@ -34,14 +36,18 @@ class TemplateRecordGenerator extends GeneralGenerator {
 
     private tableName                       = null
 
-    private TableNameHelper tableNameHelper = new TableNameHelper()
+    private XlsAppProp      xlsProp         = new XlsAppProp()
 
-    private XlsAppProp      xlsProp = new XlsAppProp()
+    public  BaseContext context             = null
 
     public TemplateRecordGenerator(
+            BaseContext _context,
             String _path, BigDecimal _ticketNumber, SVNRequestBean _requestBean,
             ArrayList<KrObjectDependenciesBean> dependencies
     ) {
+        super(_context)
+        this.context = super.getBaseContext()
+
         this.path         = _path
         this.ticketNumber = _ticketNumber
         this.requestBean  = _requestBean
@@ -50,7 +56,7 @@ class TemplateRecordGenerator extends GeneralGenerator {
 
         this.tableName  = xlsProp.templateRecordDefinePhysicalTableName()
         this.schemaName =
-                tableNameHelper.findByApplicationGroupCd(dependencies, tableName).
+                this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName).
                         objectOwnerAttr().value()
     }
 
@@ -69,14 +75,14 @@ class TemplateRecordGenerator extends GeneralGenerator {
                 tableName   : this.tableName,
                 columnName  : xlsDao.beanRecordId().physicalColumnName(),
                 recordIds   : recordIds,
-                executor    : queryProp.sqlLoaderLoadExecutor()
+                executor    : this.context.queryProp.sqlLoaderLoadExecutor()
         ]
 
         String template = "/com/jellyfish85/query/generator/template/dml/deleteTemplateRecord.template"
 
         this.generate(map, template)
         String sqlLoaderDeleteTablePath =
-                this.fileNameHelper.requestSqlLoaderDeleteTablePath(this.schemaName, this.tableName)
+                this.context.fileNameHelper.requestSqlLoaderDeleteTablePath(this.schemaName, this.tableName)
         this.setPath(sqlLoaderDeleteTablePath)
         this.writeAppFile()
 
@@ -84,17 +90,17 @@ class TemplateRecordGenerator extends GeneralGenerator {
 
     public void generateTemplateShellScript() {
         String deleteTemplateRecordTablePath =
-                FilenameUtils.getName(this.fileNameHelper.requestSqlLoaderDeleteTablePath(this.schemaName, this.tableName))
+                FilenameUtils.getName(this.context.fileNameHelper.requestSqlLoaderDeleteTablePath(this.schemaName, this.tableName))
         Map map = [
                 deleteTemplateRecordTablePath: deleteTemplateRecordTablePath,
-                schemaName                   : queryProp.sqlLoaderLoadExecutor(),
+                schemaName                   : this.context.queryProp.sqlLoaderLoadExecutor(),
                 tableName                    : tableName
         ]
 
         String path = "/com/jellyfish85/query/generator/template/shell/execSqlLoader4Template.template"
 
         this.generate(map, path)
-        this.setPath(this.fileNameHelper.requestSqlLoaderPath4TemplateRecord())
+        this.setPath(this.context.fileNameHelper.requestSqlLoaderPath4TemplateRecord())
         this.writeAppFile()
     }
 
@@ -125,21 +131,21 @@ class TemplateRecordGenerator extends GeneralGenerator {
         beanFid.physicalColumnNameAttr().setValue(xlsProp.templateRecordDefineColumnOptionFileData())
         beanRey.physicalColumnNameAttr().setValue(xlsProp.templateRecordDefineColumnOptionRegisterYmd())
         beanRet.physicalColumnNameAttr().setValue(xlsProp.templateRecordDefineColumnOptionRegisterTimestamp())
-        beanIns.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampDefault())
-        beanPln.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnTimestampUpdate())
-        beanUsr.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnUser())
-        beanFnc.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnFunction())
-        beanFlg.physicalColumnNameAttr().setValue(queryProp.sqlLoaderColumnLogicalDelete())
+        beanIns.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnTimestampDefault())
+        beanPln.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnTimestampUpdate())
+        beanUsr.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnUser())
+        beanFnc.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnFunction())
+        beanFlg.physicalColumnNameAttr().setValue(this.context.queryProp.sqlLoaderColumnLogicalDelete())
 
-        beanFil.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFile())
-        beanFid.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFileData())
-        beanRey.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueYmd())
-        beanRet.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
-        beanIns.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
-        beanPln.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueTimestamp())
-        beanUsr.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueUserId())
-        beanFnc.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueFunctionId())
-        beanFlg.dataDefaultAttr().setValue(queryProp.sqlLoaderDefaultValueCharZero())
+        beanFil.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueFile())
+        beanFid.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueFileData())
+        beanRey.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueYmd())
+        beanRet.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueTimestamp())
+        beanIns.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueTimestamp())
+        beanPln.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueTimestamp())
+        beanUsr.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueUserId())
+        beanFnc.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueFunctionId())
+        beanFlg.dataDefaultAttr().setValue(this.context.queryProp.sqlLoaderDefaultValueCharZero())
 
         _columnList.addAll([beanFil, beanFid, beanRey, beanRet,
                 beanFlg, beanIns, beanPln, beanUsr, beanFnc])
@@ -154,7 +160,7 @@ class TemplateRecordGenerator extends GeneralGenerator {
         String path = "/com/jellyfish85/query/generator/template/dml/controlFile.template"
 
         this.generate(map, path)
-        String sqlLoaderControlPath = this.fileNameHelper.requestSqlLoaderControlPath(tableName)
+        String sqlLoaderControlPath = this.context.fileNameHelper.requestSqlLoaderControlPath(tableName)
         this.setPath(sqlLoaderControlPath)
         this.writeAppFile()
     }
@@ -180,7 +186,8 @@ class TemplateRecordGenerator extends GeneralGenerator {
 
         MsTablesBean tablesBean = new MsTablesBean()
         tablesBean.physicalTableNameAttr().setValue(xlsBeans.head().physicalTableName())
-        String dataPath = this.fileNameHelper.requestSqlLoaderDataPath(tablesBean)
+        String dataPath = this.context.fileNameHelper.requestSqlLoaderDataPath(tablesBean)
+        FileUtils.forceMkdir((new File(dataPath)).getParentFile())
         PrintWriter pw = new PrintWriter(new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(dataPath),"UTF-8")))
 

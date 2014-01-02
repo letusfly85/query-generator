@@ -159,5 +159,3 @@ set sqlprompt "_date _user'@'_connect_identifier'>'"
 set serverout on size 1000000
 set termout on
 set echo on
-set time on
-set timing on
