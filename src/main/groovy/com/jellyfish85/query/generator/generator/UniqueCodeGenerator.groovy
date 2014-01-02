@@ -35,8 +35,11 @@ class UniqueCodeGenerator extends GeneralGenerator {
 
     private UniqueCodeXlsBean xlsBean = null
 
+    private BaseContext       context = null
+
     public UniqueCodeGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
     }
 
     public void setTableNames(HashMap<String, String> map) {

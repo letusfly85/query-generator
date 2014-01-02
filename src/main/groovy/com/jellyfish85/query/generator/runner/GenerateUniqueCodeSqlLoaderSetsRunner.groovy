@@ -35,11 +35,11 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
         KrObjectDependenciesDao dependenciesDao = new KrObjectDependenciesDao()
         def _dependencies = dependenciesDao.findByDependencyGrpCd(conn, dependencyGrpCd)
         ArrayList<KrObjectDependenciesBean> dependencies = dependenciesDao.convert(_dependencies)
-        UniqueCodeGenerator generator = new UniqueCodeGenerator()
+        UniqueCodeGenerator generator = new UniqueCodeGenerator(context)
 
         SVNRequestBean requestBean = new SVNRequestBean()
         requestBean.setPath(xlsAppProp.uniqueCodeBookParentPath())
-        FileDownloader.downloadDir(requestBean)
+        FileDownloader.downloadDir(queryProp, requestBean)
 
         File parentPath =
                 new File(queryProp.applicationWorkspacePath())
@@ -56,7 +56,7 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         }
 
-        CodeGeneratorHelper helper = new CodeGeneratorHelper()
+        CodeGeneratorHelper helper = new CodeGeneratorHelper(context)
         helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4UniqueCode())
 
         runner.databaseFinalize()
