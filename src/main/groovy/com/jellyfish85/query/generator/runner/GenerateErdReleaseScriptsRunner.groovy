@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.runner
 
 import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.generator.ErdReleaseScriptsGenerator
+import com.jellyfish85.query.generator.helper.ResourceCopyHelper
 
 /**
  * == GenerateErdReleaseScriptsRunner ==
@@ -24,9 +25,15 @@ class GenerateErdReleaseScriptsRunner {
 
         def conn         = runner.getConnection()
         def dependencies = runner.getDependencies()
+        def queryProp    = context.queryProp
 
         ErdReleaseScriptsGenerator generator = new ErdReleaseScriptsGenerator(context, preReleaseId)
         generator.generateErdReleaseScripts(conn, dependencies)
+
+        // add login sql to parent folder
+        ResourceCopyHelper copyHelper = new ResourceCopyHelper()
+        String loginSqlPath = (new File(queryProp.tableDDLFolder(), "login.sql")).getPath()
+        copyHelper.copyLoginSql(loginSqlPath)
 
         runner.databaseFinalize()
     }
