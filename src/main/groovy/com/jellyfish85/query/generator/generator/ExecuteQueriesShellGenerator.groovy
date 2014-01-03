@@ -31,14 +31,18 @@ class ExecuteQueriesShellGenerator extends GeneralGenerator {
      * @param dependency
      */
     public void generateExecuteQueriesShell(
-            ArrayList<MsTablesBean>  msTablesBeanArrayList,
-            KrObjectDependenciesBean dependency
+            ArrayList<MsTablesBean>             msTablesBeanArrayList,
+            ArrayList<KrObjectDependenciesBean> dependencies
     ) {
 
         ArrayList<String> execScriptsList = new ArrayList<String>()
-        msTablesBeanArrayList.each {MsTablesBean msTablesBean ->
+        msTablesBeanArrayList.each {MsTablesBean tablesBean ->
+            KrObjectDependenciesBean dependency =
+                    this.context.tableNameHelper.
+                            findByApplicationGroupCd(dependencies, tablesBean.physicalTableNameAttr().value())
+
             String execScriptsPath =
-                    this.context.fileNameHelper.requestExecuteQueriesPath(dependency, msTablesBean)
+                    this.context.fileNameHelper.requestExecuteQueriesPath(dependency, tablesBean)
 
             String execScriptsName = FilenameUtils.getName(execScriptsPath)
             execScriptsList.add(execScriptsName)

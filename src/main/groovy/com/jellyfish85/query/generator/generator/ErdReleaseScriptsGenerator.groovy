@@ -62,6 +62,7 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
 
         def _tableList = msTablesDao.findByReleaseId(conn, this.preReleaseId)
         ArrayList<MsTablesBean> tableList = msTablesDao.convert(_tableList)
+        ArrayList<MsTablesBean> targetList = new ArrayList<MsTablesBean>()
 
         // generate query each by table
         tableList.each {MsTablesBean bean ->
@@ -88,7 +89,7 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
             def _sets = msTabColumnsDao.find(conn, bean)
             ArrayList<MsTabColumnsDao> sets = msTabColumnsDao.convert(_sets)
 
-            ArrayList<MsTablesBean> targetList = new ArrayList<MsTablesBean>()
+
             if (!sets.isEmpty()) {
                 this.renameQueryGenerator.generateRenameQuery(bean, dependency)
                 this.restoreQueryGenerator.generateRestoreQuery(bean, dependency)
@@ -99,8 +100,8 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
 
                 targetList.add(bean)
             }
-            this.executeQueriesShellGenerator.
-                    generateExecuteQueriesShell(targetList, dependency)
         }
+        this.executeQueriesShellGenerator.
+                generateExecuteQueriesShell(targetList, dependencies)
     }
 }
