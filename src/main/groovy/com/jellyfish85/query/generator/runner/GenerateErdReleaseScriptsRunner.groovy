@@ -15,6 +15,8 @@ class GenerateErdReleaseScriptsRunner {
     public static void main(String[] args) {
         def dependencyGrpCd = args[0]
         def environment     = args[1]
+        def preReleaseId    = args[2]
+        def curReleaseId    = args[3]
 
         BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
         BaseContext context = runner._context
@@ -23,10 +25,12 @@ class GenerateErdReleaseScriptsRunner {
         def conn       = runner.getConnection()
         def argsHelper = context.argsHelper
 
-        ArrayList<String> tableNameList = argsHelper.requestTableNameList(args[1])
+        /*
+        ArrayList<String> tableNameList = argsHelper.requestTableNameList(preReleaseId)
 
         ErdReleaseScriptsGenerator generator = new ErdReleaseScriptsGenerator()
         generator.generateErdReleaseScripts(conn, dependencyGrpCd, tableNameList)
+        */
 
         runner.databaseFinalize()
     }

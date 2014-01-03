@@ -17,7 +17,7 @@ select to_char(sysdate,'yyyy_mmdd_hh24mi') log_date from dual;
 select username username from user_users;
 select instance_name instancename from v\$instance;
 spool on;
-spool log/Create_Table_${tableName}_${schemaName}.log
+spool log/Create_Table_${tableName}_${schemaName}.&log_date_text..log
 CREATE TABLE ${schemaName}.${tableName} ( <% columnList.eachWithIndex {bean, idx ->
     def attr = ""
     if(bean.dataTypeAttr().value() == "NUMBER") {
@@ -65,3 +65,6 @@ if (index.equals(0)) { %>     ${indCol.columnNameAttr().value()}
 <% columnList.eachWithIndex {bean, idx -> %>
 COMMENT ON TABLE ${schemaName}.${tableName}.${bean.physicalColumnNameAttr().value()}    IS	'${bean.logicalColumnNameAttr().value()}'
 / <% } %>
+
+ALTER TABLE ${schemaName}.${tableName} NOLOGGING
+/

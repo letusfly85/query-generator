@@ -11,7 +11,7 @@ import org.apache.commons.lang.math.NumberUtils
 import java.text.DecimalFormat
 
 /**
- * == TableDDLGenerator ==
+ * generate table ddl
  *
  * @author wada shunsuke
  * @since  2013/12/01
@@ -19,8 +19,11 @@ import java.text.DecimalFormat
  */
 class TableDDLGenerator extends GeneralGenerator {
 
+    private BaseContext context = null
+
     public TableDDLGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
     }
 
     /**
@@ -66,7 +69,7 @@ class TableDDLGenerator extends GeneralGenerator {
 
         this.generate(map, path)
         String tableDDLPath =
-                this.fileNameHelper.requestTableDDLPath(dependency, msTablesBean)
+                this.context.fileNameHelper.requestTableDDLPath(dependency, msTablesBean)
         this.setPath(tableDDLPath)
         this.writeAppFile()
     }
