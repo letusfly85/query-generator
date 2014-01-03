@@ -15,7 +15,8 @@ import org.apache.commons.io.FilenameUtils
 import java.sql.Connection
 
 /**
- * == IndexDDLGenerator ==
+ * generate index ddl and its executable scripts
+ *
  *
  * @author wada shunsuke
  * @since  2013/12/01
@@ -23,16 +24,21 @@ import java.sql.Connection
  */
 class IndexDDLGenerator extends GeneralGenerator {
 
+    private BaseContext context = null
+
     public IndexDDLGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
     }
 
     /**
-     * == generateIndexDDL ==
+     * generate index ddl
+     *
      *
      * @param tableName
      * @param columnList
      * @param dependency
+     *
      */
     public void generateIndexDDL(String tableName,
                        ArrayList<MsIndColumnsBean> columnList,
@@ -83,7 +89,7 @@ class IndexDDLGenerator extends GeneralGenerator {
     }
 
     /**
-     * == generateIndexDDL ==
+     * generate index ddls
      *
      * @author wada shunsuke
      * @since  2013/12/09
@@ -92,19 +98,13 @@ class IndexDDLGenerator extends GeneralGenerator {
      * @param dependencyGrpCd
      */
     public void generateIndexDDL(
-             Connection conn,
-             AppFileNameHelper fileNameHelper,
-             String dependencyGrpCd) {
+            Connection conn,
+            ArrayList<KrObjectDependenciesBean> dependencies
+    ) {
 
         // generate dao instances
-        KrObjectDependenciesDao krObjectDependenciesDao =
-                new KrObjectDependenciesDao()
         MsIndexesDao    msIndexesDao    = new MsIndexesDao()
         MsIndColumnsDao msIndColumnsDao = new MsIndColumnsDao()
-
-        // specify dependencies
-        def _dependencies = krObjectDependenciesDao.findByDependencyGrpCd(conn, dependencyGrpCd)
-        ArrayList<KrObjectDependenciesBean> dependencies = krObjectDependenciesDao.convert(_dependencies)
 
         def _list = msIndexesDao.findAll(conn)
         ArrayList<MsIndexesBean> list = msIndexesDao.convert(_list)
@@ -123,31 +123,31 @@ class IndexDDLGenerator extends GeneralGenerator {
                 this.generateIndexDDL(tableName, sets, dependency)
 
                 String indexDDLPath =
-                        fileNameHelper.requestIndexDDLPath(dependency, bean)
+                        this.context.fileNameHelper.requestIndexDDLPath(dependency, bean)
                 this.setPath(indexDDLPath)
 
                 this.writeAppFile()
             }
         }
 
-        generateExecuteIndexDDLShell(fileNameHelper, dependencies, list)
+        generateExecuteIndexDDLShell(dependencies, list)
     }
 
     /**
+     * generate shell scripts
      *
      * @param fileNameHelper
      * @param dependencies
      * @param list
      */
     public void generateExecuteIndexDDLShell(
-            AppFileNameHelper fileNameHelper,
             ArrayList<KrObjectDependenciesBean> dependencies,
             ArrayList<MsIndexesBean> list) {
 
         this.initializeQuery()
 
         String executeShellPath =
-                fileNameHelper.requestExecuteIndexDDLShellPath()
+                this.context.fileNameHelper.requestExecuteIndexDDLShellPath()
         this.setPath(executeShellPath)
 
         list.each {MsIndexesBean bean ->
@@ -156,7 +156,7 @@ class IndexDDLGenerator extends GeneralGenerator {
                     this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
 
             String indexDDLPath =
-                    fileNameHelper.requestIndexDDLPath(dependency, bean)
+                    this.context.fileNameHelper.requestIndexDDLPath(dependency, bean)
             String ddlName = FilenameUtils.getName(indexDDLPath)
 
             this.appendQuery("@" + ddlName + "\n")
