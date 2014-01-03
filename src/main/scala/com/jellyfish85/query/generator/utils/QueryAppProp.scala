@@ -46,13 +46,13 @@ class QueryAppProp(environment: String) {
    *
    *
    ************************************************************************************************/
-  val sqlLoaderLoadExecutor:           String   = outputFolder + configuration.getString("sql.loader.load.executor")
-
   val sqlLoaderParentPath:             String   = outputFolder + configuration.getString("sql.loader.path.parent")
 
   val sqlLoaderCtlPath:                String   = outputFolder + configuration.getString("sql.loader.path.ctl")
 
   val sqlLoaderDatPath:                String   = outputFolder + configuration.getString("sql.loader.path.dat")
+
+  val sqlLoaderLoadExecutor:           String   = configuration.getString("sql.loader.load.executor")
 
   val sqlLoaderColumnTimestampDefault :String   = configuration.getString("sql.loader.column.timestamp.default")
 
