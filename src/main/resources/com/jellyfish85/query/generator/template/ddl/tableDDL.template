@@ -63,7 +63,7 @@ if (index.equals(0)) { %>     ${indCol.columnNameAttr().value()}
 <% } } %>
 
 <% columnList.eachWithIndex {bean, idx -> %>
-COMMENT ON TABLE ${schemaName}.${tableName}.${bean.physicalColumnNameAttr().value()}    IS	'${bean.logicalColumnNameAttr().value()}'
+COMMENT ON COLUMN ${schemaName}.${tableName}.${bean.physicalColumnNameAttr().value()}    IS	'${bean.logicalColumnNameAttr().value()}'
 / <% } %>
 
 ALTER TABLE ${schemaName}.${tableName} NOLOGGING
