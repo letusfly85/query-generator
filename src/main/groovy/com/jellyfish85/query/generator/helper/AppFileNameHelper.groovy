@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils
  */
 class AppFileNameHelper {
 
-    private String fileName       = null
+    private String       fileName  = null
 
     private QueryAppProp queryProp = null
 
@@ -45,7 +45,6 @@ class AppFileNameHelper {
         ], "")
 
         String path = FilenameUtils.concat(this.queryProp.tableDDLFolder(), this.fileName)
-
         return path
     }
 
@@ -68,9 +67,7 @@ class AppFileNameHelper {
                 ".sql"
         ], "")
 
-        println(this.queryProp.indexDDLFolder() + "\t" + this.fileName)
         String path = FilenameUtils.concat(this.queryProp.indexDDLFolder(), this.fileName)
-
         return path
     }
 
@@ -88,9 +85,7 @@ class AppFileNameHelper {
         this.fileName = StringUtils.join(["exe_All.sql"
         ], "")
 
-        println(this.queryProp.indexDDLFolder() + "\t" + this.fileName)
         String path = FilenameUtils.concat(this.queryProp.indexDDLFolder(), this.fileName)
-
         return path
     }
 
@@ -114,7 +109,6 @@ class AppFileNameHelper {
         ], "")
 
         String path = FilenameUtils.concat(this.queryProp.tableDDLFolder(), this.fileName)
-
         return path
     }
 
@@ -137,9 +131,7 @@ class AppFileNameHelper {
                 ".sql"
         ], "")
 
-        println(this.queryProp.restoreFolder())
         String path = FilenameUtils.concat(this.queryProp.tableDDLFolder(), this.fileName)
-
         return path
     }
 
@@ -163,9 +155,7 @@ class AppFileNameHelper {
                 ".sql"
         ], "")
 
-        println(this.queryProp.restoreFolder())
         String path = FilenameUtils.concat(this.queryProp.tableDDLFolder(), this.fileName)
-
         return path
     }
 
@@ -189,9 +179,7 @@ class AppFileNameHelper {
                 ".sql"
         ], "")
 
-        println(this.queryProp.restoreFolder())
         String path = FilenameUtils.concat(this.queryProp.tableDDLFolder(), this.fileName)
-
         return path
     }
 
@@ -208,9 +196,7 @@ class AppFileNameHelper {
         this.fileName = StringUtils.join(["exe_All.sql"
         ], "")
 
-        println(this.queryProp.restoreFolder())
         String path = FilenameUtils.concat(this.queryProp.tableDDLFolder(), this.fileName)
-
         return path
     }
 
@@ -228,9 +214,7 @@ class AppFileNameHelper {
 
         this.fileName = StringUtils.join(["exec_load.sh"], "")
 
-        println(this.queryProp.sqlLoaderParentPath())
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderParentPath(), this.fileName)
-
         return path
     }
 
@@ -246,9 +230,7 @@ class AppFileNameHelper {
     public String requestSqlLoaderPath4GeneralCode() {
         this.fileName = StringUtils.join(["exec_load4general_code.sh"], "")
 
-        println(this.queryProp.sqlLoaderParentPath())
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderParentPath(), this.fileName)
-
         return path
     }
 
@@ -264,9 +246,7 @@ class AppFileNameHelper {
     public String requestSqlLoaderPath4UniqueCode() {
         this.fileName = StringUtils.join(["exec_load4unique_code.sh"], "")
 
-        println(this.queryProp.sqlLoaderParentPath())
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderParentPath(), this.fileName)
-
         return path
     }
 
@@ -282,9 +262,7 @@ class AppFileNameHelper {
     public String requestSqlLoaderPath4TemplateRecord() {
         this.fileName = StringUtils.join(["exec_load4template_record.sh"], "")
 
-        println(this.queryProp.sqlLoaderParentPath())
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderParentPath(), this.fileName)
-
         return path
     }
 
@@ -300,9 +278,7 @@ class AppFileNameHelper {
     public String requestSqlLoaderPath4AuthorityCode() {
         this.fileName = StringUtils.join(["exec_load4authority_code.sh"], "")
 
-        println(this.queryProp.sqlLoaderParentPath())
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderParentPath(), this.fileName)
-
         return path
     }
 
@@ -319,9 +295,7 @@ class AppFileNameHelper {
     public String requestSqlLoaderPath4ErrorCheckCode() {
         this.fileName = StringUtils.join(["exec_load4error_check_code.sh"], "")
 
-        println(this.queryProp.sqlLoaderParentPath())
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderParentPath(), this.fileName)
-
         return path
     }
 
@@ -342,7 +316,6 @@ class AppFileNameHelper {
                 ], "")
 
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderDatPath(), this.fileName)
-
         return path
     }
 
@@ -363,7 +336,6 @@ class AppFileNameHelper {
         ], "")
 
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderCtlPath(), this.fileName)
-
         return path
     }
 
@@ -377,7 +349,6 @@ class AppFileNameHelper {
         ], "")
 
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderParentPath(), this.fileName)
-
         return path
     }
 }

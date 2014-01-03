@@ -8,45 +8,59 @@ import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndexesDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
-import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
-import com.jellyfish85.query.generator.helper.TableNameHelper
+import com.jellyfish85.query.generator.BaseContext
 import org.apache.commons.lang.ArrayUtils
 
 import java.sql.Connection
 
-class ErdReleaseScriptsGenerator {
+class ErdReleaseScriptsGenerator extends GeneralGenerator {
 
-    private TableNameHelper tableNameHelper = new TableNameHelper()
+    private BaseContext context      = null
+    private BigDecimal  preReleaseId = null
 
-    private ExecuteQueriesShellGenerator executeQueriesShellGenerator =
-                            new ExecuteQueriesShellGenerator()
-    private RenameQueryGenerator  renameQueryGenerator  = new RenameQueryGenerator()
-    private RestoreQueryGenerator restoreQueryGenerator = new RestoreQueryGenerator()
-    private TableDDLGenerator     tableDDLGenerator     = new TableDDLGenerator()
-    private DropBackupTableQueryGenerator dropBackupTableQueryGenerator =
-            new DropBackupTableQueryGenerator()
+    private ExecuteQueriesShellGenerator  executeQueriesShellGenerator  = null
+    private RenameQueryGenerator          renameQueryGenerator          = null
+    private RestoreQueryGenerator         restoreQueryGenerator         = null
+    private TableDDLGenerator             tableDDLGenerator             = null
+    private DropBackupTableQueryGenerator dropBackupTableQueryGenerator = null
 
+    /**
+     *
+     *
+     *
+     * @param _context
+     * @param _preReleaseId
+     */
+    public ErdReleaseScriptsGenerator(BaseContext _context, String _preReleaseId) {
+        super(_context)
+        this.context = super.getBaseContext()
+
+        executeQueriesShellGenerator  = new ExecuteQueriesShellGenerator(_context)
+        renameQueryGenerator          = new RenameQueryGenerator(_context)
+        restoreQueryGenerator         = new RestoreQueryGenerator(_context)
+        tableDDLGenerator             = new TableDDLGenerator(_context)
+        dropBackupTableQueryGenerator = new DropBackupTableQueryGenerator(_context)
+
+        this.preReleaseId = new BigDecimal(_preReleaseId)
+    }
+
+    private MsTablesDao     msTablesDao     = new MsTablesDao()
+    private MsTabColumnsDao msTabColumnsDao = new MsTabColumnsDao()
+    private MsIndexesDao    msIndexesDao    = new MsIndexesDao()
+    private MsIndColumnsDao msIndColumnsDao = new MsIndColumnsDao()
+
+    /**
+     *
+     *
+     * @param conn
+     * @param dependencies
+     */
     public void generateErdReleaseScripts(
-            Connection              conn,
-            String                  dependencyGrpCd,
-            ArrayList<String>       tableNameList
+            Connection                          conn,
+            ArrayList<KrObjectDependenciesBean> dependencies
     ) {
 
-        // generate dao instances
-        KrObjectDependenciesDao krObjectDependenciesDao =
-                new KrObjectDependenciesDao()
-        MsTablesDao     msTablesDao     = new MsTablesDao()
-        MsTabColumnsDao msTabColumnsDao = new MsTabColumnsDao()
-        MsIndexesDao    msIndexesDao    = new MsIndexesDao()
-        MsIndColumnsDao msIndColumnsDao = new MsIndColumnsDao()
-
-
-        // specify dependencies
-        def _dependencies = krObjectDependenciesDao.findByDependencyGrpCd(conn, dependencyGrpCd)
-        ArrayList<KrObjectDependenciesBean> dependencies =
-                krObjectDependenciesDao.convert(_dependencies)
-
-        def _tableList = msTablesDao.findByTableNames(conn, tableNameList)
+        def _tableList = msTablesDao.findByReleaseId(conn, this.preReleaseId)
         ArrayList<MsTablesBean> tableList = msTablesDao.convert(_tableList)
 
         // generate query each by table
@@ -55,7 +69,7 @@ class ErdReleaseScriptsGenerator {
             println(".. generating .. ${tableName} .. queries")
 
             KrObjectDependenciesBean dependency =
-                    this.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+                    this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
 
             def _indList = msIndexesDao.findByTableId(conn, bean.tableIdAttr().value())
             HashMap<MsIndexesBean, ArrayList<MsIndColumnsBean>> hashMap =

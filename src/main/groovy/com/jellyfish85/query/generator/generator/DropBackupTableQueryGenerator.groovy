@@ -14,8 +14,10 @@ import com.jellyfish85.query.generator.BaseContext
  */
 class DropBackupTableQueryGenerator extends  GeneralGenerator {
 
+    private BaseContext context = null
     public DropBackupTableQueryGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
     }
 
     /**
@@ -44,7 +46,7 @@ class DropBackupTableQueryGenerator extends  GeneralGenerator {
         String path = "/com/jellyfish85/query/generator/template/ddl/dropBackupTableQuery.template"
         this.generate(map, path)
         String dropBackupTableQueryPath =
-                this.fileNameHelper.requestDropBackupTableQueryPath(dependency, msTablesBean)
+                this.context.fileNameHelper.requestDropBackupTableQueryPath(dependency, msTablesBean)
         this.setPath(dropBackupTableQueryPath)
         this.writeAppFile()
 

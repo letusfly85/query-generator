@@ -49,15 +49,6 @@ dependencies {
 
 }
 
-/*
-mainClassName = "com.jellyfish85.query.facade.Facade"
-run {
-    // dynamic arguments (from "-Prunargs=..." on gradle command line)
-    if (project.hasProperty('runargs')) {
-        args project.runargs.split(',')
-    }
-}
-*/
 
 task GenerateErdReleaseScriptsRunner (type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath

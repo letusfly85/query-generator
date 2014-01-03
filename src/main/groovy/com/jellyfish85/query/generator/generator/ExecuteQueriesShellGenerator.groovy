@@ -15,8 +15,10 @@ import org.apache.commons.io.FilenameUtils
  */
 class ExecuteQueriesShellGenerator extends GeneralGenerator {
 
+    private BaseContext context = null
     public ExecuteQueriesShellGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
     }
 
     /**

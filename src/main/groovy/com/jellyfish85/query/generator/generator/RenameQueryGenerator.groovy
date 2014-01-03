@@ -13,8 +13,11 @@ import com.jellyfish85.query.generator.BaseContext
  */
 class RenameQueryGenerator extends GeneralGenerator {
 
+    private BaseContext context = null
+
     public RenameQueryGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
     }
 
     /**

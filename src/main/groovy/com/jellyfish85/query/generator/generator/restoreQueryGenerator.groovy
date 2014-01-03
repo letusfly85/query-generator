@@ -13,8 +13,10 @@ import com.jellyfish85.query.generator.BaseContext
  */
 class RestoreQueryGenerator extends GeneralGenerator {
 
+    private BaseContext context = null
     public RestoreQueryGenerator(BaseContext _context) {
         super(_context)
+        this.context = super.getBaseContext()
     }
 
     /**
