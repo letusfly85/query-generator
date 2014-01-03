@@ -6,7 +6,8 @@ import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndexesDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTabColumnsDao
-%>/******************************************************************************
+%>\
+/******************************************************************************
  Program Name: DDL for  ${schemaName}.${tableName}
  Author:       Database Architect
  ******************************************************************************/

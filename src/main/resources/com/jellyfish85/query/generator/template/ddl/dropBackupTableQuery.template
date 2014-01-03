@@ -2,7 +2,14 @@
  Program Name: drop backup table query for  ${schemaName}.${tableName}
  Author:       Database Architect
  ******************************************************************************/
-spool log/drop_backup_table_${tableName}_${schemaName}.log;
+column log_date new_value log_date_text noprint
+column username new_value user_name_text noprint
+column instancename new_value instance_name_text noprint
+select to_char(sysdate,'yyyy_mmdd_hh24mi') log_date from dual;
+select username username from user_users;
+select instance_name instancename from v\$instance;
+spool on;
+spool log/drop_backup_table_${tableName}_${schemaName}.&log_date_text..log;
 set echo on;
 set serveroutput on;
 

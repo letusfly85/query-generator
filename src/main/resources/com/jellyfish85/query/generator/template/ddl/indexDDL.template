@@ -9,7 +9,7 @@ select to_char(sysdate,'yyyy_mmdd_hh24mi') log_date from dual;
 select username username from user_users;
 select instance_name instancename from v\$instance;
 spool on;
-spool log/Create_Index_${indexName}_${schemaName}.log
+spool log/Create_Index_${indexName}_${schemaName}.&log_date_text..log
 
 DECLARE
 W_SQL	VARCHAR2(3000);
