@@ -25,7 +25,7 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
     private DropBackupTableQueryGenerator dropBackupTableQueryGenerator = null
 
     /**
-     *
+     * generate table and it's attribute ddl and shell scripts for release
      *
      *
      * @param _context
@@ -77,6 +77,7 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
                     new HashMap<MsIndexesBean, ArrayList<MsIndColumnsBean>>()
             ArrayList<MsIndexesBean> indList = msIndexesDao.convert(_indList)
 
+            // if there are index's definition, add ddl
             if (!ArrayUtils.isEmpty(indList)) {
                 indList.each {MsIndexesBean indexesBean ->
                     def _indColList = msIndColumnsDao.find(conn, indexesBean)
@@ -89,8 +90,8 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
             def _sets = msTabColumnsDao.find(conn, bean)
             ArrayList<MsTabColumnsDao> sets = msTabColumnsDao.convert(_sets)
 
-
-            if (!sets.isEmpty()) {
+            // if there is no column list, this doesn't generate table ddl
+            if (!ArrayUtils.isEmpty(sets)) {
                 this.renameQueryGenerator.generateRenameQuery(bean, dependency)
                 this.restoreQueryGenerator.generateRestoreQuery(bean, dependency)
                 this.tableDDLGenerator.generateTableDDL(bean, sets, dependency, hashMap)
