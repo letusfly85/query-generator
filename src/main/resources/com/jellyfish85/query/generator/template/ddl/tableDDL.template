@@ -40,7 +40,6 @@ CREATE TABLE ${schemaName}.${tableName} ( <% columnList.eachWithIndex {bean, idx
          ${attr}<% } else { %>
         ,${attr}<% } }%>
 );
-/
 
 COMMENT ON TABLE ${schemaName}.${tableName} IS '${uniqueTag}\t${tableBean.logicalTableNameAttr().value()}'
 /
