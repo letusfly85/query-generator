@@ -1,9 +1,12 @@
 CREATE	INDEX ${schemaName}.${indexName} ' ||
-'ON ${schemaName}.${indexName} ' ||
+'ON ${schemaName}.${tableName} ' ||
 'KEY ' ||
-'('   || <% columnList.eachWithIndex {bean, i ->
-if (i == 0){ %>
-'${bean.columnNameAttr().value()},'	|| <% } else { %>
-'${bean.columnNameAttr().value()}'  || <% } } %>
+'('    ||
+<% columnList.eachWithIndex {bean, i ->
+    if (i == 0){ %>\
+    '${bean.columnNameAttr().value()}'	||
+<% } else { %>\
+    ',${bean.columnNameAttr().value()}' ||
+<% } } %>\
 ')'
 /

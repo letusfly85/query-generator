@@ -26,7 +26,7 @@ BEGIN
         OWNER = '${schemaName}'
     AND INDEX_NAME = '${indexName}';
     W_SQL := 'CREATE	INDEX ${schemaName}.${indexName} ' ||
-             'ON ${schemaName}.${indexName} ' ||
+             'ON ${schemaName}.${tableName} ' ||
              'KEY ' ||
              '('    ||
 <% columnList.eachWithIndex {bean, i ->
