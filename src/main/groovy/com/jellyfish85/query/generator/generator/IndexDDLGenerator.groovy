@@ -5,11 +5,7 @@ import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndexesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndexesDao
-import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.BaseContext
-import com.jellyfish85.query.generator.helper.AppFileNameHelper
-import com.jellyfish85.query.generator.helper.TableNameHelper
-import com.jellyfish85.query.generator.runner.BaseRunner
 import org.apache.commons.io.FilenameUtils
 
 import java.sql.Connection
