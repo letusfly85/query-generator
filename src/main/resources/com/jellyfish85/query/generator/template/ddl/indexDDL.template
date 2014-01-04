@@ -28,10 +28,13 @@ BEGIN
     W_SQL := 'CREATE	INDEX ${schemaName}.${indexName} ' ||
              'ON ${schemaName}.${indexName} ' ||
              'KEY ' ||
-             '('   || <% columnList.eachWithIndex {bean, i ->
-    if (i == 0){ %>
-                '${bean.columnNameAttr().value()},'	|| <% } else { %>
-                '${bean.columnNameAttr().value()}'  || <% } } %>
+             '('    ||
+<% columnList.eachWithIndex {bean, i ->
+    if (i == 0){ %>\
+                ' ${bean.columnNameAttr().value()}'	||
+<% } else { %>\
+                ',${bean.columnNameAttr().value()}'  ||
+<% } } %>\
             ')';
     IF W_COUNT = 0 THEN
         DBMS_OUTPUT.PUT_LINE(W_SQL);
