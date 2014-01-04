@@ -32,7 +32,7 @@ class VChangeSetsBean2SVNRequestBeanConverter {
       targetBean.path     = bean.pathAttr.value
       targetBean.revision = bean.revisionAttr.value.longValue()
 
-      beans.add(bean)
+      beans.add(targetBean)
     }
 
     beans
