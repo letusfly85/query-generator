@@ -249,4 +249,20 @@ class TableNameHelper {
             return queryProp.erdSchemaSubName()
         }
     }
+
+    /**
+     * request schema name by dependency group
+     *
+     *
+     * @param dependencyGrpCd
+     * @return
+     */
+    public requestOuterFaceSchemaName(String dependencyGrpCd) {
+        if (dependencyGrpCd.equals(QueryAppConst.APPLICATION_MAIN_GROUP)) {
+            return queryProp.erdSchemaOuterFaceName()
+
+        } else if (dependencyGrpCd.equals(QueryAppConst.APPLICATION_SUB_GROUP)) {
+            return queryProp.erdSchemaOuterFaceSubName()
+        }
+    }
 }

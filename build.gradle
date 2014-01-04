@@ -91,3 +91,9 @@ task GenerateErrorCheckCodeSqlLoaderSetsRunner (type: JavaExec) {
     main = "com.jellyfish85.query.generator.runner.GenerateErrorCheckCodeSqlLoaderSetsRunner"
     args = project.runargs.split(',').toList()
 }
+
+task GenerateProcedureReleaseScriptsRunner (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.jellyfish85.query.generator.runner.GenerateProcedureReleaseScriptsRunner"
+    args = project.runargs.split(',').toList()
+}

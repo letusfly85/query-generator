@@ -104,16 +104,8 @@ class QueryReplaceUtils(prop: QueryAppProp) {
 
     var idx = AppConst.INT_ZERO
     var switch: Boolean = true
-    while (switch) {
-      val buf = in.readLine()
-      if (StringUtils.isEmpty(buf)) {
-        switch = false
-      }
-      else {
-        pw.write(buf + "\n")
-      }
-
-      idx += 1
+    Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
+        if (!StringUtils.isBlank(buf)) pw.write(buf + "\n")
     }
     pw.close()
     in.close()
@@ -132,16 +124,70 @@ class QueryReplaceUtils(prop: QueryAppProp) {
 
     idx = AppConst.INT_ZERO
     switch = true
-    while (switch) {
-      val buf = in.readLine()
-      if (StringUtils.isEmpty(buf)) {
-        switch = false
+    Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
+        pw.write(buf + "\n")
+    }
+    pw.close()
+    in.close()
+    is.close()
+  }
+
+  def addSchemaName2Procedure(dest: File, mainSchemaName: String, outerFaceSchemaName: String) {
+    val tmpFile: File = new File(prop.applicationWorkspacePath, "tmp")
+    if (tmpFile.exists()) FileUtils.forceDelete(tmpFile)
+
+    var pw: PrintWriter = new PrintWriter(new BufferedWriter(
+      new OutputStreamWriter(new FileOutputStream(tmpFile),"UTF-8")))
+
+    var is: FileInputStream = new FileInputStream(dest)
+    var in: BufferedReader  = new BufferedReader(new InputStreamReader(is, "SJIS"))
+
+    var idx = AppConst.INT_ZERO
+    var switch: Boolean = true
+    var endFlg: Boolean = false
+
+    Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
+      if (idx < 50 && !StringUtils.isBlank(buf)) {
+        if (buf.toUpperCase().matches(".*" + " END " + ".*")) {
+          endFlg = true
+        }
+
+        if (dest.getName.startsWith(this.prop.erdFunctionAnotherOwnerDDL)  && !endFlg) {
+          pw.write(buf.toUpperCase().replace("FNC_", outerFaceSchemaName + ".FNC_") + "\n")
+
+        } else if (dest.getName.startsWith("FNC_")  && !endFlg) {
+          pw.write(buf.toUpperCase().replace("FNC_", mainSchemaName + ".FNC_") + "\n")
+
+        } else {
+          pw.write(buf.toUpperCase().replace("PROCEDURE ", "PROCEDURE " + mainSchemaName  + ".") + "\n")
+        }
 
       } else {
-        pw.write(buf + "\n")
+        pw.write(buf    + "\n")
       }
 
       idx += 1
+    }
+    pw.close()
+    in.close()
+    is.close()
+
+
+    // exchange old and new one
+    val filePath: String = dest.getPath
+    FileUtils.forceDelete(dest)
+
+    val newFile: File = new File(filePath)
+    pw = new PrintWriter(new BufferedWriter(
+      new OutputStreamWriter(new FileOutputStream(newFile),"UTF-8")))
+
+    is = new FileInputStream(tmpFile)
+    in = new BufferedReader(new InputStreamReader(is, "UTF-8"))
+
+    idx = AppConst.INT_ZERO
+    switch = true
+    Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
+        pw.write(buf + "\n")
     }
     pw.close()
     in.close()

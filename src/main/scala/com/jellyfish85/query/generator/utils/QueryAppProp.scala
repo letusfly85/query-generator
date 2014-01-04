@@ -142,8 +142,6 @@ class QueryAppProp(environment: String) {
 
   val applicationDataPath:             String   = configuration.getString("application.workspace.data.path")
 
-  val applicationProcedurePath:        String   = configuration.getString("application.workspace.procedure.path")
-
 
   /************************************************************************************************
    * erd attributes
@@ -155,5 +153,11 @@ class QueryAppProp(environment: String) {
   val erdSchemaMainName:               String   = configuration.getString("erd.schema.main.name")
 
   val erdSchemaSubName:                String   = configuration.getString("erd.schema.sub.name")
+
+  val erdSchemaOuterFaceName:          String   = configuration.getString("erd.schema.outer.face.name")
+
+  val erdSchemaOuterFaceSubName:       String   = configuration.getString("erd.schema.outer.face.sub.name")
+
+  val erdFunctionAnotherOwnerDDL:      String   = configuration.getString("erd.function.another.owner.ddl")
 
 }

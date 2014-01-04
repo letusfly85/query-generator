@@ -28,9 +28,6 @@ class GenerateProcedureReleaseScriptsRunner {
         def dependencies = runner.getDependencies()
         def queryProp    = context.queryProp
 
-        ProcedureReleaseScriptsGenerator generator =
-                new ProcedureReleaseScriptsGenerator(context)
-
 
         // specify target by commit date
         String procedurePath = queryProp.subversionProcedureDDLPathLike()
@@ -43,11 +40,15 @@ class GenerateProcedureReleaseScriptsRunner {
 
         // download target functions
         requestBeans.each {requestBean ->
-            FileDownloader.download(queryProp, requestBean, queryProp.applicationProcedurePath())
+            FileDownloader.download(queryProp, requestBean)
         }
 
         // generate ddl and release shell scripts
         //todo
+        ProcedureReleaseScriptsGenerator generator =
+                new ProcedureReleaseScriptsGenerator(context, requestBeans)
+        generator.generateDDL()
+
 
         // add login sql to parent folder
         ResourceCopyHelper copyHelper = new ResourceCopyHelper()
