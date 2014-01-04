@@ -27,7 +27,23 @@ object FileDownloader {
     FileUtils.forceMkdir(folder)
 
     getter.simpleGetFile(requestBean, folder, "")
-    
+
+    val list: List[SVNRequestBean] = getter.modifyAttribute2Current(List(requestBean))
+
+    list.head
+  }
+
+  /**
+   *
+   *
+   * @param requestBean
+   */
+  def download(prop:    QueryAppProp, requestBean: SVNRequestBean, path: String): SVNRequestBean = {
+    val folder: File = new File(path)
+    FileUtils.forceMkdir(folder)
+
+    getter.simpleGetFile(requestBean, folder, "")
+
     val list: List[SVNRequestBean] = getter.modifyAttribute2Current(List(requestBean))
 
     list.head

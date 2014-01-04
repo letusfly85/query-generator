@@ -41,6 +41,8 @@ class QueryAppProp(environment: String) {
 
   val indexDDLFolder:                  String   = outputFolder + configuration.getString("folder.output.erd.index")
 
+  val procedureDDLFolder:              String   = outputFolder + configuration.getString("folder.output.erd.procedure")
+
   /************************************************************************************************
    *
    *
@@ -112,17 +114,20 @@ class QueryAppProp(environment: String) {
    *
    ************************************************************************************************/
 
-  val subversionAuthorityCodeDataPath: String = configuration.getString("subversion.authority.code.data.path")
+  val subversionAuthorityCodeDataPath:     String
+                                              = configuration.getString("subversion.authority.code.data.path")
 
-  val subversionAuthorityCodeControlPath: String
+  val subversionAuthorityCodeControlPath:  String
                                               = configuration.getString("subversion.authority.code.control.path")
 
-  val subversionErrorCheckCodeDataPath: String
+  val subversionErrorCheckCodeDataPath:    String
                                               = configuration.getString("subversion.error.check.code.data.path")
 
   val subversionErrorCheckCodeControlPath: String
                                               = configuration.getString("subversion.error.check.code.control.path")
 
+  val subversionProcedureDDLPathLike:      String
+                                              =configuration.getString("subversion.procedure.ddl.path.like")
 
   /************************************************************************************************
    * workspace attributes
@@ -136,6 +141,9 @@ class QueryAppProp(environment: String) {
   val applicationControlPath:          String   = configuration.getString("application.workspace.control.path")
 
   val applicationDataPath:             String   = configuration.getString("application.workspace.data.path")
+
+  val applicationProcedurePath:        String   = configuration.getString("application.workspace.procedure.path")
+
 
   /************************************************************************************************
    * erd attributes
