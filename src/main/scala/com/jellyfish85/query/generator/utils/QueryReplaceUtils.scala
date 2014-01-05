@@ -33,23 +33,15 @@ class QueryReplaceUtils(prop: QueryAppProp) {
     var in: BufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"))
 
     var idx = AppConst.INT_ZERO
-    var switch: Boolean = true
-    while (switch) {
-      val buf = in.readLine()
-      if (StringUtils.isEmpty(buf)) {
-        switch = false
-      }
-      else {
+    Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
         if (idx < 10) {
           pw.write(buf.
-            replace(("TABLE " + prop.erdTableMasterPrefix),
+            replace(("TABLE "  + prop.erdTableMasterPrefix),
                     ("TABLE "  + schemaName + "." + prop.erdTableMasterPrefix)) + "\n")
 
         } else {
           pw.write(buf + "\n")
         }
-
-      }
 
       idx += 1
     }
@@ -69,17 +61,8 @@ class QueryReplaceUtils(prop: QueryAppProp) {
     in = new BufferedReader(new InputStreamReader(is, "UTF-8"))
 
     idx = AppConst.INT_ZERO
-    switch = true
-    while (switch) {
-      val buf = in.readLine()
-      if (StringUtils.isEmpty(buf)) {
-        switch = false
-
-      } else {
+    Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
         pw.write(buf + "\n")
-      }
-
-      idx += 1
     }
     pw.close()
     in.close()
@@ -103,7 +86,6 @@ class QueryReplaceUtils(prop: QueryAppProp) {
     var in: BufferedReader = new BufferedReader(new InputStreamReader(is, "SJIS"))
 
     var idx = AppConst.INT_ZERO
-    var switch: Boolean = true
     Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
         if (!StringUtils.isBlank(buf)) pw.write(buf + "\n")
     }
@@ -123,7 +105,6 @@ class QueryReplaceUtils(prop: QueryAppProp) {
     in = new BufferedReader(new InputStreamReader(is, "UTF-8"))
 
     idx = AppConst.INT_ZERO
-    switch = true
     Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
         pw.write(buf + "\n")
     }
@@ -143,7 +124,6 @@ class QueryReplaceUtils(prop: QueryAppProp) {
     var in: BufferedReader  = new BufferedReader(new InputStreamReader(is, "SJIS"))
 
     var idx = AppConst.INT_ZERO
-    var switch: Boolean = true
     var endFlg: Boolean = false
 
     Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
@@ -185,7 +165,6 @@ class QueryReplaceUtils(prop: QueryAppProp) {
     in = new BufferedReader(new InputStreamReader(is, "UTF-8"))
 
     idx = AppConst.INT_ZERO
-    switch = true
     Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
         pw.write(buf + "\n")
     }
