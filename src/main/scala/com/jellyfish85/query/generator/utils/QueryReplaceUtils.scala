@@ -121,7 +121,7 @@ class QueryReplaceUtils(prop: QueryAppProp) {
       new OutputStreamWriter(new FileOutputStream(tmpFile),"UTF-8")))
 
     var is: FileInputStream = new FileInputStream(dest)
-    var in: BufferedReader  = new BufferedReader(new InputStreamReader(is, "SJIS"))
+    var in: BufferedReader  = new BufferedReader(new InputStreamReader(is, "UTF-8"))
 
     var idx = AppConst.INT_ZERO
     var endFlg: Boolean = false
