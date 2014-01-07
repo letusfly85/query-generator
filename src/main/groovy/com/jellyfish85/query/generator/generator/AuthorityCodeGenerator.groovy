@@ -47,7 +47,7 @@ class AuthorityCodeGenerator extends GeneralGenerator {
         }
 
         destFiles.each {File dest ->
-            replaceUtils.convertSJIS2UTF8(dest)
+            //replaceUtils.convertSJIS2UTF8(dest)
             replaceUtils.addSchemaName2ControlFile(dest, this.schemaName)
         }
     }
