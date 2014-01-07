@@ -85,9 +85,18 @@ class QueryReplaceUtils(prop: QueryAppProp) {
     var is: FileInputStream = new FileInputStream(file)
     var in: BufferedReader = new BufferedReader(new InputStreamReader(is, "SJIS"))
 
-    var idx = AppConst.INT_ZERO
-    Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
-        if (!StringUtils.isBlank(buf)) pw.write(buf + "\n")
+    var idx = 0
+    var switch: Boolean = true
+    while (switch) {
+      val buf = in.readLine()
+      if (buf == null) {
+        switch = false
+      }
+      else {
+        pw.write(buf + "\n")
+      }
+
+      idx += 1
     }
     pw.close()
     in.close()
