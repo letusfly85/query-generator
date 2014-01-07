@@ -36,8 +36,8 @@ class ProcedureReleaseScriptsGenerator extends GeneralGenerator {
             File src  = new File(this.context.queryProp.applicationWorkspacePath(), requestBean.path())
             File dest = new File(this.context.queryProp.procedureDDLFolder(), requestBean.fileName())
 
-            this.replaceUtils.convertSJIS2UTF8(src)
-            //this.replaceUtils.addSchemaName2Procedure(src, mainSchemaName, outerFaceSchemaName)
+            //this.replaceUtils.convertSJIS2UTF8(src)
+            this.replaceUtils.addSchemaName2Procedure(src, mainSchemaName, outerFaceSchemaName)
             FileUtils.copyFile(src, dest)
         }
     }
