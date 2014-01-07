@@ -83,7 +83,7 @@ class QueryReplaceUtils(prop: QueryAppProp) {
       new OutputStreamWriter(new FileOutputStream(tmpFile),"UTF-8")))
 
     var is: FileInputStream = new FileInputStream(file)
-    var in: BufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"))
+    var in: BufferedReader = new BufferedReader(new InputStreamReader(is, "SJIS"))
 
     var idx = AppConst.INT_ZERO
     Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
@@ -121,7 +121,7 @@ class QueryReplaceUtils(prop: QueryAppProp) {
       new OutputStreamWriter(new FileOutputStream(tmpFile),"UTF-8")))
 
     var is: FileInputStream = new FileInputStream(dest)
-    var in: BufferedReader  = new BufferedReader(new InputStreamReader(is, "UTF-8"))
+    var in: BufferedReader  = new BufferedReader(new InputStreamReader(is, "SJIS"))
 
     var idx = AppConst.INT_ZERO
     var endFlg: Boolean = false
