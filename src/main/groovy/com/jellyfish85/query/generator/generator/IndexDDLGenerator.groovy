@@ -67,7 +67,8 @@ class IndexDDLGenerator extends GeneralGenerator {
      */
     public void generateIndexPlainDDL(String tableName,
                                  ArrayList<MsIndColumnsBean> columnList,
-                                 KrObjectDependenciesBean dependency) {
+                                 KrObjectDependenciesBean dependency,
+                                 String mode) {
         this.initializeQuery()
 
         String indexName   = columnList.head().indexNameAttr().value()
@@ -80,7 +81,13 @@ class IndexDDLGenerator extends GeneralGenerator {
                 columnList  : columnList
         ]
 
-        String path = "/com/jellyfish85/query/generator/template/ddl/indexPlainDDL.template"
+        String path = ""
+        if (mode.equals("drop")) {
+            path = "/com/jellyfish85/query/generator/template/ddl/indexDDLWithDrop.template"
+        } else {
+            path = "/com/jellyfish85/query/generator/template/ddl/indexPlainDDL.template"
+        }
+
         this.generate(map, path)
     }
 
@@ -116,7 +123,54 @@ class IndexDDLGenerator extends GeneralGenerator {
             ArrayList<MsIndColumnsBean> sets = msIndColumnsDao.convert(_sets)
 
             if (!sets.isEmpty()) {
-                this.generateIndexDDL(tableName, sets, dependency)
+                this.generateIndexDDL(tableName, sets, dependency, "create")
+
+                String indexDDLPath =
+                        this.context.fileNameHelper.requestIndexDDLPath(dependency, bean)
+                this.setPath(indexDDLPath)
+
+                this.writeAppFile()
+            }
+        }
+
+        generateExecuteIndexDDLShell(dependencies, list)
+    }
+
+
+    /**
+     * generate index ddls
+     *
+     * @author wada shunsuke
+     * @since  2013/12/09
+     * @param conn
+     * @param fileNameHelper
+     * @param dependencyGrpCd
+     */
+    public void generateIndexDDL(
+            Connection conn,
+            ArrayList<KrObjectDependenciesBean> dependencies,
+            ArrayList<String> indexes
+    ) {
+
+        // generate dao instances
+        MsIndexesDao    msIndexesDao    = new MsIndexesDao()
+        MsIndColumnsDao msIndColumnsDao = new MsIndColumnsDao()
+
+        def _list = msIndexesDao.findByIndexNames(conn, indexes)
+        ArrayList<MsIndexesBean> list = msIndexesDao.convert(_list)
+
+
+        // generate query each by table
+        list.each {MsIndexesBean bean ->
+            String tableName = bean.physicalTableNameAttr().value()
+            KrObjectDependenciesBean dependency =
+                    this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+
+            def _sets = msIndColumnsDao.find(conn, bean)
+            ArrayList<MsIndColumnsBean> sets = msIndColumnsDao.convert(_sets)
+
+            if (!sets.isEmpty()) {
+                this.generateIndexDDL(tableName, sets, dependency, "drop")
 
                 String indexDDLPath =
                         this.context.fileNameHelper.requestIndexDDLPath(dependency, bean)

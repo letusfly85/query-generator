@@ -83,23 +83,14 @@ class QueryReplaceUtils(prop: QueryAppProp) {
       new OutputStreamWriter(new FileOutputStream(tmpFile),"UTF-8")))
 
     var is: FileInputStream = new FileInputStream(file)
-    var in: BufferedReader = new BufferedReader(new InputStreamReader(is, "SJIS"))
+    var br: BufferedReader = new BufferedReader(new InputStreamReader(is, "SJIS"))
 
-    var idx = 0
-    var switch: Boolean = true
-    while (switch) {
-      val buf = in.readLine()
-      if (buf == null) {
-        switch = false
-      }
-      else {
-        pw.write(buf + "\n")
-      }
-
-      idx += 1
+    var idx = AppConst.INT_ZERO
+    Stream.continually(br.readLine()).takeWhile(_ != null).foreach {str: String =>
+        if (!StringUtils.isBlank(buf)) pw.write(str + "\n")
     }
     pw.close()
-    in.close()
+    br.close()
     is.close()
 
     // exchange old and new one
@@ -111,14 +102,14 @@ class QueryReplaceUtils(prop: QueryAppProp) {
       new OutputStreamWriter(new FileOutputStream(newFile),"UTF-8")))
 
     is = new FileInputStream(tmpFile)
-    in = new BufferedReader(new InputStreamReader(is, "UTF-8"))
+    br = new BufferedReader(new InputStreamReader(is, "UTF-8"))
 
     idx = AppConst.INT_ZERO
-    Stream.continually(in.readLine()).takeWhile(_ != null).foreach {buf: String =>
+    Stream.continually(br.readLine()).takeWhile(_ != null).foreach {buf: String =>
         pw.write(buf + "\n")
     }
     pw.close()
-    in.close()
+    br.close()
     is.close()
   }
 

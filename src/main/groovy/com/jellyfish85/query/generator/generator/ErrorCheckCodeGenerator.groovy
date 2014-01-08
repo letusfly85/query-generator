@@ -50,7 +50,6 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
         }
 
         destFiles.each {File dest ->
-            //replaceUtils.convertSJIS2UTF8(dest)
             replaceUtils.addSchemaName2ControlFile(dest, this.schemaName)
         }
     }
@@ -68,9 +67,6 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
             destFiles.add(dest)
         }
 
-        /*destFiles.each {File dest ->
-            replaceUtils.convertSJIS2UTF8(dest)
-        }*/
     }
 
     public void generateShellScript() {

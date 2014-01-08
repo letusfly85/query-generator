@@ -27,4 +27,23 @@ class ArgumentsHelper {
 
         return list
     }
+
+    /**
+     * == requestTableNameList ==
+     *
+     * @author wada shunsuke
+     * @since  2013/12/05
+     * @param tableNames
+     * @return
+     *
+     */
+    public ArrayList<String> requestObjectNameList(String tableNames) {
+        ArrayList<String> list = new ArrayList<String>()
+
+        tableNames.split(/\n/).each {String tableName ->
+            list.add(tableName)
+        }
+
+        return list
+    }
 }
