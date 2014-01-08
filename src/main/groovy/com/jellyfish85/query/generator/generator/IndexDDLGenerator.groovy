@@ -38,37 +38,8 @@ class IndexDDLGenerator extends GeneralGenerator {
      */
     public void generateIndexDDL(String tableName,
                        ArrayList<MsIndColumnsBean> columnList,
-                       KrObjectDependenciesBean dependency) {
-        this.initializeQuery()
-
-        String indexName   = columnList.head().indexNameAttr().value()
-        String schemaName  = dependency.objectOwnerAttr().value()
-
-        Map map = [
-                schemaName  : schemaName,
-                tableName   : tableName,
-                indexName   : indexName,
-                columnList  : columnList
-        ]
-
-        String path = "/com/jellyfish85/query/generator/template/ddl/indexDDL.template"
-        this.generate(map, path)
-    }
-
-    /**
-     * == generateIndexPlainDDL ==
-     *
-     *
-     * @author wada shunsuke
-     * @since  2013/12/12
-     * @param tableName
-     * @param columnList
-     * @param dependency
-     */
-    public void generateIndexPlainDDL(String tableName,
-                                 ArrayList<MsIndColumnsBean> columnList,
-                                 KrObjectDependenciesBean dependency,
-                                 String mode) {
+                       KrObjectDependenciesBean dependency,
+                       String mode) {
         this.initializeQuery()
 
         String indexName   = columnList.head().indexNameAttr().value()
@@ -85,8 +56,39 @@ class IndexDDLGenerator extends GeneralGenerator {
         if (mode.equals("drop")) {
             path = "/com/jellyfish85/query/generator/template/ddl/indexDDLWithDrop.template"
         } else {
-            path = "/com/jellyfish85/query/generator/template/ddl/indexPlainDDL.template"
+            path = "/com/jellyfish85/query/generator/template/ddl/indexDDL.template"
         }
+        this.generate(map, path)
+    }
+
+    /**
+     * == generateIndexPlainDDL ==
+     *
+     *
+     * @author wada shunsuke
+     * @since  2013/12/12
+     * @param tableName
+     * @param columnList
+     * @param dependency
+     */
+    public void generateIndexPlainDDL(String tableName,
+                                 ArrayList<MsIndColumnsBean> columnList,
+                                 KrObjectDependenciesBean dependency) {
+        this.initializeQuery()
+
+        String indexName   = columnList.head().indexNameAttr().value()
+        String schemaName  = dependency.objectOwnerAttr().value()
+
+        Map map = [
+                schemaName  : schemaName,
+                tableName   : tableName,
+                indexName   : indexName,
+                columnList  : columnList
+        ]
+
+
+        path = "/com/jellyfish85/query/generator/template/ddl/indexPlainDDL.template"
+
 
         this.generate(map, path)
     }
