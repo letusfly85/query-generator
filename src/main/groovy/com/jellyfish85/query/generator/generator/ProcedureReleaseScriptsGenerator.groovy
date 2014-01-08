@@ -32,14 +32,26 @@ class ProcedureReleaseScriptsGenerator extends GeneralGenerator {
         String outerFaceSchemaName =
                 this.context.tableNameHelper.requestOuterFaceSchemaName(this.context.dependentGrpCd)
 
+        ArrayList<String> execScriptsList = new ArrayList<>()
         this.requestBeans.each {SVNRequestBean requestBean ->
             File src  = new File(this.context.queryProp.applicationWorkspacePath(), requestBean.path())
             File dest = new File(this.context.queryProp.procedureDDLFolder(), requestBean.fileName())
 
             this.replaceUtils.addSchemaName2Procedure(src, mainSchemaName, outerFaceSchemaName)
             FileUtils.copyFile(src, dest)
+
+            execScriptsList.add("@" + requestBean.fileName())
         }
+
+        Map map = [
+                execScriptsList : execScriptsList
+        ]
+
+        String path = "/com/jellyfish85/query/generator/template/ddl/ExecuteAllQueries.template"
+        this.setProperty(path)
+        this.generate(map, path)
+
+        this.setPath(this.context.fileNameHelper.requestExecuteProcedureDDLShellPath())
+        this.writeAppFile()
     }
-
-
 }

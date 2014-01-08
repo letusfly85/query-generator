@@ -90,6 +90,21 @@ class AppFileNameHelper {
     }
 
     /**
+     *
+     *
+     *
+     * @return
+     */
+    public String requestExecuteProcedureDDLShellPath() {
+
+        this.fileName = StringUtils.join(["exe_All.sql"
+        ], "")
+
+        String path = FilenameUtils.concat(this.queryProp.procedureDDLFolder(), this.fileName)
+        return path
+    }
+
+    /**
      * == requestRestorePath ==
      *
      * @author wada shunsuke
