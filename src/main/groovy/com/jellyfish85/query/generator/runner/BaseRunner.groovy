@@ -61,7 +61,9 @@ public class BaseRunner {
     private void outputFolderClean() {
        if (environment.startsWith("patch")) {
            File outputFolder = new File(this._context.queryProp.outputFolder())
-           FileUtils.cleanDirectory(outputFolder)
+           if (outputFolder.exists()) {
+            FileUtils.cleanDirectory(outputFolder)
+           }
        }
     }
 
