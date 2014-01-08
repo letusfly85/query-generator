@@ -132,10 +132,10 @@ class QueryReplaceUtils(prop: QueryAppProp) {
           endFlg = true
         }
 
-        if (dest.getName.startsWith(this.prop.erdFunctionAnotherOwnerDDL)  && !endFlg) {
+        if (dest.getName.toLowerCase().startsWith(this.prop.erdFunctionAnotherOwnerDDL)  && !endFlg) {
           pw.write(buf.toUpperCase().replace("FNC_", outerFaceSchemaName + ".FNC_") + "\n")
 
-        } else if (dest.getName.startsWith("FNC_")  && !endFlg) {
+        } else if (dest.getName.toUpperCase.startsWith("FNC_")  && !endFlg) {
           pw.write(buf.toUpperCase().replace("FNC_", mainSchemaName + ".FNC_") + "\n")
 
         } else {
