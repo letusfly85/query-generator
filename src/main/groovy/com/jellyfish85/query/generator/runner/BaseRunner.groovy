@@ -19,7 +19,7 @@ import java.sql.Connection
  */
 public class BaseRunner {
 
-    private BaseContext context    = null
+    private BaseContext _context    = null
 
     private String      environment = null
 
@@ -32,7 +32,7 @@ public class BaseRunner {
      */
     public BaseRunner(String dependentGrpCd, String _environment) {
         this.environment = _environment
-        this.context     = new BaseContext(dependentGrpCd, this.environment)
+        this._context     = new BaseContext(dependentGrpCd, this.environment)
 
         outputFolderClean()
     }
@@ -58,7 +58,7 @@ public class BaseRunner {
 
     private void outputFolderClean() {
        if (environment.startsWith("patch")) {
-           File outputFolder = new File(this.context.queryProp.outputFolder())
+           File outputFolder = new File(this._context.queryProp.outputFolder())
            FileUtils.cleanDirectory(outputFolder)
        }
     }
@@ -72,7 +72,7 @@ public class BaseRunner {
     public ArrayList<KrObjectDependenciesBean> getDependencies() {
         KrObjectDependenciesDao dependenciesDao = new KrObjectDependenciesDao()
         def _dependencies =
-                dependenciesDao.findByDependencyGrpCd(this.connection, this.context.dependentGrpCd)
+                dependenciesDao.findByDependencyGrpCd(this.connection, this._context.dependentGrpCd)
 
         ArrayList<KrObjectDependenciesBean> dependencies = dependenciesDao.convert(_dependencies)
         return dependencies
