@@ -40,7 +40,7 @@ class ArgumentsHelper {
     public ArrayList<String> requestObjectNameList(String tableNames) {
         ArrayList<String> list = new ArrayList<String>()
 
-        tableNames.split(/\n/).each {String tableName ->
+        tableNames.split(/,/).each {String tableName ->
             list.add(tableName)
         }
 

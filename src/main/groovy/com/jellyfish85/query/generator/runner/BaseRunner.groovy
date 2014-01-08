@@ -4,14 +4,37 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.dbaccessor.manager.DatabaseManager
 import com.jellyfish85.query.generator.BaseContext
+import org.apache.commons.io.FileUtils
 
 import java.sql.Connection
 
+/**
+ * base class of all runners
+ *
+ * contain properties, helpers, database connection
+ *
+ * @author wada shunsuke
+ * @since  2014/01/08
+ *
+ */
 public class BaseRunner {
 
-    public BaseContext _context = null
-    public BaseRunner(String dependentGrpCd, String environment) {
-        this._context  = new BaseContext(dependentGrpCd, environment)
+    private BaseContext context    = null
+
+    private String      environment = null
+
+    /**
+     *
+     *
+     *
+     * @param dependentGrpCd
+     * @param _environment
+     */
+    public BaseRunner(String dependentGrpCd, String _environment) {
+        this.environment = _environment
+        this.context     = new BaseContext(dependentGrpCd, this.environment)
+
+        outputFolderClean()
     }
 
     private static DatabaseManager manager     = new DatabaseManager()
@@ -33,6 +56,13 @@ public class BaseRunner {
         this.manager.jClose()
     }
 
+    private void outputFolderClean() {
+       if (environment.equals("patch")) {
+           File outputFolder = new File(this.context.queryProp.outputFolder())
+           FileUtils.cleanDirectory(outputFolder)
+       }
+    }
+
     /**
      * return dependency sets
      *
@@ -42,7 +72,7 @@ public class BaseRunner {
     public ArrayList<KrObjectDependenciesBean> getDependencies() {
         KrObjectDependenciesDao dependenciesDao = new KrObjectDependenciesDao()
         def _dependencies =
-                dependenciesDao.findByDependencyGrpCd(this.connection, this._context.dependentGrpCd)
+                dependenciesDao.findByDependencyGrpCd(this.connection, this.context.dependentGrpCd)
 
         ArrayList<KrObjectDependenciesBean> dependencies = dependenciesDao.convert(_dependencies)
         return dependencies
