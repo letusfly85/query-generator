@@ -5,6 +5,7 @@ import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDa
 import com.jellyfish85.dbaccessor.manager.DatabaseManager
 import com.jellyfish85.query.generator.BaseContext
 import org.apache.commons.io.FileUtils
+import sun.net.www.protocol.file.FileURLConnection
 
 import java.sql.Connection
 
@@ -35,6 +36,7 @@ public class BaseRunner {
         this._context     = new BaseContext(dependentGrpCd, this.environment)
 
         outputFolderClean()
+        FileUtils.forceMkdir(this._context.queryProp.outputFolder())
     }
 
     private static DatabaseManager manager     = new DatabaseManager()
