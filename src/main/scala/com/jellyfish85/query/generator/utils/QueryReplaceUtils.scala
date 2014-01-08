@@ -87,7 +87,7 @@ class QueryReplaceUtils(prop: QueryAppProp) {
 
     var idx = AppConst.INT_ZERO
     Stream.continually(br.readLine()).takeWhile(_ != null).foreach {str: String =>
-        if (!StringUtils.isBlank(buf)) pw.write(str + "\n")
+        if (!StringUtils.isBlank(str)) pw.write(str + "\n")
     }
     pw.close()
     br.close()
