@@ -62,6 +62,12 @@ task GenerateIndexDDLRunner (type: JavaExec) {
     args = project.runargs.split(',').toList()
 }
 
+task GenerateIndexReDDLRunner (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.jellyfish85.query.generator.runner.GenerateIndexReDDLRunner"
+    args = project.runargs.split(',').toList()
+}
+
 task GenerateGeneralCodeSqlLoaderSetsRunner (type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "com.jellyfish85.query.generator.runner.GenerateGeneralCodeSqlLoaderSetsRunner"
