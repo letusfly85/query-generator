@@ -17,13 +17,11 @@ class GenerateIndexReDDLRunner {
     public static void main(String[] args) {
         def dependencyGrpCd = args[0]
         def environment     = args[1]
-        def indexNames      = args.tail().tail()
+        ArrayList<String> indexes = args.tail().tail()
 
         BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
         BaseContext context = runner._context
         runner.databaseInitialize()
-
-        ArrayList<String> indexes = context.argsHelper.requestObjectNameList(indexNames)
 
         def conn      = runner.getConnection()
         def queryProp = context.queryProp
