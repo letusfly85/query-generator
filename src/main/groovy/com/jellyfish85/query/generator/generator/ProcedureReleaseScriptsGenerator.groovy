@@ -48,7 +48,7 @@ class ProcedureReleaseScriptsGenerator extends GeneralGenerator {
         ]
 
         String path = "/com/jellyfish85/query/generator/template/ddl/ExecuteAllQueries.template"
-        this.setProperty(path)
+        this.setPath(path)
         this.generate(map, path)
 
         this.setPath(this.context.fileNameHelper.requestExecuteProcedureDDLShellPath())
