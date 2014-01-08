@@ -17,9 +17,7 @@ class GenerateIndexReDDLRunner {
     public static void main(String[] args) {
         def dependencyGrpCd = args[0]
         def environment     = args[1]
-        def indexNames      = args[2]
-
-
+        def indexNames      = args.tail().tail()
 
         BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
         BaseContext context = runner._context
