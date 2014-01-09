@@ -63,7 +63,9 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
             String fileName = StringUtils.join([FilenameUtils.getBaseName(file.getName()), extName], ".")
             File dest = new File(this.context.queryProp.sqlLoaderDatPath(), fileName)
 
+            dest.deleteOnExit()
             FileUtils.copyFile(file, dest)
+            replaceUtils.convertSJIS2UTF8(dest)
             destFiles.add(dest)
         }
 
