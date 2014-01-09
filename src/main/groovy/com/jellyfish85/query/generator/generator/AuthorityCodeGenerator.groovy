@@ -59,6 +59,7 @@ class AuthorityCodeGenerator extends GeneralGenerator {
             File dest = new File(this.context.queryProp.sqlLoaderDatPath(), file.getName())
 
             FileUtils.copyFile(file, dest)
+            replaceUtils.convertSJIS2UTF8(dest)
             destFiles.add(dest)
         }
     }
