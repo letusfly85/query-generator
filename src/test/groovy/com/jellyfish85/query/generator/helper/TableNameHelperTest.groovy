@@ -2,9 +2,6 @@ package com.jellyfish85.query.generator.helper
 
 import com.jellyfish85.query.generator.constant.QueryAppConst
 import com.jellyfish85.query.generator.utils.QueryAppProp
-import com.jellyfish85.xlsaccessor.constant.AppConst
-
-import javax.management.Query
 
 /**
  * test class of TableNameHelper
@@ -13,7 +10,8 @@ import javax.management.Query
  */
 class TableNameHelperTest extends GroovyTestCase {
 
-    QueryAppProp _queryProp = new QueryAppProp("test")
+    String       _environment       = System.getProperty("4test.environment")
+    QueryAppProp _queryProp         = new QueryAppProp(_environment)
     TableNameHelper tableNameHelper = new TableNameHelper(_queryProp)
 
     void testRequestBKTableName() {
@@ -40,8 +38,6 @@ class TableNameHelperTest extends GroovyTestCase {
     void testRequestBITableName1() {
 
     }
-
-
 
     void testRequestBKTableName1() {
 

@@ -49,6 +49,12 @@ dependencies {
 
 }
 
+test {
+    systemProperty "app.env.name",           "develop"
+    systemProperty "4test.dependentGrpCd",   "99"
+    systemProperty "4test.environment",      "4test.environment"
+}
+
 
 task GenerateErdReleaseScriptsRunner (type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath

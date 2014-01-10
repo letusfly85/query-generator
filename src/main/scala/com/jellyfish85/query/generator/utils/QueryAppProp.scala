@@ -158,6 +158,8 @@ class QueryAppProp(environment: String) {
 
   val erdSchemaOuterFaceSubName:       String   = configuration.getString("erd.schema.outer.face.sub.name")
 
+  val erdSchema4Test:                  String   = configuration.getString("erd.schema.4test")
+
   val erdFunctionAnotherOwnerDDL:      String   = configuration.getString("erd.function.another.owner.ddl")
 
 }
