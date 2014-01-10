@@ -3,6 +3,7 @@ package com.jellyfish85.query.generator.helper
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.query.generator.constant.QueryAppConst
 import com.jellyfish85.query.generator.utils.QueryAppProp
+import org.apache.commons.lang.StringUtils
 
 /**
  * == TableNameHelper ==
@@ -45,10 +46,10 @@ class TableNameHelper {
      */
     public String requestBITableName(String tableName, String option) {
         if (tableName.startsWith("M")) {
-            this.biTableName = "C" + tableName
+            this.biTableName = "C" + StringUtils.substring(tableName, 1)
 
         } else if (tableName.startsWith("T")) {
-            this.biTableName = "R" + tableName
+            this.biTableName = "H" + StringUtils.substring(tableName, 1)
         }
 
         return this.biTableName
