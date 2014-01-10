@@ -3,6 +3,7 @@ package com.jellyfish85.query.generator.runner
 import com.jellyfish85.query.generator.utils.QueryAppProp
 
 import java.sql.Connection
+import java.sql.DatabaseMetaData
 
 /**
  *
@@ -19,11 +20,14 @@ class BaseRunnerTest extends GroovyTestCase {
 
     void testGetConnection() {
         runner.databaseInitialize()
+
+        // check Connection commit mode
         Connection conn = runner.getConnection()
-
-        println("schema name is.." + conn.getSchema())
-
         assertEquals("auto commit should be true", conn.getAutoCommit(), false)
+
+        // confirm test schema name
+        DatabaseMetaData metaData = conn.getMetaData()
+        assertEquals("schemaName", metaData.getUserName(), _queryProp.erdSchema4Test())
     }
 
     /*

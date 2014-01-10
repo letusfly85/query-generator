@@ -50,7 +50,7 @@ dependencies {
 }
 
 test {
-    systemProperty "app.env.name",           "develop"
+    systemProperty "app.env.name",           "development"
     systemProperty "4test.dependentGrpCd",   "99"
     systemProperty "4test.environment",      "4test.environment"
 }
