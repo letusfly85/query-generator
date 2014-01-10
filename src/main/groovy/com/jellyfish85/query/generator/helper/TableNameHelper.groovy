@@ -79,7 +79,7 @@ class TableNameHelper {
     public String requestBKTableName(String tableName, String option) {
         this.bkTableName = "BK_" + tableName
 
-        return this.biTableName
+        return this.bkTableName
     }
 
     /**
