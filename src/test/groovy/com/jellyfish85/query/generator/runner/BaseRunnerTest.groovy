@@ -21,6 +21,8 @@ class BaseRunnerTest extends GroovyTestCase {
         runner.databaseInitialize()
         Connection conn = runner.getConnection()
 
+        println("schema name is.." + conn.getSchema())
+
         assertEquals("auto commit should be true", conn.getAutoCommit(), false)
     }
 
