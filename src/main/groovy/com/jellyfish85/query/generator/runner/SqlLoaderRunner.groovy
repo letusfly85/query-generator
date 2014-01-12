@@ -1,6 +1,7 @@
 package com.jellyfish85.query.generator.runner
 
 import com.jellyfish85.query.generator.BaseContext
+import com.jellyfish85.query.generator.utils.QueryReplaceUtils
 import org.apache.commons.io.FileUtils
 
 class SqlLoaderRunner {
@@ -24,11 +25,11 @@ class SqlLoaderRunner {
         script = script.replace("\$PASSWORD", queryProp.erdSchemaAdminPass() + "@" + queryProp.erdSidName())
         script = "cd ${workspace}\n" + script
 
-        String _path = "tmp.bat"
+        String _path = "tmp.sh"
         File _file  = new File(_path)
         FileUtils.writeStringToFile(_file, script)
 
-        String command  = "cmd /c ${_path}"
+        String command  = "sh ${_path}"
 
         println(command)
 
@@ -70,20 +71,30 @@ class SqlLoaderRunner {
      * generate executable bat file for sql loader on ms a machine
      * and execute it
      *
+     * example below
+     * gradle SqlLoaderRunner -Prunargs=99,4test.environment,C:\query-generator\output\develop\loader,exec_load4error_check_code.sh
+     *
      * @param runner
      * @param scriptPath
+     *
      */
     public void msWinExec(BaseRunner  runner, String scriptPath) {
         BaseContext context = runner._context
         def queryProp = context.queryProp
 
+        // convert script to utf-8 encoding
+        QueryReplaceUtils utils = new QueryReplaceUtils(queryProp)
+
         println scriptPath
         File file  = new File(scriptPath)
+        utils.convertDatFileEncoding2SJISByShell(scriptPath, queryProp.sqlLoaderDatPath())
+
         String script = FileUtils.readFileToString(file)
         script = script.replace("\$PASSWORD",
                 (queryProp.erdSchemaAdminPass() + "@" + queryProp.erdSidName()))
         String workspace = file.getParent()
         script = "cd ${workspace}\n" + script
+
 
         String _path = "tmp.bat"
         File _file  = new File(_path)

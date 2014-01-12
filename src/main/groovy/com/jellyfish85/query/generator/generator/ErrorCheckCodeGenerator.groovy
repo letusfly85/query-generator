@@ -39,6 +39,7 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
         controlPath.listFiles().each {File file ->
             String extName  = FilenameUtils.getExtension(file.getName()).toLowerCase()
             String fileName = StringUtils.join([FilenameUtils.getBaseName(file.getName()), extName], ".")
+
             File dest = new File(this.context.queryProp.sqlLoaderCtlPath(), fileName)
 
             FileUtils.copyFile(file, dest)
@@ -61,9 +62,9 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
         dataPath.listFiles().each {File file ->
             String extName  = FilenameUtils.getExtension(file.getName()).toLowerCase()
             String fileName = StringUtils.join([FilenameUtils.getBaseName(file.getName()), extName], ".")
+
             File dest = new File(this.context.queryProp.sqlLoaderDatPath(), fileName)
 
-            dest.deleteOnExit()
             FileUtils.copyFile(file, dest)
             replaceUtils.convertSJIS2UTF8(dest)
             destFiles.add(dest)
