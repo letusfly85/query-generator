@@ -18,8 +18,15 @@ class BaseRunnerTest extends GroovyTestCase {
 
     QueryAppProp _queryProp = new QueryAppProp(_environment)
 
-    void testGetConnection() {
+    void setUp() {
         runner.databaseInitialize()
+    }
+
+    void tearDown() {
+        runner.databaseFinalize()
+    }
+
+    void testGetConnection() {
 
         // check Connection commit mode
         Connection conn = runner.getConnection()
