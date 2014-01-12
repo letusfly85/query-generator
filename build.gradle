@@ -6,6 +6,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     compile    'org.codehaus.groovy:groovy-all:2.1.5'
 
@@ -24,28 +25,22 @@ dependencies {
     compile    'org.antlr:antlr-runtime:3.4'
 
     //compile 'com.jellyfish85:dbaccessor:1.0-SNAPSHOT'
-    compile files('lib/dbaccessor.jar')
+    compile     files('lib/dbaccessor.jar')
 
     //compile 'com.jellyfish85:svnaccessor:1.0-SNAPSHOT'
-    compile files('lib/svnaccessor.jar')
+    compile     files('lib/svnaccessor.jar')
 
     //compile 'com.jellyfish85:xlsaccessor:1.0-SNAPSHOT'
-    compile files('lib/xlsaccessor.jar')
+    compile     files('lib/xlsaccessor.jar')
 
     //compile 'com.jellyfish85:cassandra-accessor:1.0-SNAPSHOT'
-    compile files('lib/cassandra-accessor.jar')
+    compile     files('lib/cassandra-accessor.jar')
 
-    runtime files('lib/ojdbc14.jar')
+    runtime     files('lib/ojdbc14.jar')
 
-    runtime 'org.apache.poi:poi:3.8'
+    runtime     'org.apache.poi:poi:3.8'
 
-    runtime 'org.apache.poi:poi-ooxml:3.8'
-
-    testCompile      'junit:junit:4.11'
-
-    testCompile      group: "org.specs2", name: "specs2_2.9.2", version:"1.12.1"
-
-    testCompile      group: 'org.specs2', name: 'specs2-scalaz-core_2.9.1',version:'6.0.1'
+    runtime     'org.apache.poi:poi-ooxml:3.8'
 
 }
 
@@ -53,6 +48,22 @@ test {
     systemProperty "app.env.name",           "development"
     systemProperty "4test.dependentGrpCd",   "99"
     systemProperty "4test.environment",      "4test.environment"
+
+    dependencies {
+        testCompile      'junit:junit:4.11'
+
+        testCompile      group: "org.specs2", name: "specs2_2.9.2", version:"1.12.1"
+
+        testCompile      group: 'org.specs2', name: 'specs2-scalaz-core_2.9.1',version:'6.0.1'
+
+        testCompile      files('lib/dbunit-2.4.9.jar')
+
+        testCompile      'org.slf4j:slf4j-log4j12:1.5.6'
+
+        testCompile      'org.slf4j:slf4j-api:1.5.6'
+
+        testCompile      'org.slf4j:jcl-over-slf4j:1.5.6'
+    }
 }
 
 
