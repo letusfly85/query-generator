@@ -28,7 +28,7 @@ class BaseRunnerTest extends GroovyTestCase {
     QueryAppProp _queryProp      = null
 
     void setUp() {
-        dependentGrpCd = System.getProperty("4test.dependentGrpCd")
+        dependentGrpCd  = System.getProperty("4test.dependentGrpCd")
         _environment    = System.getProperty("4test.environment")
         runner          = new BaseRunner(dependentGrpCd, _environment)
 

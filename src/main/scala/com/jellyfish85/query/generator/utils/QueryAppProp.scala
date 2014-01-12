@@ -150,6 +150,12 @@ class QueryAppProp(environment: String) {
    ************************************************************************************************/
   val erdTableMasterPrefix:            String   = configuration.getString("erd.table.master.prefix")
 
+  val erdSidName:                      String   = configuration.getString("erd.sid.name")
+
+  val erdSchemaAdminName:              String   = configuration.getString("erd.schema.admin.name")
+
+  val erdSchemaAdminPass:              String   = configuration.getString("erd.schema.admin.pass")
+
   val erdSchemaMainName:               String   = configuration.getString("erd.schema.main.name")
 
   val erdSchemaSubName:                String   = configuration.getString("erd.schema.sub.name")
