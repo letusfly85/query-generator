@@ -18,7 +18,7 @@ class SqlLoaderRunner {
         BaseContext context = runner._context
         def queryProp = context.queryProp
 
-        String path = "${workspace}\\${scriptName}"
+        String path = "${workspace}/${scriptName}"
         println path
         File file  = new File(path)
         String script = FileUtils.readFileToString(file)
@@ -32,6 +32,7 @@ class SqlLoaderRunner {
         String command  = "sh ${_path}"
 
         println(command)
+        System.exit(0)
 
         Process process = command.execute()
         int result = process.waitFor()
