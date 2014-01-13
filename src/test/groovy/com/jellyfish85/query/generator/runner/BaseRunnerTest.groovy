@@ -3,6 +3,8 @@ package com.jellyfish85.query.generator.runner
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.query.generator.utils.QueryAppProp
 import org.dbunit.operation.DatabaseOperation
+import org.junit.AfterClass
+import org.junit.BeforeClass
 
 import java.sql.Connection
 import java.sql.DatabaseMetaData
@@ -27,6 +29,7 @@ class BaseRunnerTest extends GroovyTestCase {
     BaseRunner   runner          = null
     QueryAppProp _queryProp      = null
 
+    @BeforeClass
     void setUp() {
         dependentGrpCd  = System.getProperty("4test.dependentGrpCd")
         _environment    = System.getProperty("4test.environment")
@@ -47,6 +50,7 @@ class BaseRunnerTest extends GroovyTestCase {
         DatabaseOperation.CLEAN_INSERT.execute(iConn, partialDataSet)
     }
 
+    @AfterClass
     void tearDown() {
         runner.databaseFinalize()
     }
@@ -66,5 +70,16 @@ class BaseRunnerTest extends GroovyTestCase {
         // check dependencies list
         ArrayList<KrObjectDependenciesBean> beans = runner.getDependencies()
         assertEquals("beans size should be 3.", 3, beans.size())
+
+        beans.each {bean ->
+            assert bean instanceof KrObjectDependenciesBean
+        }
+    }
+
+    // check existent of output folder
+    void testInitializeOutputFolder() {
+        File outputFolder = new File(_queryProp.outputFolder())
+
+        assertEquals("output folder exists", Boolean.TRUE, outputFolder.exists())
     }
 }
