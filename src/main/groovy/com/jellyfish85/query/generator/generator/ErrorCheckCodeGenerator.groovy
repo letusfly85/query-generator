@@ -55,6 +55,13 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
         }
     }
 
+    /**
+     * generate error check data files
+     * they are registerd in the subversion repository by utf-8,
+     * so don't need to converting encoding.
+     *
+     *
+     */
     public void generateDataFile() {
         File dataPath = new File(this.context.queryProp.applicationDataPath())
 
