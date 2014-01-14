@@ -66,7 +66,7 @@ class ErrorCheckCodeGenerator extends GeneralGenerator {
             File dest = new File(this.context.queryProp.sqlLoaderDatPath(), fileName)
 
             FileUtils.copyFile(file, dest)
-            replaceUtils.convertSJIS2UTF8(dest)
+            //replaceUtils.convertSJIS2UTF8(dest)
             destFiles.add(dest)
         }
 
