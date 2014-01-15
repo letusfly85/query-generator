@@ -43,6 +43,8 @@ class QueryAppProp(environment: String) {
 
   val procedureDDLFolder:              String   = outputFolder + configuration.getString("folder.output.erd.procedure")
 
+  val objectCheckFolder:               String   = outputFolder + configuration.getString("folder.output.erd.check")
+
   /************************************************************************************************
    *
    *

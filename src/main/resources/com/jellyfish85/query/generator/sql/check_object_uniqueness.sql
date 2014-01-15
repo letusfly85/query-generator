@@ -14,7 +14,7 @@ where
     x.object_type <> 'SYNONYM'
 and x.owner in
 (
-	'schemaNames'
+	schemaNames
 )
 and x.object_name in
 (
@@ -25,7 +25,7 @@ and x.object_name in
     where
         s.OWNER in
     (
-        'schemaNames'
+        schemaNames
     )
     group by
          s.OBJECT_NAME

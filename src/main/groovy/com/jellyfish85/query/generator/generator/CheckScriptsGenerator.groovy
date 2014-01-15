@@ -25,9 +25,10 @@ class CheckScriptsGenerator extends GeneralGenerator {
 
         String checkObjectQueryPath = "/com/jellyfish85/query/generator/sql/check_object.sql"
 
-        String checkQuery = dao.generateSQLIncludesList(checkObjectQueryPath, map)
-
+        String checkQuery = dao.generateSQLIncludesListWithParameters(checkObjectQueryPath, map)
         this.setQuery(checkQuery)
+
+        this.setPath(this.context.fileNameHelper.requestErdCheckScriptsPath())
 
         this.writeAppFile()
     }

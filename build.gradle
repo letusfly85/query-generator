@@ -127,3 +127,9 @@ task SqlLoaderRunner (type: JavaExec) {
     main = "com.jellyfish85.query.generator.runner.SqlLoaderRunner"
     args = project.runargs.split(',').toList()
 }
+
+task GenerateCheckScriptsRunner (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.jellyfish85.query.generator.runner.GenerateCheckScriptsRunner"
+    args = project.runargs.split(',').toList()
+}

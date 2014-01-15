@@ -199,6 +199,23 @@ class AppFileNameHelper {
     }
 
     /**
+     * request red check scripts path
+     *
+     * @author wada shunsuke
+     * @since  2014/01/15
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestErdCheckScriptsPath() {
+
+        this.fileName = "check_object.sql"
+
+        String path = FilenameUtils.concat(this.queryProp.objectCheckFolder(), this.fileName)
+        return path
+    }
+
+    /**
      * == requestExecuteAllQueriesPath ==
      *
      * @author wada shunsuke

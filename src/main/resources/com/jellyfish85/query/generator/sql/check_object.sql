@@ -13,7 +13,7 @@ from
 where
 	s.OWNER in
 (
-	'schemaNames'
+	schemaNames
 )
 order by
 	s.OWNER

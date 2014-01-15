@@ -15,7 +15,7 @@ FROM
 where
 	      com.OWNER in
 (
-	      'schemaNames'
+	      schemaNames
 )
 order by
 	       com.OWNER
