@@ -18,7 +18,6 @@ class GenerateCheckScriptsRunner {
         BaseContext context = runner._context
         runner.databaseInitialize()
 
-
         // specify schema names
         ArrayList<KrObjectDependenciesBean> beans = runner.getDependencies()
         ArrayList<String> schemaNames = new ArrayList<>()
@@ -27,6 +26,7 @@ class GenerateCheckScriptsRunner {
         // generate find object list sql
         CheckScriptsGenerator generator = new CheckScriptsGenerator(context)
         generator.generateErdExistence(schemaNames)
+        generator.generateTableVersionCheckScripts(schemaNames)
 
         runner.databaseFinalize()
     }

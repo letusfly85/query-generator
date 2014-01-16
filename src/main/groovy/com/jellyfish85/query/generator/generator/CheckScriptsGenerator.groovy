@@ -32,4 +32,20 @@ class CheckScriptsGenerator extends GeneralGenerator {
 
         this.writeAppFile()
     }
+
+    public void generateTableVersionCheckScripts(ArrayList<String> schemaNames) {
+
+        def key = "schemaNames"
+        HashMap<String, ArrayList<String>> map = new HashMap()
+        map.put(key, schemaNames)
+
+        String checkObjectQueryPath = "/com/jellyfish85/query/generator/sql/check_table_version.sql"
+
+        String checkQuery = dao.generateSQLIncludesListWithParameters(checkObjectQueryPath, map)
+        this.setQuery(checkQuery)
+
+        this.setPath(this.context.fileNameHelper.requestTableVersionCheckScriptsPath())
+
+        this.writeAppFile()
+    }
 }

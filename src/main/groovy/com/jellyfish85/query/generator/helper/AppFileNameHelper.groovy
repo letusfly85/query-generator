@@ -199,7 +199,7 @@ class AppFileNameHelper {
     }
 
     /**
-     * request red check scripts path
+     * request erd check scripts path
      *
      * @author wada shunsuke
      * @since  2014/01/15
@@ -210,6 +210,23 @@ class AppFileNameHelper {
     public String requestErdCheckScriptsPath() {
 
         this.fileName = "check_object.sql"
+
+        String path = FilenameUtils.concat(this.queryProp.objectCheckFolder(), this.fileName)
+        return path
+    }
+
+    /**
+     * request table version check scripts path
+     *
+     * @author wada shunsuke
+     * @since  2014/01/16
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestTableVersionCheckScriptsPath() {
+
+        this.fileName = "check_table_version.sql"
 
         String path = FilenameUtils.concat(this.queryProp.objectCheckFolder(), this.fileName)
         return path
