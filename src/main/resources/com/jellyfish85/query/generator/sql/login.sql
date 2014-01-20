@@ -131,7 +131,7 @@ column cd_id_nm     format a20
 column cd_id_nm_btr format a20
 column ry           format a15
 column hyoj_jn      format 99
-column count        format 99
+column count        format 9999999
 column user_id      format 9999999
 column default_tablespace format a30
 column temporary_tablespace format a30
