@@ -2,10 +2,10 @@
 int index = 0
 tableNames.each {String tableName, String schemaName ->
     if (index == tableNames.size() -1) { %>\
-SELECT '${schemaName}' OWNER, '${tableName}' TABLE_NAME, COUNT(\*) COUNT FROM ${schemaName}.${tableName}
+SELECT
 ORDER BY TABLE_NAME
 <% } else { %>\
-SELECT '${schemaName}' OWNER, '${tableName}' TABLE_NAME, COUNT(\*) COUNT FROM ${schemaName}.${tableName} UNION ALL
+SELECT
 <% }
-    index += 1%>\
+    index += 1 %>\
 <% } %>\
