@@ -1,11 +1,4 @@
-<%
-int index = 0
-tableNames.each {String tableName, String schemaName ->
-    if (index == (tableNames.size() -1)) { %>\
+<% int index = 0 %>
+<% tableNames.each {String tableName, String schemaName ->
 SELECT
-ORDER BY TABLE_NAME
-<% } else { %>\
-SELECT
-<% }
-    index += 1 %>\
 <% } %>\
