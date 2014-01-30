@@ -38,11 +38,10 @@ column table_name format a30
 column column_name format a30
 column index_name format a30
 column index_type format a30
-column owner format a30
+column owner format a15
 column constraint_name format a30
 column constraint_type format a30
 column privilege format a30
-column owner format a30
 column data_type format a30
 column data_length format 9999999
 column synonym_name format a30
@@ -158,4 +157,10 @@ set trimspool on
 set sqlprompt "_date _user'@'_connect_identifier'>'"
 set serverout on size 1000000
 set termout on
+column log_date new_value log_date_text noprint
+column username new_value user_name_text noprint
+column instancename new_value instance_name_text noprint
+select to_char(sysdate,'yyyy_mmdd_hh24mi') log_date from dual;
+select username username from user_users;
+select instance_name instancename from v$instance;
 set echo on

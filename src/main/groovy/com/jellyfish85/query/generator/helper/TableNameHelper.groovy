@@ -99,6 +99,9 @@ class TableNameHelper {
         } else if (tableName.startsWith("WI_IK_")) {
             return QueryAppConst.APPLICATION_GROUP_IK
 
+        } else if (tableName.startsWith("M_IK_")) {
+            return QueryAppConst.APPLICATION_GROUP_IK
+
         } else if (tableName.startsWith("WR")) {
             return QueryAppConst.APPLICATION_GROUP_IF
 
