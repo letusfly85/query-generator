@@ -1,4 +1,4 @@
 <% int index = 0 %>
-<% tableNames.each {String tableName, String schemaName ->
+<% tableNames.each {String tableName, String schemaName -> %>\
 SELECT
 <% } %>\
