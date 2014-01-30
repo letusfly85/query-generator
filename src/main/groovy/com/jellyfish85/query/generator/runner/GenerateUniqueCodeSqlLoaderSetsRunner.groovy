@@ -67,6 +67,9 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         CheckScriptsGenerator checkScriptsGenerator =
                 new CheckScriptsGenerator(runner._context)
+        tableNames.each {String tableName, String schemaName ->
+            println(tableName + "\t" + schemaName)
+        }
         checkScriptsGenerator.generateCurrentRecordCheckScripts(tableNames)
 
         runner.databaseFinalize()
