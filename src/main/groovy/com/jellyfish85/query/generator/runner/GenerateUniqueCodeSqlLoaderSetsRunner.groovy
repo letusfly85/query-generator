@@ -4,6 +4,7 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrObjectDependenciesDao
 import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.downloader.FileDownloader
+import com.jellyfish85.query.generator.generator.CheckScriptsGenerator
 import com.jellyfish85.query.generator.generator.UniqueCodeGenerator
 import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.CodeGeneratorHelper
@@ -58,6 +59,10 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         CodeGeneratorHelper helper = new CodeGeneratorHelper(context)
         helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4UniqueCode())
+
+        CheckScriptsGenerator checkScriptsGenerator =
+                new CheckScriptsGenerator(runner._context)
+        checkScriptsGenerator.generateCurrentRecordCheckScripts(tableNames)
 
         runner.databaseFinalize()
     }

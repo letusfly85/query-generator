@@ -232,6 +232,24 @@ class AppFileNameHelper {
         return path
     }
 
+
+    /**
+     * request current master record check scripts path
+     *
+     * @author wada shunsuke
+     * @since  2014/01/31
+     * @param dependency
+     * @param bean
+     * @return
+     */
+    public String requestCurrentRecordCheckScriptsPath() {
+
+        this.fileName = "current_record_check.sql"
+
+        String path = FilenameUtils.concat(this.queryProp.objectCheckFolder(), this.fileName)
+        return path
+    }
+
     /**
      * == requestExecuteAllQueriesPath ==
      *

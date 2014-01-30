@@ -48,4 +48,16 @@ class CheckScriptsGenerator extends GeneralGenerator {
 
         this.writeAppFile()
     }
+
+    public void generateCurrentRecordCheckScripts(HashMap<String, String> tableNames) {
+
+        String path = "/com/jellyfish85/query/generator/template/dml/checkCurrentRecord.template"
+        Map map = [
+                tableNames: tableNames
+        ]
+
+        generate(map, path)
+        this.setPath(this.context.fileNameHelper.requestTableVersionCheckScriptsPath())
+        this.writeAppFile()
+    }
 }
