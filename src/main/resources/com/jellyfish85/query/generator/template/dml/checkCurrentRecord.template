@@ -1,7 +1,7 @@
 <%
 int index = 0
 tableNames.each {String tableName, String schemaName ->
-    if (index == tableNames.size() -1) { %>\
+    if (index == (tableNames.size() -1)) { %>\
 SELECT
 ORDER BY TABLE_NAME
 <% } else { %>\
