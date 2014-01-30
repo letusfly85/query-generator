@@ -57,7 +57,7 @@ class CheckScriptsGenerator extends GeneralGenerator {
         ]
 
         generate(map, path)
-        this.setPath(this.context.fileNameHelper.requestTableVersionCheckScriptsPath())
+        this.setPath(this.context.fileNameHelper.requestCurrentRecordCheckScriptsPath())
         this.writeAppFile()
     }
 }
