@@ -1,5 +1,5 @@
 <%
-def index = 0
+int index = 0
 tableNames.each {String tableName, String schemaName ->
     if (index == tableNames.size() -1) { %>\
 SELECT '${schemaName}' OWNER, '${tableName}' TABLE_NAME, COUNT(*) COUNT FROM ${schemaName}.${tableName}
