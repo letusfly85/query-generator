@@ -40,7 +40,7 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         SVNRequestBean requestBean = new SVNRequestBean()
         requestBean.setPath(xlsAppProp.uniqueCodeBookParentPath())
-        FileDownloader.downloadDir(queryProp, requestBean)
+        //FileDownloader.downloadDir(queryProp, requestBean)
 
         File parentPath =
                 new File(queryProp.applicationWorkspacePath())
@@ -48,12 +48,17 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         HashMap<String, String> tableNames = new HashMap<>()
         uniqueCodeFiles.eachWithIndex {File file, int idx ->
+
+            if (idx <= 3) {
+
             println(file.getPath())
             generator.initializeBean(dependencies, file.getPath())
             generator.setTableNames(tableNames)
 
             generator.generateUniqueCodeControlFile()
             generator.generateUniqueCodeDataFile()
+
+            }
 
         }
 
