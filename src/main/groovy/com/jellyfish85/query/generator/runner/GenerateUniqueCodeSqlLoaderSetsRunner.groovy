@@ -70,7 +70,9 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         HashMap<String, String> _tableNames = new HashMap<>()
         tableNames.each {String tableName, String, schemaName ->
-            String _schemaName = context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+            String _schemaName =
+                    context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName).
+                            objectOwnerAttr().value()
             _tableNames.put(tableName, _schemaName)
         }
         checkScriptsGenerator.generateCurrentRecordCheckScripts(_tableNames)
