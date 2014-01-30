@@ -65,11 +65,9 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
         CodeGeneratorHelper helper = new CodeGeneratorHelper(context)
         helper.generateLoadingShellScript(tableNames, fileNameHelper.requestSqlLoaderPath4UniqueCode())
 
-        CheckScriptsGenerator checkScriptsGenerator =
-                new CheckScriptsGenerator(runner._context)
 
         HashMap<String, String> _tableNames = new HashMap<>()
-
+        println(tableNames)
         tableNames.each {String tableName, String, schemaName ->
             println(tableName)
 
@@ -79,6 +77,9 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
             _tableNames.put(tableName, _schemaName)
         }
+
+        CheckScriptsGenerator checkScriptsGenerator =
+                new CheckScriptsGenerator(runner._context)
         checkScriptsGenerator.generateCurrentRecordCheckScripts(_tableNames)
 
         runner.databaseFinalize()
