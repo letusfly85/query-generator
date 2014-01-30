@@ -68,7 +68,7 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
 
         HashMap<String, String> _tableNames = new HashMap<>()
         println(tableNames)
-        tableNames.each {String tableName, String, schemaName ->
+        tableNames.each {String tableName, String schemaName ->
             println(tableName)
 
             String _schemaName =
