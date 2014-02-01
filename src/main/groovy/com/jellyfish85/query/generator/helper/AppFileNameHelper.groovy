@@ -418,4 +418,18 @@ class AppFileNameHelper {
         String path = FilenameUtils.concat(this.queryProp.sqlLoaderParentPath(), this.fileName)
         return path
     }
+
+    /**
+     *
+     *
+     * @author wada shunsuke
+     * @since  2014/02/02
+     *
+     * @return
+     */
+    public String requestHTMLReleaseDiffPath() {
+
+        String path = FilenameUtils.concat(this.queryProp.htmlReleaseDiffFolder(), "releaseDiff.html")
+        return path
+    }
 }

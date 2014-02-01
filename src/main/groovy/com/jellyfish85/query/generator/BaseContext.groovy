@@ -18,9 +18,11 @@ class BaseContext {
     public AppFileNameHelper fileNameHelper  = null
 
     public String dependentGrpCd             = null
+    public String environment                = null
 
     public BaseContext(String _dependentGrpCd, String environment) {
         this.dependentGrpCd  = _dependentGrpCd
+        this.environment     = environment
 
         this.queryProp       = new QueryAppProp(environment)
         this.tableNameHelper = new TableNameHelper(this.queryProp)

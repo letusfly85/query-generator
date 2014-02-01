@@ -45,6 +45,8 @@ class QueryAppProp(environment: String) {
 
   val objectCheckFolder:               String   = outputFolder + configuration.getString("folder.output.erd.check")
 
+  val htmlReleaseDiffFolder:           String   = outputFolder + configuration.getString("folder.output.html.release.diff")
+
   /************************************************************************************************
    *
    *
@@ -115,6 +117,9 @@ class QueryAppProp(environment: String) {
    *
    *
    ************************************************************************************************/
+
+  val redmineURLRevisionHeader:            String
+                                              = configuration.getString("redmine.url.revision.header")
 
   val subversionRepositoryCode:            String
                                               = configuration.getString("subversion.repository.code")

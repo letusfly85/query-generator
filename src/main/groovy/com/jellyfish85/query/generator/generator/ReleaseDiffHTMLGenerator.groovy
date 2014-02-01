@@ -5,6 +5,7 @@ import com.jellyfish85.dbaccessor.bean.src.mainte.tool.VChangesetsBean
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrReleaseDiffsDao
 import com.jellyfish85.dbaccessor.dao.src.mainte.tool.VChangesetsDao
 import com.jellyfish85.query.generator.BaseContext
+import org.apache.commons.io.FilenameUtils
 
 import java.sql.Connection
 
@@ -51,11 +52,26 @@ class ReleaseDiffHTMLGenerator extends GeneralGenerator {
 
         ArrayList<VChangesetsBean> vList = changeSetsDao.convert(_vList)
 
-        vList.each {VChangesetsBean vBean ->
-            println(vBean.pathAttr().value())
+        vList.collectAll {VChangesetsBean vBean ->
+            vBean.fileNameAttr().setValue(FilenameUtils.getName(vBean.pathAttr().value()))
+            vBean.pathAttr().setValue(vBean.pathAttr().value().replaceAll("/JYB/", ""))
         }
 
-        //TODO generate HTML
+        String hrefHeader = this.context.queryProp.redmineURLRevisionHeader()
+        Map map = [
+                fromRevision: bean.fromRevisionAttr().value(),
+                toRevision:   bean.toRevisionAttr().value(),
+                vList:        vList,
+                hrefHeader:   hrefHeader,
+        ]
+
+        println(this.context.environment)
+        String path = "/com/jellyfish85/query/generator/template/html/${this.context.environment}/releaseDiff.template"
+
+        generate(map, path)
+        setPath(this.context.fileNameHelper.requestHTMLReleaseDiffPath())
+
+        writeAppFile()
     }
 
 }
