@@ -116,6 +116,9 @@ class QueryAppProp(environment: String) {
    *
    ************************************************************************************************/
 
+  val subversionRepositoryCode:            String
+                                              = configuration.getString("subversion.repository.code")
+
   val subversionAuthorityCodeDataPath:     String
                                               = configuration.getString("subversion.authority.code.data.path")
 
@@ -133,6 +136,15 @@ class QueryAppProp(environment: String) {
 
   val subversionUrlTag4Test:               String
                                               = configuration.getString("subversion.url.tag.4test")
+
+  var subversionCurrentName:                   String = _
+  val subversionTagNames: java.util.Iterator[String] = configuration.getKeys("subversion.url.current")
+  while (subversionTagNames.hasNext) {
+    val key: String = subversionTagNames.next()
+    if (key.replaceAll("subversion.url.current.", "").equals(environment)) {
+      subversionCurrentName = configuration.getString(key)
+    }
+  }
 
   /************************************************************************************************
    * workspace attributes
