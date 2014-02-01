@@ -4,9 +4,9 @@ CREATE	INDEX ${schemaName}.${indexName} ' ||
 '('    ||
 <% columnList.eachWithIndex {bean, i ->
     if (i == 0){ %>\
-    '${bean.columnNameAttr().value()}'	||
+    '${currentBean.columnNameAttr().value()}'	||
 <% } else { %>\
-    ',${bean.columnNameAttr().value()}' ||
+    ',${currentBean.columnNameAttr().value()}' ||
 <% } } %>\
 ')'
 /

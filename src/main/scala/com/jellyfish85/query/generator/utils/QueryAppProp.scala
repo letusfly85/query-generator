@@ -131,6 +131,9 @@ class QueryAppProp(environment: String) {
   val subversionProcedureDDLPathLike:      String
                                               = configuration.getString("subversion.procedure.ddl.path.like")
 
+  val subversionUrlTag4Test:               String
+                                              = configuration.getString("subversion.url.tag.4test")
+
   /************************************************************************************************
    * workspace attributes
    *

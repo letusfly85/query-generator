@@ -46,7 +46,7 @@ COMMENT ON TABLE ${schemaName}.${tableName} IS '${uniqueTag}\t${tableBean.logica
 
 <% if (!pkList.size().equals(0)) { %>
 ALTER TABLE ${schemaName}.${tableName} ADD CONSTRAINT PK_${tableName} PRIMARY KEY (
-<% pkList.eachWithIndex {bean, idx ->
+<% pkList.eachWithIndex {currentBean, idx ->
 if (idx == 0) { %> ${bean.physicalColumnNameAttr().value()}
 <% } else { %>,${bean.physicalColumnNameAttr().value()}
 <% } } %>)<% } %>
@@ -62,7 +62,7 @@ if (index.equals(0)) { %>     ${indCol.columnNameAttr().value()}
 /
 <% } } %>
 
-<% columnList.eachWithIndex {bean, idx -> %>
+<% columnList.eachWithIndex {currentBean, idx -> %>
 COMMENT ON COLUMN ${schemaName}.${tableName}.${bean.physicalColumnNameAttr().value()}    IS	'${bean.logicalColumnNameAttr().value()}'
 / <% } %>
 

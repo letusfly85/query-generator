@@ -42,12 +42,13 @@ class BaseRunnerTest extends GroovyTestCase {
         Connection conn = runner.getConnection()
         IDatabaseConnection iConn = new DatabaseConnection(conn, _queryProp.erdSchema4Test())
 
-        String url = "/com/jellyfish85/query/generator/runner/KR_OBJECT_DEPENDENCIES.xls"
+        String url = "/com/jellyfish85/query/generator/excel/KR_OBJECT_DEPENDENCIES.xls"
         File file  = new File(getClass().getResource(url).toURI())
         FileInputStream inputStream = new FileInputStream(file)
         IDataSet partialDataSet     = new XlsDataSet(inputStream)
 
         DatabaseOperation.CLEAN_INSERT.execute(iConn, partialDataSet)
+        conn.commit()
     }
 
     @AfterClass

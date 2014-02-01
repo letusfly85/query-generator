@@ -80,7 +80,7 @@ class UniqueCodeGenerator extends GeneralGenerator {
     }
 
     /**
-     * initialize bean info, add table name and other attributes
+     * initialize currentBean info, add table name and other attributes
      *
      *
      * @param _dependencies
