@@ -136,6 +136,12 @@ task GenerateCheckScriptsRunner (type: JavaExec) {
     args = project.runargs.split(',').toList()
 }
 
+task RegisterReleaseDiffRunner (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.jellyfish85.query.generator.runner.RegisterReleaseDiffRunner"
+    args = project.runargs.split(',').toList()
+}
+
 task GenerateReleaseDiffHTMLRunner (type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "com.jellyfish85.query.generator.runner.GenerateReleaseDiffHTMLRunner"
