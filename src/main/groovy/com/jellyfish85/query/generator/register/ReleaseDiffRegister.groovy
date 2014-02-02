@@ -4,6 +4,7 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrReleaseDiffsBean
 import com.jellyfish85.dbaccessor.dao.query.generate.tool.KrReleaseDiffsDao
 import com.jellyfish85.svnaccessor.manager.SVNManager
 import org.apache.commons.lang.ArrayUtils
+import org.tmatesoft.svn.core.SVNDirEntry
 import org.tmatesoft.svn.core.io.SVNRepository
 
 import java.sql.Connection
@@ -78,7 +79,10 @@ class ReleaseDiffRegister {
         this.nextBean.headerFlgAttr().setValue("1")
 
         this.currentBean.headerFlgAttr().setValue("0")
-        this.nextBean.toRevisionAttr().setValue(new BigDecimal(this.repository.getLatestRevision()))
+
+        SVNDirEntry entry = this.repository.info(".", -1)
+        BigDecimal  headRevision = new BigDecimal(entry.getRevision())
+        this.nextBean.toRevisionAttr().setValue(headRevision)
     }
 
     public BigDecimal getLatestRevision() {

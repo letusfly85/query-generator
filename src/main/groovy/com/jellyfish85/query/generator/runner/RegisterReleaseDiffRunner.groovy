@@ -1,25 +1,25 @@
 package com.jellyfish85.query.generator.runner
 
-import com.jellyfish85.dbaccessor.manager.DatabaseManager
 import com.jellyfish85.query.generator.BaseContext
-import com.jellyfish85.query.generator.generator.ReleaseDiffHTMLGenerator
+import com.jellyfish85.query.generator.register.ReleaseDiffRegister
 import com.jellyfish85.query.generator.utils.QueryAppProp
 
 import java.sql.Connection
 
-class GenerateReleaseDiffHTMLRunner {
+class RegisterReleaseDiffRunner {
 
     /**
-     * usage:
-     *  GenerateReleaseDiffHTMLRunner -Prunargs=01,product/operation/training/4user
-     *  GenerateReleaseDiffHTMLRunner -Prunargs=02,develop
      *
+     * usage:
+     *  gradle RegisterReleaseDiffRunner -Prunargs=01,product/operation/training/4user
+     *  gradle RegisterReleaseDiffRunner -Prunargs=02,develop,develop
      *
      * @param args
      */
     public static void main(String[] args){
         def dependencyGrpCd = args[0]
         def environment     = args[1]
+        def envName         = args[2]
 
         BaseRunner  runner     = new BaseRunner(dependencyGrpCd, environment)
         BaseContext context    = runner._context
@@ -28,13 +28,14 @@ class GenerateReleaseDiffHTMLRunner {
         runner.databaseInitialize()
         Connection conn = runner.getConnection()
 
-        DatabaseManager db = new DatabaseManager()
-        db.myConnect()
-        Connection myConn = db.conn()
+        ReleaseDiffRegister register =
+                new ReleaseDiffRegister(conn, queryProp.subversionTagName(), envName)
 
-        ReleaseDiffHTMLGenerator generator =
-                new ReleaseDiffHTMLGenerator(context, queryProp.subversionCurrentName(), conn, myConn)
+        register.setAttributeFromDB()
 
-        generator.generateHTML()
+        register.setSVNAttributeFromSVN()
+
+        register.register()
     }
+
 }

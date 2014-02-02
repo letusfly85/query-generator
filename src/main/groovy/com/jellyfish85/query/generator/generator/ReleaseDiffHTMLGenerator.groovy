@@ -11,13 +11,14 @@ import java.sql.Connection
 
 class ReleaseDiffHTMLGenerator extends GeneralGenerator {
 
-    private String tagName  = ""
+    private String tagName      = ""
 
-    private Connection conn   = null
+    private Connection conn     = null
 
-    private Connection myConn = null
+    private Connection myConn   = null
 
     private BaseContext context = null
+
     public ReleaseDiffHTMLGenerator(
             BaseContext _context, String _tagName,
             Connection _conn,  Connection _myConn
@@ -52,9 +53,10 @@ class ReleaseDiffHTMLGenerator extends GeneralGenerator {
 
         ArrayList<VChangesetsBean> vList = changeSetsDao.convert(_vList)
 
+        String replaceKeyWord = this.context.queryProp.subversionProjectName()
         vList.collectAll {VChangesetsBean vBean ->
             vBean.fileNameAttr().setValue(FilenameUtils.getName(vBean.pathAttr().value()))
-            vBean.pathAttr().setValue(vBean.pathAttr().value().replaceAll("/JYB/", ""))
+            vBean.pathAttr().setValue(vBean.pathAttr().value().replaceAll("/${replaceKeyWord}/", ""))
         }
 
         String hrefHeader = this.context.queryProp.redmineURLRevisionHeader()
@@ -73,5 +75,4 @@ class ReleaseDiffHTMLGenerator extends GeneralGenerator {
 
         writeAppFile()
     }
-
 }

@@ -121,6 +121,9 @@ class QueryAppProp(environment: String) {
   val redmineURLRevisionHeader:            String
                                               = configuration.getString("redmine.url.revision.header")
 
+  val subversionProjectName:               String
+                                              = configuration.getString("subversion.project.name")
+
   val subversionRepositoryCode:            String
                                               = configuration.getString("subversion.repository.code")
 
@@ -143,11 +146,20 @@ class QueryAppProp(environment: String) {
                                               = configuration.getString("subversion.url.tag.4test")
 
   var subversionCurrentName:                   String = _
-  val subversionTagNames: java.util.Iterator[String] = configuration.getKeys("subversion.url.current")
-  while (subversionTagNames.hasNext) {
-    val key: String = subversionTagNames.next()
+  val subversionCurrentNames: java.util.Iterator[String] = configuration.getKeys("subversion.url.current")
+  while (subversionCurrentNames.hasNext) {
+    val key: String = subversionCurrentNames.next()
     if (key.replaceAll("subversion.url.current.", "").equals(environment)) {
       subversionCurrentName = configuration.getString(key)
+    }
+  }
+
+  var subversionTagName:                   String = _
+  val subversionTagNames: java.util.Iterator[String] = configuration.getKeys("subversion.url.tag")
+  while (subversionTagNames.hasNext) {
+    val key: String = subversionTagNames.next()
+    if (key.replaceAll("subversion.url.tag.", "").equals(environment)) {
+      subversionTagName = configuration.getString(key)
     }
   }
 
