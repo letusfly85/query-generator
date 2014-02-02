@@ -33,7 +33,7 @@ class GenerateReleaseDiffHTMLRunner {
         Connection myConn = db.conn()
 
         ReleaseDiffHTMLGenerator generator =
-                new ReleaseDiffHTMLGenerator(context, queryProp.subversionCurrentName(), conn, myConn)
+                new ReleaseDiffHTMLGenerator(context, queryProp.subversionTagName(), conn, myConn)
 
         generator.generateHTML()
     }
