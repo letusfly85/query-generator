@@ -12,7 +12,7 @@ class RegisterReleaseDiffRunner {
      *
      * usage:
      *  gradle RegisterReleaseDiffRunner -Prunargs=01,product/operation/training/4user
-     *  gradle RegisterReleaseDiffRunner -Prunargs=02,develop,develop
+     *  gradle RegisterReleaseDiffRunner -Prunargs=02,develop
      *
      * @param args
      */

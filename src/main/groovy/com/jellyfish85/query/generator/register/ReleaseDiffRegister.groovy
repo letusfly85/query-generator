@@ -90,6 +90,19 @@ class ReleaseDiffRegister {
     }
 
     public void register() {
+        if (this.currentBean.toRevisionAttr().value() == this.nextBean.toRevisionAttr().value()) {
+
+            println("############################################")
+            println("#")
+            println("# nothing to do for KR_RELEASE_DIFFS record")
+            println("#")
+            println("# there is no change in repository...")
+            println("#")
+            println("############################################")
+
+            return
+        }
+
         println("############################################")
         println("#")
         println("# updating KR_RELEASE_DIFFS record")
