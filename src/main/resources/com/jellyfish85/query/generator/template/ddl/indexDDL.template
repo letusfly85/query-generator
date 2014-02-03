@@ -31,9 +31,9 @@ BEGIN
              '('    ||
 <% columnList.eachWithIndex {bean, i ->
     if (i == 0){ %>\
-                ' ${currentBean.columnNameAttr().value()}'	||
+                ' ${bean.columnNameAttr().value()}'	||
 <% } else { %>\
-                ',${currentBean.columnNameAttr().value()}'  ||
+                ',${bean.columnNameAttr().value()}'  ||
 <% } } %>\
             ')';
     IF W_COUNT = 0 THEN
