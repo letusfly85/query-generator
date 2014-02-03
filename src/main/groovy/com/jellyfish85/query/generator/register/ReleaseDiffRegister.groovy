@@ -86,7 +86,9 @@ class ReleaseDiffRegister {
     }
 
     public BigDecimal getLatestRevision() {
-        return new BigDecimal(this.repository.getLatestRevision())
+        SVNDirEntry entry = this.repository.info(".", -1)
+        BigDecimal  headRevision = new BigDecimal(entry.getRevision())
+        return new BigDecimal(headRevision)
     }
 
     public void register() {
