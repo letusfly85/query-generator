@@ -19,7 +19,7 @@ select username username from user_users;
 select instance_name instancename from v\$instance;
 spool on;
 spool log/Create_Table_${tableName}_${schemaName}.&log_date_text..log
-CREATE TABLE ${schemaName}.${tableName} ( <% columnList.eachWithIndex {bean, idx ->
+CREATE TABLE ${schemaName}.${tableName} ( <% columnList.eachWithIndex {MsTabColumnsBean bean, int idx ->
     def attr = ""
     if(bean.dataTypeAttr().value() == "NUMBER") {
         attr = bean.physicalColumnNameAttr().value() + "\t" + bean.dataTypeAttr().value() + "(" + bean.dataLengthAttr().value() + "," + bean.dataPrecisionAttr().value() + ")"
@@ -47,8 +47,8 @@ COMMENT ON TABLE ${schemaName}.${tableName} IS '${uniqueTag}\t${tableBean.logica
 <% if (!pkList.size().equals(0)) { %>
 ALTER TABLE ${schemaName}.${tableName} ADD CONSTRAINT PK_${tableName} PRIMARY KEY (
 <% pkList.eachWithIndex {currentBean, idx ->
-if (idx == 0) { %> ${bean.physicalColumnNameAttr().value()}
-<% } else { %>,${bean.physicalColumnNameAttr().value()}
+if (idx == 0) { %> ${currentBean.physicalColumnNameAttr().value()}
+<% } else { %>,${currentBean.physicalColumnNameAttr().value()}
 <% } } %>)<% } %>
 /
 
@@ -63,7 +63,7 @@ if (index.equals(0)) { %>     ${indCol.columnNameAttr().value()}
 <% } } %>
 
 <% columnList.eachWithIndex {currentBean, idx -> %>
-COMMENT ON COLUMN ${schemaName}.${tableName}.${bean.physicalColumnNameAttr().value()}    IS	'${bean.logicalColumnNameAttr().value()}'
+COMMENT ON COLUMN ${schemaName}.${tableName}.${currentBean.physicalColumnNameAttr().value()}    IS	'${currentBean.logicalColumnNameAttr().value()}'
 / <% } %>
 
 ALTER TABLE ${schemaName}.${tableName} NOLOGGING
