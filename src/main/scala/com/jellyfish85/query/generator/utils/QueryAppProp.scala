@@ -163,6 +163,18 @@ class QueryAppProp(environment: String) {
     }
   }
 
+  var subversionTagHeader:                   String = _
+  val subversionTagHeaders: java.util.Iterator[String] = configuration.getKeys("subversion.url.tag.header")
+  while (subversionTagHeaders.hasNext) {
+    val key: String = subversionTagHeaders.next()
+    if (key.replaceAll("subversion.url.tag.header.", "").equals(environment)) {
+      subversionTagHeader = configuration.getString(key)
+    }
+  }
+
+  val subversionGeneralCodeBookPath: String =
+                subversionTagHeader + configuration.getString("subversion.general.code.book.path")
+
   /************************************************************************************************
    * workspace attributes
    *

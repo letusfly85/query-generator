@@ -41,7 +41,7 @@ class GeneralCodeGenerator extends GeneralGenerator {
     public void generateDataFile() {
 
         SVNRequestBean requestBean = new SVNRequestBean()
-        requestBean.setPath(xlsProp.generalCodeBookPath())
+        requestBean.setPath(this.context.queryProp.subversionGeneralCodeBookPath())
         requestBean = FileDownloader.download(this.context.queryProp, requestBean)
 
         String bookPath =

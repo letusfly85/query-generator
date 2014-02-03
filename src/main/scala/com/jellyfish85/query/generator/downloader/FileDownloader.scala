@@ -6,6 +6,7 @@ import com.jellyfish85.svnaccessor.getter.SVNGetFiles
 import com.jellyfish85.query.generator.utils.QueryAppProp
 import java.io.File
 import org.apache.commons.io.FileUtils
+import org.tmatesoft.svn.core.io.SVNRepository
 
 /**
  *
@@ -13,8 +14,8 @@ import org.apache.commons.io.FileUtils
  */
 object FileDownloader {
 
-  val manager: SVNManager  = new SVNManager
-
+  val manager: SVNManager = new SVNManager
+  val defaultRepository: SVNRepository = manager.repository
   val getter:  SVNGetFiles[SVNRequestBean] = new SVNGetFiles
 
   /**
@@ -23,6 +24,9 @@ object FileDownloader {
    * @param requestBean
    */
   def download(prop:    QueryAppProp, requestBean: SVNRequestBean): SVNRequestBean = {
+
+    getter.reSetRepository(manager.baseUrl + prop.subversionTagHeader)
+
     val folder: File = new File(prop.applicationWorkspacePath)
     FileUtils.forceMkdir(folder)
 
