@@ -2,7 +2,6 @@
 <html>
 <head>
 <h2>リビジョン${fromRevision}から${toRevision}へ変更されました</h2>
-    <h3>ヘッダーをクリックするとソートできます</h3>
 <style type="text/css"><!--
 
 .mst {
