@@ -7,7 +7,6 @@ import com.jellyfish85.query.generator.generator.TemplateRecordGenerator
 import com.jellyfish85.query.generator.helper.ResourceCopyHelper
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.TemplateRecordXlsBean
-import com.jellyfish85.xlsaccessor.utils.XlsAppProp
 import org.apache.commons.io.FileUtils
 
 
@@ -23,12 +22,10 @@ class GenerateTemplateRecordSqlLoaderSetsRunner {
 
         def queryProp       = context.queryProp
 
-        XlsAppProp        xlsAppProp      = new XlsAppProp()
-
         ArrayList<KrObjectDependenciesBean> dependencies = runner.getDependencies()
 
         SVNRequestBean _requestBean = new SVNRequestBean()
-        _requestBean.setPath(xlsAppProp.templateRecordBookPath())
+        _requestBean.setPath(queryProp.subversionTemplateRecordBookPath())
         FileDownloader.download(queryProp, _requestBean)
         String _path = (new File(queryProp.applicationWorkspacePath(), _requestBean.path()))
 
@@ -42,7 +39,7 @@ class GenerateTemplateRecordSqlLoaderSetsRunner {
         generator.generateTemplateShellScript()
 
         SVNRequestBean __requestBean = new SVNRequestBean()
-        __requestBean.setPath(xlsAppProp.templateRecordDocsPath())
+        __requestBean.setPath(queryProp.subversionTemplateRecordDocsPath())
         FileDownloader.downloadDir(__requestBean, queryProp.applicationTemplatePath())
         File docs = new File(queryProp.applicationTemplatePath())
         docs.listFiles().each {File doc ->

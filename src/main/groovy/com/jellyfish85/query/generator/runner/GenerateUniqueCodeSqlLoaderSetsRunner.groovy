@@ -6,10 +6,8 @@ import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.downloader.FileDownloader
 import com.jellyfish85.query.generator.generator.CheckScriptsGenerator
 import com.jellyfish85.query.generator.generator.UniqueCodeGenerator
-import com.jellyfish85.query.generator.helper.AppFileNameHelper
 import com.jellyfish85.query.generator.helper.CodeGeneratorHelper
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
-import com.jellyfish85.xlsaccessor.utils.XlsAppProp
 
 /**
  *
@@ -31,15 +29,13 @@ class GenerateUniqueCodeSqlLoaderSetsRunner {
         def queryProp       = context.queryProp
         def fileNameHelper  = context.fileNameHelper
 
-        XlsAppProp      xlsAppProp      = new XlsAppProp()
-
         KrObjectDependenciesDao dependenciesDao = new KrObjectDependenciesDao()
         def _dependencies = dependenciesDao.findByDependencyGrpCd(conn, dependencyGrpCd)
         ArrayList<KrObjectDependenciesBean> dependencies = dependenciesDao.convert(_dependencies)
         UniqueCodeGenerator generator = new UniqueCodeGenerator(context)
 
         SVNRequestBean requestBean = new SVNRequestBean()
-        requestBean.setPath(xlsAppProp.uniqueCodeBookParentPath())
+        requestBean.setPath(queryProp.subversionUniqueCodeBookParentPath())
         FileDownloader.downloadDir(queryProp, requestBean)
 
         File parentPath =

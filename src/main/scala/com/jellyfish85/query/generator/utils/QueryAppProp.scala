@@ -127,18 +127,6 @@ class QueryAppProp(environment: String) {
   val subversionRepositoryCode:            String
                                               = configuration.getString("subversion.repository.code")
 
-  val subversionAuthorityCodeDataPath:     String
-                                              = configuration.getString("subversion.authority.code.data.path")
-
-  val subversionAuthorityCodeControlPath:  String
-                                              = configuration.getString("subversion.authority.code.control.path")
-
-  val subversionErrorCheckCodeDataPath:    String
-                                              = configuration.getString("subversion.error.check.code.data.path")
-
-  val subversionErrorCheckCodeControlPath: String
-                                              = configuration.getString("subversion.error.check.code.control.path")
-
   val subversionProcedureDDLPathLike:      String
                                               = configuration.getString("subversion.procedure.ddl.path.like")
 
@@ -172,8 +160,29 @@ class QueryAppProp(environment: String) {
     }
   }
 
-  val subversionGeneralCodeBookPath: String =
+  val subversionGeneralCodeBookPath:      String =
                 subversionTagHeader + configuration.getString("subversion.general.code.book.path")
+
+  val subversionAuthorityCodeDataPath:     String =
+                subversionTagHeader + configuration.getString("subversion.authority.code.data.path")
+
+  val subversionAuthorityCodeControlPath:  String =
+                subversionTagHeader + configuration.getString("subversion.authority.code.control.path")
+
+  val subversionErrorCheckCodeDataPath:    String =
+                subversionTagHeader + configuration.getString("subversion.error.check.code.data.path")
+
+  val subversionErrorCheckCodeControlPath: String =
+                subversionTagHeader + configuration.getString("subversion.error.check.code.control.path")
+
+  val subversionUniqueCodeBookParentPath: String =
+                subversionTagHeader + configuration.getString("subversion.unique.code.book.parentPath")
+
+  val subversionTemplateRecordBookPath: String =
+                subversionTagHeader + configuration.getString("subversion.template.record.book.path")
+
+  val subversionTemplateRecordDocsPath: String =
+                subversionTagHeader + configuration.getString("subversion.template.record.docs.path")
 
   /************************************************************************************************
    * workspace attributes
