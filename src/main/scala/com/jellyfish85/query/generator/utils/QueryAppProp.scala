@@ -160,6 +160,7 @@ class QueryAppProp(environment: String) {
     }
   }
 
+  //todo check how to control revisions when using tags and branches
   val subversionGeneralCodeBookPath:      String =
                 subversionTagHeader + configuration.getString("subversion.general.code.book.path")
 
