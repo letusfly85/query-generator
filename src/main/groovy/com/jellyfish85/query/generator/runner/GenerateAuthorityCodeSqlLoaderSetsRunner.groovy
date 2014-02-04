@@ -29,8 +29,8 @@ class GenerateAuthorityCodeSqlLoaderSetsRunner {
         SVNRequestBean dataRequestBean = new SVNRequestBean()
         dataRequestBean.setPath(queryProp.subversionAuthorityCodeDataPath())
 
-        FileDownloader.downloadDir(controlRequestBean, queryProp.applicationControlPath())
-        FileDownloader.downloadDir(dataRequestBean,    queryProp.applicationDataPath())
+        FileDownloader.downloadDir(queryProp, controlRequestBean, queryProp.applicationControlPath())
+        FileDownloader.downloadDir(queryProp, dataRequestBean,    queryProp.applicationDataPath())
 
         AuthorityCodeGenerator generator = new AuthorityCodeGenerator(context)
         generator.generateControlFile()

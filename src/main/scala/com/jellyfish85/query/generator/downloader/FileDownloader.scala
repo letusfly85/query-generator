@@ -24,7 +24,6 @@ object FileDownloader {
    * @param requestBean
    */
   def download(prop:    QueryAppProp, requestBean: SVNRequestBean): SVNRequestBean = {
-
     getter.reSetRepository(manager.baseUrl + prop.subversionTagHeader)
 
     val folder: File = new File(prop.applicationWorkspacePath)
@@ -43,6 +42,8 @@ object FileDownloader {
    * @param requestBean
    */
   def download(prop:    QueryAppProp, requestBean: SVNRequestBean, path: String): SVNRequestBean = {
+    getter.reSetRepository(manager.baseUrl + prop.subversionTagHeader)
+
     val folder: File = new File(path)
     FileUtils.forceMkdir(folder)
 
@@ -59,6 +60,8 @@ object FileDownloader {
    * @param requestBean
    */
   def downloadDir(prop:    QueryAppProp, requestBean: SVNRequestBean) {
+    getter.reSetRepository(manager.baseUrl + prop.subversionTagHeader)
+
     val folder: File = new File(prop.applicationWorkspacePath)
     FileUtils.forceMkdir(folder)
 
@@ -75,6 +78,24 @@ object FileDownloader {
    * @param path
    */
   def downloadDir(requestBean: SVNRequestBean, path: String) {
+    val folder: File = new File(path)
+    FileUtils.forceMkdir(folder)
+
+    def filter(x: SVNRequestBean): Boolean  =  true
+    val requestBeans: List[SVNRequestBean] = getter.getSVNInfo(requestBean.path, filter)
+
+    getter.simpleGetFiles(requestBeans, folder)
+  }
+
+  /**
+   *
+   *
+   * @param requestBean
+   * @param path
+   */
+  def downloadDir(prop:    QueryAppProp, requestBean: SVNRequestBean, path: String) {
+    getter.reSetRepository(manager.baseUrl + prop.subversionTagHeader)
+
     val folder: File = new File(path)
     FileUtils.forceMkdir(folder)
 
