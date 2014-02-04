@@ -164,25 +164,25 @@ class QueryAppProp(environment: String) {
                 subversionTagHeader + configuration.getString("subversion.general.code.book.path")
 
   val subversionAuthorityCodeDataPath:     String =
-                subversionTagHeader + configuration.getString("subversion.authority.code.data.path")
+                subversionCurrentName + configuration.getString("subversion.authority.code.data.path")
 
   val subversionAuthorityCodeControlPath:  String =
-                subversionTagHeader + configuration.getString("subversion.authority.code.control.path")
+                subversionCurrentName + configuration.getString("subversion.authority.code.control.path")
 
   val subversionErrorCheckCodeDataPath:    String =
-                subversionTagHeader + configuration.getString("subversion.error.check.code.data.path")
+    subversionCurrentName + configuration.getString("subversion.error.check.code.data.path")
 
   val subversionErrorCheckCodeControlPath: String =
-                subversionTagHeader + configuration.getString("subversion.error.check.code.control.path")
+    subversionCurrentName + configuration.getString("subversion.error.check.code.control.path")
 
   val subversionUniqueCodeBookParentPath: String =
-                subversionTagHeader + configuration.getString("subversion.unique.code.book.parentPath")
+    subversionCurrentName + configuration.getString("subversion.unique.code.book.parentPath")
 
   val subversionTemplateRecordBookPath: String =
-                subversionTagHeader + configuration.getString("subversion.template.record.book.path")
+    subversionCurrentName + configuration.getString("subversion.template.record.book.path")
 
   val subversionTemplateRecordDocsPath: String =
-                subversionTagHeader + configuration.getString("subversion.template.record.docs.path")
+    subversionCurrentName + configuration.getString("subversion.template.record.docs.path")
 
   /************************************************************************************************
    * workspace attributes
