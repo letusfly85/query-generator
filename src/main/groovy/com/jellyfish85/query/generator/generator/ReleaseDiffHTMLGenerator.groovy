@@ -53,8 +53,15 @@ class ReleaseDiffHTMLGenerator extends GeneralGenerator {
 
         ArrayList<VChangesetsBean> vList = changeSetsDao.convert(_vList)
 
+        ArrayList<VChangesetsBean> vList_ = new ArrayList<>()
+        vList.each {v ->
+            if (FilenameUtils.getName(v.pathAttr().value()) != this.context.queryProp.exceptionPg()) {
+                vList_.add(v)
+            }
+        }
+
         String replaceKeyWord = this.context.queryProp.subversionProjectName()
-        vList.collectAll {VChangesetsBean vBean ->
+        vList_.collectAll {VChangesetsBean vBean ->
             vBean.fileNameAttr().setValue(FilenameUtils.getName(vBean.pathAttr().value()))
             vBean.pathAttr().setValue(vBean.pathAttr().value().replaceAll("/${replaceKeyWord}/", ""))
         }
@@ -63,7 +70,7 @@ class ReleaseDiffHTMLGenerator extends GeneralGenerator {
         Map map = [
                 fromRevision: bean.fromRevisionAttr().value(),
                 toRevision:   bean.toRevisionAttr().value(),
-                vList:        vList,
+                vList:        vList_,
                 hrefHeader:   hrefHeader,
         ]
 
