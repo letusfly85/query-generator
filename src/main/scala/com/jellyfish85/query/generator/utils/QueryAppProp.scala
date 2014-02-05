@@ -171,19 +171,19 @@ class QueryAppProp(environment: String) {
                 subversionCurrentName + configuration.getString("subversion.authority.code.control.path")
 
   val subversionErrorCheckCodeDataPath:    String =
-    subversionCurrentName + configuration.getString("subversion.error.check.code.data.path")
+                subversionCurrentName + configuration.getString("subversion.error.check.code.data.path")
 
   val subversionErrorCheckCodeControlPath: String =
-    subversionCurrentName + configuration.getString("subversion.error.check.code.control.path")
+                subversionCurrentName + configuration.getString("subversion.error.check.code.control.path")
 
   val subversionUniqueCodeBookParentPath: String =
-    subversionCurrentName + configuration.getString("subversion.unique.code.book.parentPath")
+                subversionCurrentName + configuration.getString("subversion.unique.code.book.parentPath")
 
   val subversionTemplateRecordBookPath: String =
-    subversionCurrentName + configuration.getString("subversion.template.record.book.path")
+                subversionCurrentName + configuration.getString("subversion.template.record.book.path")
 
   val subversionTemplateRecordDocsPath: String =
-    subversionCurrentName + configuration.getString("subversion.template.record.docs.path")
+                subversionCurrentName + configuration.getString("subversion.template.record.docs.path")
 
   /************************************************************************************************
    * workspace attributes
@@ -223,5 +223,8 @@ class QueryAppProp(environment: String) {
   val erdSchema4Test:                  String   = configuration.getString("erd.schema.4test")
 
   val erdFunctionAnotherOwnerDDL:      String   = configuration.getString("erd.function.another.owner.ddl")
+
+
+  val exceptionPg: String = configuration.getString("exception.pg")
 
 }
