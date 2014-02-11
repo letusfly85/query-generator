@@ -216,6 +216,10 @@ class QueryAppProp(environment: String) {
 
   val erdSchemaSubName:                String   = configuration.getString("erd.schema.sub.name")
 
+  val erdSchemaBIMainName:             String   = configuration.getString("erd.schema.bi.main.name")
+
+  val erdSchemaBISubName:              String   = configuration.getString("erd.schema.bi.sub.name")
+
   val erdSchemaOuterFaceName:          String   = configuration.getString("erd.schema.outer.face.name")
 
   val erdSchemaOuterFaceSubName:       String   = configuration.getString("erd.schema.outer.face.sub.name")

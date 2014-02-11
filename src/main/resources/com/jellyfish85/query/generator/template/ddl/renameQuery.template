@@ -2,7 +2,7 @@
  Program Name: renmae query for  ${schemaName}.${tableName}
  Author:       Database Architect
  ******************************************************************************/
-spool log/rename_table_${tableName}_${schemaName}.log;
+spool log/rename_table_${tableName}_${schemaName}.&log_date_text..log;
 set echo on;
 set serveroutput on;
 

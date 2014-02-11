@@ -6,20 +6,12 @@ import com.jellyfish85.query.generator.BaseContext
 import com.jellyfish85.query.generator.generator.ErdReleaseScriptsGenerator
 import com.jellyfish85.query.generator.helper.ResourceCopyHelper
 
-/**
- * == GenerateErdReleaseScriptsRunner ==
- *
- * @author wada shunsuke
- * @since  2013/12/05
- *
- */
-class GenerateErdReleaseScriptsRunner {
+class GeneratePatchErdReleaseScriptsRunner {
 
     public static void main(String[] args) {
         def dependencyGrpCd = args[0]
         def environment     = args[1]
-        def preReleaseId    = args[2]
-        //def curReleaseId    = args[3]
+        def tableList       = args.tail().tail()
 
         BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
         BaseContext context = runner._context
@@ -30,12 +22,14 @@ class GenerateErdReleaseScriptsRunner {
         def queryProp    = context.queryProp
 
         ErdReleaseScriptsGenerator generator = new ErdReleaseScriptsGenerator(context)
-        generator.setPreReleaseId(preReleaseId)
 
         MsTablesDao msTablesDao = new MsTablesDao()
-        def _tableList = msTablesDao.findByReleaseId(conn, preReleaseId)
-        ArrayList<MsTablesBean> tableList = msTablesDao.convert(_tableList)
-        generator.generateErdReleaseScripts(conn, dependencies, tableList)
+        ArrayList<String> tableNames = new ArrayList<>()
+        tableList.each {tableName -> tableNames.add(tableName)}
+        def _tableList = msTablesDao.findByTableNames(conn, tableNames)
+        ArrayList<MsTablesBean> msTablesBeans = msTablesDao.convert(_tableList)
+
+        generator.generateErdReleaseScripts(conn, dependencies, msTablesBeans)
 
         // add login sql to parent folder
         ResourceCopyHelper copyHelper = new ResourceCopyHelper()

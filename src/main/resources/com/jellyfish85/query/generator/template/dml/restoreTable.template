@@ -1,4 +1,4 @@
-spool log/restore_table_${tableName}_${schemaName}.log;
+spool log/restore_table_${tableName}_${schemaName}.&log_date_text..log;
 set echo on;
 
 DECLARE

@@ -123,6 +123,12 @@ class TableNameHelper {
         } else if (isIkTable(tableName)) {
             return QueryAppConst.APPLICATION_GROUP_IK
 
+        } else if (tableName.startsWith("H_")) {
+            return QueryAppConst.APPLICATION_GROUP_BI
+
+        } else if (tableName.startsWith("C_")) {
+            return QueryAppConst.APPLICATION_GROUP_BI
+
         } else {
             return QueryAppConst.APPLICATION_GROUP_APP
         }
@@ -250,6 +256,12 @@ class TableNameHelper {
             return queryProp.erdSchemaMainName()
 
         } else if (dependencyGrpCd.equals(QueryAppConst.APPLICATION_SUB_GROUP)) {
+            return queryProp.erdSchemaSubName()
+
+        } else if (dependencyGrpCd.equals(QueryAppConst.APPLICATION_BI_MAIN_GROUP)) {
+            return queryProp.erdSchemaSubName()
+
+        } else if (dependencyGrpCd.equals(QueryAppConst.APPLICATION_BI_SUB_GROUP)) {
             return queryProp.erdSchemaSubName()
         }
     }

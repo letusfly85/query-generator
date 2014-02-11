@@ -21,6 +21,12 @@ class QueryAppConst {
     // application sub group
     public final static String APPLICATION_SUB_GROUP        = "02"
 
+    // application bi main group
+    public final static String APPLICATION_BI_MAIN_GROUP    = "15"
+
+    // application bi sub group
+    public final static String APPLICATION_BI_SUB_GROUP     = "16"
+
 
     // application group of main system
     public final static String APPLICATION_GROUP_APP        = "0"
@@ -30,6 +36,9 @@ class QueryAppConst {
 
     // application group of translation
     public final static String APPLICATION_GROUP_IK         = "2"
+
+    // application group of translation
+    public final static String APPLICATION_GROUP_BI         = "3"
 
     // data files end symbol
     public final static String STRING_DAT_END               = "CRLF"

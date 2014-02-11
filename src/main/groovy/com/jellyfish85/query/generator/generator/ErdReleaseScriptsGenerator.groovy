@@ -31,7 +31,7 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
      * @param _context
      * @param _preReleaseId
      */
-    public ErdReleaseScriptsGenerator(BaseContext _context, String _preReleaseId) {
+    public ErdReleaseScriptsGenerator(BaseContext _context) {
         super(_context)
         this.context = super.getBaseContext()
 
@@ -40,8 +40,10 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
         restoreQueryGenerator         = new RestoreQueryGenerator(_context)
         tableDDLGenerator             = new TableDDLGenerator(_context)
         dropBackupTableQueryGenerator = new DropBackupTableQueryGenerator(_context)
+    }
 
-        this.preReleaseId = new BigDecimal(_preReleaseId)
+    public void setPreReleaseId(BigDecimal _preReleaseId) {
+        this.preReleaseId = _preReleaseId
     }
 
     private MsTablesDao     msTablesDao     = new MsTablesDao()
@@ -57,11 +59,12 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
      */
     public void generateErdReleaseScripts(
             Connection                          conn,
-            ArrayList<KrObjectDependenciesBean> dependencies
+            ArrayList<KrObjectDependenciesBean> dependencies,
+            ArrayList<MsTablesBean> tableList
     ) {
 
-        def _tableList = msTablesDao.findByReleaseId(conn, this.preReleaseId)
-        ArrayList<MsTablesBean> tableList = msTablesDao.convert(_tableList)
+        //def _tableList = msTablesDao.findByReleaseId(conn, this.preReleaseId)
+        //ArrayList<MsTablesBean> tableList = msTablesDao.convert(_tableList)
         ArrayList<MsTablesBean> targetList = new ArrayList<MsTablesBean>()
 
         // generate query each by table
