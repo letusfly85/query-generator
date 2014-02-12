@@ -1,6 +1,5 @@
 package com.jellyfish85.query.generator.runner
 
-import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
 import com.jellyfish85.query.generator.BaseContext

@@ -123,6 +123,9 @@ class TableNameHelper {
         } else if (isIkTable(tableName)) {
             return QueryAppConst.APPLICATION_GROUP_IK
 
+        } else if (tableName.startsWith("WH_")) {
+            return QueryAppConst.APPLICATION_GROUP_BI
+
         } else if (tableName.startsWith("H_")) {
             return QueryAppConst.APPLICATION_GROUP_BI
 
@@ -194,6 +197,9 @@ class TableNameHelper {
             result =  false
 
         } else if (tableName.startsWith("WI_IK_")) {
+            result =  false
+
+        } else if (tableName.startsWith("H_")) {
             result =  false
 
         } else if (tableName.startsWith("WR")) {
