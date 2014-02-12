@@ -18,7 +18,8 @@ class GenerateErdReleaseScriptsRunner {
     public static void main(String[] args) {
         def dependencyGrpCd = args[0]
         def environment     = args[1]
-        def preReleaseId    = args[2]
+        def _preReleaseId    = args[2]
+        BigDecimal preReleaseId = new BigDecimal(_preReleaseId)
         //def curReleaseId    = args[3]
 
         BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
