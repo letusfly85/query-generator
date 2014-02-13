@@ -138,6 +138,28 @@ class TableNameHelper {
     }
 
     /**
+     * return revert bi table name
+     *
+     *
+     * @param tableName
+     * @return
+     */
+    public String getRevertName(String tableName) {
+        String revertTableName = ""
+        if (tableName.startsWith("WH_")) {
+            revertTableName = tableName.replaceFirst("WH_", "R_")
+
+        } else if (tableName.startsWith("H_")) {
+            revertTableName = tableName.replaceFirst("H_", "R_")
+
+        } else if (tableName.startsWith("C_")) {
+            revertTableName = tableName.replaceFirst("C_", "R_")
+        }
+
+        return revertTableName
+    }
+
+  /**
      * == isIkTable ==
      *
      *

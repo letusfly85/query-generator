@@ -34,6 +34,20 @@ class TableNameHelperTest extends GroovyTestCase {
         assertEquals("schema name should be sub group schema",  _queryProp.erdSchemaSubName(), subSchemaName)
     }
 
+    void testGetRevertName() {
+        String tableName       = "WH_MY_TABLE"
+        String revertTableName = tableNameHelper.getRevertName(tableName)
+        assertEquals("revert table name should be", "R_MY_TABLE", revertTableName)
+
+        tableName       = "C_MY_TABLE"
+        revertTableName = tableNameHelper.getRevertName(tableName)
+        assertEquals("revert table name should be", "R_MY_TABLE", revertTableName)
+
+        tableName       = "H_MY_TABLE"
+        revertTableName = tableNameHelper.getRevertName(tableName)
+        assertEquals("revert table name should be", "R_MY_TABLE", revertTableName)
+    }
+
     /*
     void testRequestBITableName1() {
 
