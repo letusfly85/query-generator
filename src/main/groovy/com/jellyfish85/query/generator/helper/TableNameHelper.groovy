@@ -138,6 +138,21 @@ class TableNameHelper {
     }
 
     /**
+     *
+     *
+     * @param tableName
+     * @return
+     */
+    public Boolean isBITable(String tableName) {
+        if (identifyTableGroup(tableName).equals(QueryAppConst.APPLICATION_GROUP_BI)) {
+            return true
+
+        } else {
+            return false
+        }
+    }
+
+    /**
      * return revert bi table name
      *
      *

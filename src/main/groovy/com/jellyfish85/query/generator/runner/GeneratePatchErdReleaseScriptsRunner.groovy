@@ -30,6 +30,7 @@ class GeneratePatchErdReleaseScriptsRunner {
         ArrayList<MsTablesBean> msTablesBeans = msTablesDao.convert(_tableList)
 
         generator.generateErdReleaseScripts(conn, dependencies, msTablesBeans)
+        generator.generateBIRevertErdReleaseScripts(conn, dependencies, msTablesBeans)
 
         // add login sql to parent folder
         ResourceCopyHelper copyHelper = new ResourceCopyHelper()

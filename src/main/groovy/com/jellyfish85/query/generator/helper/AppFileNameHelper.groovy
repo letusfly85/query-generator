@@ -268,6 +268,23 @@ class AppFileNameHelper {
     }
 
     /**
+     *
+     *
+     * @author wada shunsuke
+     * @since  2014/02/14
+     * @return
+     *
+     */
+    public String requestExecuteBIRevertQueriesPath() {
+
+        this.fileName = StringUtils.join(["exe_R_All.sql"
+        ], "")
+
+        String path = FilenameUtils.concat(this.queryProp.tableDDLFolder(), this.fileName)
+        return path
+    }
+
+    /**
      * == requestSqlLoaderPath ==
      *
      * @author wada shunsuke

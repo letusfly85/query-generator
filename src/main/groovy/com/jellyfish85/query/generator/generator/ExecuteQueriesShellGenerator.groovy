@@ -60,6 +60,37 @@ class ExecuteQueriesShellGenerator extends GeneralGenerator {
         this.writeAppFile()
     }
 
+    public void generateBIRevertExecuteQueriesShell(
+            ArrayList<MsTablesBean>             msTablesBeanArrayList,
+            ArrayList<KrObjectDependenciesBean> dependencies
+    ) {
+        ArrayList<String> execScriptsList = new ArrayList<String>()
+        msTablesBeanArrayList.each {MsTablesBean tablesBean ->
+            KrObjectDependenciesBean dependency =
+                    this.context.tableNameHelper.
+                            findByApplicationGroupCd(dependencies, tablesBean.physicalTableNameAttr().value())
+
+            tablesBean.physicalTableNameAttr().
+                    setValue(context.tableNameHelper.getRevertName(tablesBean.physicalTableNameAttr().value()))
+            String execScriptsPath =
+                    this.context.fileNameHelper.requestExecuteQueriesPath(dependency, tablesBean)
+
+            String execScriptsName = FilenameUtils.getName(execScriptsPath)
+            execScriptsList.add(execScriptsName)
+        }
+
+        Map map = [
+                execScriptsList : execScriptsList
+        ]
+
+        String path = "/com/jellyfish85/query/generator/template/ddl/ExecuteAllQueries.template"
+
+        this.generate(map, path)
+        String executeAllQueriesPath = this.context.fileNameHelper.requestExecuteBIRevertQueriesPath()
+        this.setPath(executeAllQueriesPath)
+        this.writeAppFile()
+    }
+
     /**
      * == generateExecuteQueriesShell ==
      *

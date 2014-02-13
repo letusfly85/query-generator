@@ -2,6 +2,7 @@ package com.jellyfish85.query.generator.generator
 
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsIndexesBean
+import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTabColumnsBean
 import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesBean
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
@@ -46,7 +47,6 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
         this.preReleaseId = _preReleaseId
     }
 
-    private MsTablesDao     msTablesDao     = new MsTablesDao()
     private MsTabColumnsDao msTabColumnsDao = new MsTabColumnsDao()
     private MsIndexesDao    msIndexesDao    = new MsIndexesDao()
     private MsIndColumnsDao msIndColumnsDao = new MsIndColumnsDao()
@@ -60,11 +60,8 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
     public void generateErdReleaseScripts(
             Connection                          conn,
             ArrayList<KrObjectDependenciesBean> dependencies,
-            ArrayList<MsTablesBean> tableList
+            ArrayList<MsTablesBean>             tableList
     ) {
-
-        //def _tableList = msTablesDao.findByReleaseId(conn, this.preReleaseId)
-        //ArrayList<MsTablesBean> tableList = msTablesDao.convert(_tableList)
         ArrayList<MsTablesBean> targetList = new ArrayList<MsTablesBean>()
 
         // generate query each by table
@@ -107,5 +104,75 @@ class ErdReleaseScriptsGenerator extends GeneralGenerator {
         }
         this.executeQueriesShellGenerator.
                 generateExecuteQueriesShell(targetList, dependencies)
+    }
+
+    /**
+     *
+     *
+     * @param conn
+     * @param dependencies
+     */
+    public void generateBIRevertErdReleaseScripts(
+            Connection                          conn,
+            ArrayList<KrObjectDependenciesBean> dependencies,
+            ArrayList<MsTablesBean>             tableList
+    ) {
+        ArrayList<MsTablesBean> biTables = tableList.findAll {target ->
+            context.tableNameHelper.isBITable(target.physicalTableNameAttr().value())
+        }
+
+        ArrayList<MsTablesBean> targetList = new ArrayList<MsTablesBean>()
+        biTables.eachWithIndex {MsTablesBean bean, int index ->
+            String tableName   = bean.physicalTableNameAttr().value()
+            String biTableName = context.tableNameHelper.getRevertName(tableName)
+
+            println(".. generating .. ${tableName} .. queries")
+
+            KrObjectDependenciesBean dependency =
+                    this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+
+            def _indList = msIndexesDao.findByTableId(conn, bean.tableIdAttr().value())
+            HashMap<MsIndexesBean, ArrayList<MsIndColumnsBean>> hashMap =
+                    new HashMap<MsIndexesBean, ArrayList<MsIndColumnsBean>>()
+            ArrayList<MsIndexesBean> indList = msIndexesDao.convert(_indList)
+
+            // if there are index's definition, add ddl
+            if (!ArrayUtils.isEmpty(indList)) {
+                indList.each {MsIndexesBean indexesBean ->
+                    def _indColList = msIndColumnsDao.find(conn, indexesBean)
+                    ArrayList<MsIndColumnsBean> indColList = msIndColumnsDao.convert(_indColList)
+
+                    indexesBean.physicalTableNameAttr().setValue(biTableName)
+                    hashMap.put(indexesBean, indColList)
+                }
+            }
+
+            def _sets = msTabColumnsDao.find(conn, bean)
+            ArrayList<MsTabColumnsBean> sets = msTabColumnsDao.convert(_sets)
+
+            // if there is no column list, this doesn't generate table ddl
+            if (!ArrayUtils.isEmpty(sets)) {
+                bean.physicalTableNameAttr().setValue(biTableName)
+                sets.collect {MsTabColumnsBean set ->
+                    set.physicalTableNameAttr().setValue(biTableName)
+                }
+
+
+                this.renameQueryGenerator.generateRenameQuery(bean, dependency)
+                this.restoreQueryGenerator.generateRestoreQuery(bean, dependency)
+                this.tableDDLGenerator.generateTableDDL(bean, sets, dependency, hashMap)
+                this.dropBackupTableQueryGenerator.generateDropBackupTableQuery(bean, dependency)
+
+                this.executeQueriesShellGenerator.generateExecuteQueriesShell(bean, dependency)
+
+                bean.physicalTableNameAttr().setValue(tableName)
+                targetList.add(bean)
+            }
+        }
+
+        if (!ArrayUtils.isEmpty(targetList)) {
+            this.executeQueriesShellGenerator.
+                    generateBIRevertExecuteQueriesShell(targetList, dependencies)
+        }
     }
 }
