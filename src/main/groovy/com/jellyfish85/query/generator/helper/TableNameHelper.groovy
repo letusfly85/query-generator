@@ -162,13 +162,13 @@ class TableNameHelper {
     public String getRevertName(String tableName) {
         String revertTableName = ""
         if (tableName.startsWith("WH_")) {
-            revertTableName = tableName.replaceFirst("WH_", "R_")
+            revertTableName = tableName.replaceFirst("WH_", "RWH_")
 
         } else if (tableName.startsWith("H_")) {
-            revertTableName = tableName.replaceFirst("H_", "R_")
+            revertTableName = tableName.replaceFirst("H_", "RH_")
 
         } else if (tableName.startsWith("C_")) {
-            revertTableName = tableName.replaceFirst("C_", "R_")
+            revertTableName = tableName.replaceFirst("C_", "RC_")
         }
 
         return revertTableName
