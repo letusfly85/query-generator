@@ -37,15 +37,15 @@ class TableNameHelperTest extends GroovyTestCase {
     void testGetRevertName() {
         String tableName       = "WH_MY_TABLE"
         String revertTableName = tableNameHelper.getRevertName(tableName)
-        assertEquals("revert table name should be", "R_MY_TABLE", revertTableName)
+        assertEquals("revert table name should be", "RWH_MY_TABLE", revertTableName)
 
         tableName       = "C_MY_TABLE"
         revertTableName = tableNameHelper.getRevertName(tableName)
-        assertEquals("revert table name should be", "R_MY_TABLE", revertTableName)
+        assertEquals("revert table name should be", "RC_MY_TABLE", revertTableName)
 
         tableName       = "H_MY_TABLE"
         revertTableName = tableNameHelper.getRevertName(tableName)
-        assertEquals("revert table name should be", "R_MY_TABLE", revertTableName)
+        assertEquals("revert table name should be", "RH_MY_TABLE", revertTableName)
     }
 
     /*
