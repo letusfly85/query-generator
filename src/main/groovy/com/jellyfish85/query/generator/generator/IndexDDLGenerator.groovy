@@ -6,6 +6,7 @@ import com.jellyfish85.dbaccessor.bean.query.generate.tool.KrObjectDependenciesB
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndColumnsDao
 import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsIndexesDao
 import com.jellyfish85.query.generator.BaseContext
+import com.jellyfish85.query.generator.constant.QueryAppConst
 import org.apache.commons.io.FilenameUtils
 
 import java.sql.Connection
@@ -104,6 +105,7 @@ class IndexDDLGenerator extends GeneralGenerator {
      */
     public void generateIndexDDL(
             Connection conn,
+            String     serviceName,
             ArrayList<KrObjectDependenciesBean> dependencies
     ) {
 
@@ -118,8 +120,18 @@ class IndexDDLGenerator extends GeneralGenerator {
         // generate query each by table
         list.each {MsIndexesBean bean ->
             String tableName = bean.physicalTableNameAttr().value()
+
             KrObjectDependenciesBean dependency =
                     this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
+            if (dependency.ifFlgAttr().value().equals(QueryAppConst.APPLICATION_GROUP_IK)){
+                return
+            }
+
+            String iServiceName = this.context.tableNameHelper.identifyServiceName(tableName)
+            if (!iServiceName.equals(serviceName)) {
+                return
+            }
+
 
             def _sets = msIndColumnsDao.find(conn, bean)
             ArrayList<MsIndColumnsBean> sets = msIndColumnsDao.convert(_sets)

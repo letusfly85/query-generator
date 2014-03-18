@@ -138,6 +138,60 @@ class TableNameHelper {
     }
 
     /**
+     * identify service name
+     *
+     * @author wada shunsuke
+     * @since  2014/03/19
+     * @param  tableName
+     * @return
+     */
+    public String identifyServiceName(String tableName) {
+
+        if (tableName.startsWith("WR_IK")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("WI_IK_")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("M_IK_")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("WR")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("WS")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("WI")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("E_J")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("E_K")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("E_IK")) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (isIkTable(tableName)) {
+            return queryProp.erdServiceNameMain()
+
+        } else if (tableName.startsWith("WH_")) {
+            return queryProp.erdServiceNameBI()
+
+        } else if (tableName.startsWith("H_")) {
+            return queryProp.erdServiceNameBI()
+
+        } else if (tableName.startsWith("C_")) {
+            return queryProp.erdServiceNameBI()
+
+        } else {
+            return queryProp.erdServiceNameMain()
+        }
+    }
+
+    /**
      *
      *
      * @param tableName

@@ -228,6 +228,10 @@ class QueryAppProp(environment: String) {
 
   val erdFunctionAnotherOwnerDDL:      String   = configuration.getString("erd.function.another.owner.ddl")
 
+  val erdServiceNameMain:              String   = configuration.getString("erd.service.name.Main")
+
+  val erdServiceNameBI:                String   = configuration.getString("erd.service.name.BI")
+
 
   val exceptionPg: String = configuration.getString("exception.pg")
 
