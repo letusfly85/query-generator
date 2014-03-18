@@ -116,7 +116,7 @@ class IndexDDLGenerator extends GeneralGenerator {
         def _list = msIndexesDao.findAll(conn)
         ArrayList<MsIndexesBean> list = msIndexesDao.convert(_list)
 
-
+        ArrayList<MsIndexesBean> cList = new ArrayList<>()
         // generate query each by table
         list.each {MsIndexesBean bean ->
             String tableName = bean.physicalTableNameAttr().value()
@@ -132,6 +132,7 @@ class IndexDDLGenerator extends GeneralGenerator {
                 return
             }
 
+            cList.add(bean)
 
             def _sets = msIndColumnsDao.find(conn, bean)
             ArrayList<MsIndColumnsBean> sets = msIndColumnsDao.convert(_sets)
@@ -147,7 +148,7 @@ class IndexDDLGenerator extends GeneralGenerator {
             }
         }
 
-        generateExecuteIndexDDLShell(dependencies, list)
+        generateExecuteIndexDDLShell(dependencies, cList)
     }
 
 
