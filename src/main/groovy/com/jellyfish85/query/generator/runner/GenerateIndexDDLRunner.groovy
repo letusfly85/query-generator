@@ -30,7 +30,7 @@ class GenerateIndexDDLRunner {
         IndexDDLGenerator generator = new IndexDDLGenerator(context)
 
         // generate files
-        generator.generateIndexDDL(conn, runner.getDependencies(), serviceName)
+        generator.generateIndexDDL(conn, serviceName, runner.getDependencies())
 
         // add login sql to parent folder
         ResourceCopyHelper copyHelper = new ResourceCopyHelper()
