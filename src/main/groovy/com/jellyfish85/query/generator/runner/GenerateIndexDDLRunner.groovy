@@ -17,6 +17,7 @@ class GenerateIndexDDLRunner {
     public static void main(String[] args) {
         def dependencyGrpCd = args[0]
         def environment     = args[1]
+        def serviceName     = args[2]
 
         BaseRunner  runner  = new BaseRunner(dependencyGrpCd, environment)
         BaseContext context = runner._context
@@ -29,7 +30,7 @@ class GenerateIndexDDLRunner {
         IndexDDLGenerator generator = new IndexDDLGenerator(context)
 
         // generate files
-        generator.generateIndexDDL(conn, runner.getDependencies())
+        generator.generateIndexDDL(conn, runner.getDependencies(), serviceName)
 
         // add login sql to parent folder
         ResourceCopyHelper copyHelper = new ResourceCopyHelper()
