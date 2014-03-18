@@ -123,7 +123,7 @@ class IndexDDLGenerator extends GeneralGenerator {
 
             KrObjectDependenciesBean dependency =
                     this.context.tableNameHelper.findByApplicationGroupCd(dependencies, tableName)
-            if (dependency.ifFlgAttr().value().equals(QueryAppConst.APPLICATION_GROUP_IK)){
+            if (dependency == null){
                 return
             }
 
